@@ -10,22 +10,27 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="#">Paradise View</a>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Explore</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Rooms</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
-                    <li class="nav-item"><a class="btn btn-book" href="#">Book Now</a></li>
-                </ul>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+            <div class="container">
+                <a class="navbar-brand" href="#">Paradise View</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Explore</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Rooms</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+                        <li class="nav-item"><a class="btn btn-book" href="#">Book Now</a></li>
+                    </ul>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
+    </header>
 
     <!-- Main Content -->
     <div class="container mt-4">
@@ -35,43 +40,87 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <div class="row">
+            <div class="row g-3">
                 <div class="col-md-3">
-                    <h5>Quick Links</h5>
-                    <a href="#">Room Booking</a>
-                    <a href="#">Rooms</a>
-                    <a href="#">Contact</a>
-                    <a href="#">Explore</a>
+                    <h5 class="footer-heading">Quick Links</h5>
+                    <a href="#" class="footer-link">Room Booking</a>
+                    <a href="#" class="footer-link">Rooms</a>
+                    <a href="#" class="footer-link">Contact</a>
+                    <a href="#" class="footer-link">Explore</a>
                 </div>
                 <div class="col-md-3">
-                    <h5>Company</h5>
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Retreat Policy</a>
-                    <a href="#">F.A.Q</a>
-                    <a href="#">About</a>
+                    <h5 class="footer-heading">Company</h5>
+                    <a href="#" class="footer-link">Privacy Policy</a>
+                    <a href="#" class="footer-link">Refund Policy</a>
+                    <a href="#" class="footer-link">F.A.Q</a>
+                    <a href="#" class="footer-link">About</a>
                 </div>
                 <div class="col-md-3">
-                    <h5>Social Media</h5>
+                    <h5 class="footer-heading">Social Media</h5>
                     <div class="social-icons">
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="footer-icon"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="footer-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="footer-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="footer-icon"><i class="fab fa-linkedin"></i></a>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <h5>Newsletter</h5>
-                    <p>Subscribe to our newsletter to get latest deals on our rooms and vacation discounts.</p>
+                    <h5 class="footer-heading">Newsletter</h5>
+                    <p class="footer-text">Subscribe to get deals on rooms and discounts.</p>
                     <input type="email" class="newsletter-input" placeholder="Enter your email">
-                    <button class="subscribe-btn">Subscribe</button>
+                    <button class="subscribe-btn mt-2">Subscribe</button>
                 </div>
             </div>
-            <div class="copyright">
+            <div class="copyright mt-3">
                 &copy; 2023 Paradise View. All rights reserved.
             </div>
         </div>
     </footer>
 
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Login to Continue</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label for="loginEmail" class="form-label">Email address</label>
+                            <input type="email" class="form-control" id="loginEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="loginPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="loginPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-custom w-100">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Add click handler to all Book Now buttons
+        document.querySelectorAll('.book-now-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const modal = new bootstrap.Modal(document.getElementById('loginModal'));
+                modal.show();
+            });
+        });
+
+        // Handle login form submission
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Add your login logic here
+            alert('Login functionality would go here');
+            const modal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+            modal.hide();
+        });
+    </script>
 </body>
 </html>
