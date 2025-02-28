@@ -1,0 +1,269 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paradise View - Rooms and Suites</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .nav-link {
+            color: #2c3e50 !important;
+            margin: 0 1rem;
+            font-weight: 500;
+        }
+
+        .btn-custom {
+            background: #ff6b6b;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+
+            .btn-custom:hover {
+                background: #e55a5a;
+            }
+
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('hotel-hero.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 150px 0;
+            text-align: center;
+        }
+
+            .hero-section h1 {
+                font-size: 3.5rem;
+                font-weight: 700;
+                margin-bottom: 1rem;
+            }
+
+            .hero-section p {
+                font-size: 1.25rem;
+                max-width: 800px;
+                margin: 0 auto 2rem;
+            }
+
+        .room-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            text-align: center;
+        }
+
+            .room-card:hover {
+                transform: translateY(-10px);
+            }
+
+        .price-tag {
+            background: #ff6b6b;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-section {
+            background: #f8f9fa;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+            .testimonial-section blockquote {
+                font-size: 1.5rem;
+                font-style: italic;
+                color: #555;
+                max-width: 800px;
+                margin: 0 auto;
+            }
+
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 40px 0;
+        }
+
+            .footer h5 {
+                margin-bottom: 1.5rem;
+                font-weight: 600;
+            }
+
+            .footer a {
+                color: white;
+                text-decoration: none;
+                margin-bottom: 0.5rem;
+                display: block;
+            }
+
+                .footer a:hover {
+                    color: #ff6b6b;
+                }
+
+        .newsletter-input {
+            border: 2px solid #e9ecef;
+            padding: 12px 20px;
+            border-radius: 30px;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .subscribe-btn {
+            background: #ff6b6b;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+            .subscribe-btn:hover {
+                background: #e55a5a;
+            }
+
+        .social-icons a {
+            color: white;
+            margin-right: 1rem;
+            font-size: 1.25rem;
+        }
+
+            .social-icons a:hover {
+                color: #ff6b6b;
+            }
+
+        .copyright {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">Paradise View</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Explore</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Rooms</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+                    <li class="nav-item"><a class="btn btn-custom" href="#">Book Now</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <h1>Rooms and Suites</h1>
+            <p>The elegant luxury bedrooms in this gallery showcase custom interior designs & decorating ideas. View pictures and find your perfect luxury bedroom design.</p>
+        </div>
+    </section>
+
+    <!-- Rooms Section -->
+    <section class="container py-5">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="room-card">
+                    <h3>The Royal Room</h3>
+                    <div class="price-tag">N190,000 / night</div>
+                    <p>Experience unparalleled luxury with our signature Royal Room.</p>
+                    <button class="btn btn-custom">Book Now</button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="room-card">
+                    <h3>The Royal Room</h3>
+                    <div class="price-tag">N190,000 / night</div>
+                    <p>Experience unparalleled luxury with our signature Royal Room.</p>
+                    <button class="btn btn-custom">Book Now</button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="room-card">
+                    <h3>The Royal Room</h3>
+                    <div class="price-tag">N190,000 / night</div>
+                    <p>Experience unparalleled luxury with our signature Royal Room.</p>
+                    <button class="btn btn-custom">Book Now</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="facilities-section">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 mb-3">Our Facilities</h2>
+                <p class="text-muted">We offer modern (5 star) hotel facilities for your comfort</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="facility-card">
+                        <i class="fas fa-swimming-pool facility-icon"></i>
+                        <h4>Infinity Pool</h4>
+                        <p class="text-muted">Temperature-controlled with panoramic views</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="facility-card">
+                        <i class="fas fa-spa facility-icon"></i>
+                        <h4>Spa & Wellness</h4>
+                        <p class="text-muted">Premium spa treatments and wellness programs</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="facility-card">
+                        <i class="fas fa-utensils facility-icon"></i>
+                        <h4>Fine Dining</h4>
+                        <p class="text-muted">5-star international cuisine restaurants</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonial Section -->
+    <section class="testimonial-section">
+        <div class="container">
+            <blockquote>
+                "The service at the Hotel Paradise View was exceptional. There was absolutely no issue that was not addressed promptly and professionally. We were particularly impressed with how the hotel staff anticipated our needs."
+                <footer>- Satisfied Guest</footer>
+            </blockquote>
+        </div>
+    </section>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+ 
+
+</body>
+</html>
