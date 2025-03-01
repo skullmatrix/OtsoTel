@@ -229,6 +229,31 @@
 <script>
     function handleCredentialResponse(response) {
         console.log("ID Token: " + response.credential);
-        // Handle the ID token (e.g., send it to your backend for verification)
+
+        // Decode the ID token to get user info
+        const payload = JSON.parse(atob(response.credential.split('.')[1]));
+        const userData = {
+            name: payload.name,
+            email: payload.email,
+            photo: payload.picture
+        };
+
+        // Send user data to the server
+        fetch('/Home/SaveUser', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("User saved:", data);
+            alert("Sign-in successful! You will be redirected to the User Management page.");
+            window.location.href = "/Home/User"; // Redirect to User Management page
+        })
+        .catch(error => {
+            console.error("Error saving user:", error);
+        });
     }
 </script>
