@@ -5,7 +5,6 @@
     var userId = HttpContextAccessor.HttpContext?.Session.GetString("UserId");
     var userName = HttpContextAccessor.HttpContext?.Session.GetString("UserName");
     var userPhoto = HttpContextAccessor.HttpContext?.Session.GetString("UserPhoto");
-    var isAdmin = HttpContextAccessor.HttpContext?.Session.GetString("IsAdmin") == "true";
 }
 
 <!DOCTYPE html>
@@ -20,6 +19,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <!-- Header -->
     <header class="header">
         <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
             <div class="container">
@@ -34,12 +34,15 @@
                         <li class="nav-item"><a class="nav-link" href="#">Rooms</a></li>
                         <li class="nav-item"><a class="nav-link" href="#">About</a></li>
                         <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
-                        @if (!string.IsNullOrEmpty(Context.Session.GetString("UserId")))
+                        @if (!string.IsNullOrEmpty(userId))
                         {
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src="@Context.Session.GetString("UserPhoto")" class="rounded-circle" width="30" height="30" alt="Profile Picture" />
-                                    @Context.Session.GetString("UserName") <!-- Display user's full name -->
+                                    @if (!string.IsNullOrEmpty(userPhoto))
+                                    {
+                                        <img src="@userPhoto" class="rounded-circle" width="30" height="30" alt="Profile Picture" />
+                                    }
+                                    @userName
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li><a class="dropdown-item" href="/Account/UserProfile">User Profile</a></li>
@@ -106,9 +109,65 @@
         </div>
     </footer>
 
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Login</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Login Form -->
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email address</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-signin w-100">Sign In</button>
+                    </form>
+                    <div class="or-divider">OR</div>
+                    <!-- Google Sign-In Button -->
+                    <div id="g_id_onload"
+                         data-client_id="YOUR_GOOGLE_CLIENT_ID"
+                         data-callback="handleCredentialResponse"
+                         data-auto_prompt="false">
+                    </div>
+                    <div class="g_id_signin"
+                         data-type="standard"
+                         data-theme="filled_blue"
+                         data-text="sign_in_with"
+                         data-shape="rectangular"
+                         data-logo_alignment="left"
+                         data-width="100%">
+                    </div>
+                    <!-- Sign Up Link -->
+                    <div class="text-center mt-3">
+                        <p>Don't have an account? <a href="/Account/SignUp" class="text-primary">Sign Up</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Google Sign-In Script -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <!-- Script to Open Login Modal -->
+    @if (TempData["ShowLoginModal"] != null && (bool)TempData["ShowLoginModal"])
+    {
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+                loginModal.show();
+            });
+        </script>
+    }
 </body>
 </html>

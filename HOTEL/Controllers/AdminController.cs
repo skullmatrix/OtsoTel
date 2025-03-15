@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using HotelWebsite.Models;
 using System.Linq;
-using HOTEL.Models;
 
 namespace HotelWebsite.Controllers
 {
@@ -14,26 +13,38 @@ namespace HotelWebsite.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
+        // GET: /Admin/UserManagement
         public IActionResult UserManagement()
         {
             var users = _context.Users.ToList();
             return View(users);
         }
 
+        // GET: /Admin/EditUser/5
+        public IActionResult EditUser(int id)
+        {
+            var user = _context.Users.Find(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
+
+        // POST: /Admin/EditUser/5
         [HttpPost]
         public IActionResult EditUser(User user)
         {
-            _context.Users.Update(user);
-            _context.SaveChanges();
-            return RedirectToAction("UserManagement");
+            if (ModelState.IsValid)
+            {
+                _context.Users.Update(user);
+                _context.SaveChanges();
+                return RedirectToAction("UserManagement");
+            }
+            return View(user);
         }
 
-        [HttpPost]
+        // GET: /Admin/DeleteUser/5
         public IActionResult DeleteUser(int id)
         {
             var user = _context.Users.Find(id);

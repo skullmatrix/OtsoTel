@@ -71,48 +71,6 @@ namespace HotelWebsite.Controllers
         }
 
         [HttpPost]
-        public IActionResult SaveGoogleUser([FromBody] User user)
-        {
-            if (ModelState.IsValid)
-            {
-                // Check if the user already exists
-                var existingUser = _context.Users.FirstOrDefault(u => u.Email == user.Email);
-                if (existingUser == null)
-                {
-                    // Save the new user
-                    _context.Users.Add(user);
-                    _context.SaveChanges();
-                }
-
-                // Store user data in session
-                this.HttpContext.Session.SetString("UserId", user.Id.ToString());
-                this.HttpContext.Session.SetString("UserName", $"{user.FirstName} {user.LastName}");
-                this.HttpContext.Session.SetString("UserEmail", user.Email);
-                this.HttpContext.Session.SetString("UserPhoto", user.Photo);
-
-                return Json(new { success = true });
-            }
-            return Json(new { success = false });
-        }
-
-        public IActionResult UserProfile()
-        {
-            var userId = this.HttpContext.Session.GetString("UserId");
-            if (string.IsNullOrEmpty(userId))
-            {
-                return RedirectToAction("Index", "Home"); // Redirect if not logged in
-            }
-
-            var user = _context.Users.FirstOrDefault(u => u.Id == int.Parse(userId));
-            if (user == null)
-            {
-                return RedirectToAction("Index", "Home"); // Redirect if user not found
-            }
-
-            return View(user);
-        }
-
-        [HttpPost]
         public IActionResult UpdateProfile(User updatedUser)
         {
             var userId = this.HttpContext.Session.GetString("UserId");
@@ -143,6 +101,49 @@ namespace HotelWebsite.Controllers
             return RedirectToAction("UserProfile");
         }
 
+        public IActionResult UserProfile()
+        {
+            var userId = this.HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction("Index", "Home"); // Redirect if not logged in
+            }
+
+            var user = _context.Users.FirstOrDefault(u => u.Id == int.Parse(userId));
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home"); // Redirect if user not found
+            }
+
+            return View(user);
+        }
+
+        [HttpPost]
+        public IActionResult SaveGoogleUser([FromBody] User user)
+        {
+            if (ModelState.IsValid)
+            {
+                // Check if the user already exists
+                var existingUser = _context.Users.FirstOrDefault(u => u.Email == user.Email);
+                if (existingUser == null)
+                {
+                    // Save the new user
+                    _context.Users.Add(user);
+                    _context.SaveChanges();
+                }
+
+                // Store user data in session
+                this.HttpContext.Session.SetString("UserId", user.Id.ToString());
+                this.HttpContext.Session.SetString("UserName", $"{user.FirstName} {user.LastName}");
+                this.HttpContext.Session.SetString("UserEmail", user.Email);
+                this.HttpContext.Session.SetString("UserPhoto", user.Photo);
+
+                return Json(new { success = true });
+            }
+            return Json(new { success = false });
+        }
+
+       
 
         // GET: /Account/Logout
         public IActionResult Logout()
@@ -150,11 +151,16 @@ namespace HotelWebsite.Controllers
             this.HttpContext.Session.Clear(); // Clear all session data
             return RedirectToAction("Index", "Home");
         }
+
+        public class LoginRequest
+        {
+            public string Email { get; set; } = string.Empty; // Initialize with default value
+            public string Password { get; set; } = string.Empty; // Initialize with default value
+        }
+
     }
 
-    public class LoginRequest
-    {
-        public string Email { get; set; }
-        public string Password { get; set; }
-    }
+    
+
+
 }

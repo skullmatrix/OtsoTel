@@ -209,7 +209,7 @@
                 <div class="or-divider">OR</div>
                 <!-- Google Sign-In Button -->
                 <div id="g_id_onload"
-                     data-client_id="YOUR_GOOGLE_CLIENT_ID"
+                     data-client_id="854052749798-r8jnqlh5e7vlgkneeg3jdsjei7l3a466.apps.googleusercontent.com"
                      data-callback="handleCredentialResponse"
                      data-auto_prompt="false">
                 </div>
@@ -232,41 +232,53 @@
 
 <!-- Script to Handle Login Form Submission -->
 <script>
-    document.getElementById('loginForm').addEventListener('submit', function (e) {
-        e.preventDefault(); // Prevent default form submission
+    document.addEventListener('DOMContentLoaded', function () {
+        const loginForm = document.getElementById('loginForm');
+        if (loginForm) {
+            loginForm.addEventListener('submit', function (e) {
+                e.preventDefault(); // Prevent default form submission
 
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
 
-        fetch('/Account/Login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Close the modal
-                bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
+                fetch('/Account/Login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password }),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        // Handle server errors (e.g., 500 Internal Server Error)
+                        return response.json().then(error => {
+                            throw new Error(error.message || "An error occurred during login.");
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        // Close the modal
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+                        modal.hide();
 
-                // Redirect to the appropriate page
-                if (data.isAdmin) {
-                    window.location.href = "/Admin"; // Redirect to Admin page
-                } else {
-                    window.location.href = "/Home"; // Redirect to Home page
-                }
-            } else {
-                alert("Invalid login attempt. Please check your credentials.");
-            }
-        })
-        .catch(error => {
-            console.error("Error during login:", error);
-        });
+                        // Refresh the page to update the header
+                        window.location.reload();
+                    } else {
+                        alert(data.message || "Invalid login attempt. Please check your credentials.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error during login:", error);
+                    alert(error.message || "An error occurred during login. Please try again.");
+                });
+            });
+        }
     });
 </script>
 
+// Google Sign In Script
 <script>
     function handleCredentialResponse(response) {
         console.log("ID Token: " + response.credential);
@@ -309,3 +321,16 @@
         });
     }
 </script>
+
+<!-- Script to Open Login Modal -->
+@if (TempData["ShowLoginModal"] != null && (bool)TempData["ShowLoginModal"])
+{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+            loginModal.show();
+        });
+    </script>
+}
+
+
