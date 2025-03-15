@@ -1,4 +1,14 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    var userId = HttpContextAccessor.HttpContext?.Session.GetString("UserId");
+    var userName = HttpContextAccessor.HttpContext?.Session.GetString("UserName");
+    var userPhoto = HttpContextAccessor.HttpContext?.Session.GetString("UserPhoto");
+    var isAdmin = HttpContextAccessor.HttpContext?.Session.GetString("IsAdmin") == "true";
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -10,7 +20,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <!-- Header -->
     <header class="header">
         <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
             <div class="container">
@@ -25,11 +34,27 @@
                         <li class="nav-item"><a class="nav-link" href="#">Rooms</a></li>
                         <li class="nav-item"><a class="nav-link" href="#">About</a></li>
                         <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
-                        <li class="nav-item">
-                            <button class="btn btn-book" data-bs-toggle="modal" data-bs-target="#loginModal">
-                                Book Now
-                            </button>
-                        </li>
+                        @if (!string.IsNullOrEmpty(Context.Session.GetString("UserId")))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="@Context.Session.GetString("UserPhoto")" class="rounded-circle" width="30" height="30" alt="Profile Picture" />
+                                    @Context.Session.GetString("UserName") <!-- Display user's full name -->
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="/Account/UserProfile">User Profile</a></li>
+                                    <li><a class="dropdown-item" href="/Account/Logout">Logout</a></li>
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <button class="btn btn-book" data-bs-toggle="modal" data-bs-target="#loginModal">
+                                    Book Now
+                                </button>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

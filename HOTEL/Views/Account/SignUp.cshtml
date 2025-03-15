@@ -1,0 +1,65 @@
+﻿@model HotelWebsite.Models.User
+
+@{
+    ViewData["Title"] = "Sign Up";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Sign Up</h2>
+
+<form asp-action="SignUp" method="post" onsubmit="return validatePassword()">
+    <div class="form-group">
+        <label asp-for="FirstName" class="control-label"></label>
+        <input asp-for="FirstName" class="form-control" required />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="LastName" class="control-label"></label>
+        <input asp-for="LastName" class="form-control" required />
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="MiddleName" class="control-label"></label>
+        <input asp-for="MiddleName" class="form-control" />
+        <span asp-validation-for="MiddleName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Address" class="control-label"></label>
+        <input asp-for="Address" class="form-control" required />
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Email" class="control-label"></label>
+        <input asp-for="Email" class="form-control" required />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Password" class="control-label">Password</label>
+        <input type="password" id="Password" name="Password" class="form-control" required />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="ConfirmPassword" class="control-label">Confirm Password</label>
+        <input type="password" id="ConfirmPassword" class="form-control" required />
+        <span id="confirmPasswordError" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Sign Up</button>
+    </div>
+</form>
+
+<script>
+    function validatePassword() {
+        const password = document.getElementById("Password").value;
+        const confirmPassword = document.getElementById("ConfirmPassword").value;
+        const errorElement = document.getElementById("confirmPasswordError");
+
+        if (password !== confirmPassword) {
+            errorElement.textContent = "Passwords do not match.";
+            return false; // Prevent form submission
+        } else {
+            errorElement.textContent = "";
+            return true; // Allow form submission
+        }
+    }
+</script>
