@@ -1374,7 +1374,6 @@ C:\Users\Lenovo\Documents\Planas\toch\HOTEL\obj\Debug\net8.0\staticwebassets\msb
 C:\Users\Lenovo\Documents\Planas\toch\HOTEL\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.HOTEL.props
 C:\Users\Lenovo\Documents\Planas\toch\HOTEL\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.HOTEL.props
 C:\Users\Lenovo\Documents\Planas\toch\HOTEL\obj\Debug\net8.0\staticwebassets.pack.json
-C:\Users\Lenovo\Documents\Planas\toch\HOTEL\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\Lenovo\Documents\Planas\toch\HOTEL\obj\Debug\net8.0\HOTEL.csproj.Up2Date
 C:\Users\Lenovo\Documents\Planas\toch\HOTEL\obj\Debug\net8.0\HOTEL.genruntimeconfig.cache
 C:\Users\Lenovo\Documents\Planas\toch\HOTEL\obj\Debug\net8.0\ref\HOTEL.dll
