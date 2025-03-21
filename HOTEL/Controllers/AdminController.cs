@@ -16,7 +16,8 @@ namespace HotelWebsite.Controllers
         // GET: /Admin/UserManagement
         public IActionResult UserManagement()
         {
-            var users = _context.Users.ToList();
+            // Exclude the admin user from the list
+            var users = _context.Users.Where(u => !u.IsAdmin).ToList();
             return View(users);
         }
 

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HOTEL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250315030348_UpdateUserTable")]
-    partial class UpdateUserTable
+    [Migration("20250320235541_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,6 +39,9 @@ namespace HOTEL.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -57,6 +60,19 @@ namespace HOTEL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "Admin Address",
+                            Email = "admin@matrix.com",
+                            FirstName = "Admin",
+                            IsAdmin = true,
+                            LastName = "Matrix",
+                            Password = "$2a$11$UPgDv1BDIT.Dk/xscmYhQ.VIqRP.pHhxvICTO9/Rmi2XfpIvM5RhW",
+                            Photo = "https://cdn-icons-png.flaticon.com/256/2165/2165674.png"
+                        });
                 });
 #pragma warning restore 612, 618
         }

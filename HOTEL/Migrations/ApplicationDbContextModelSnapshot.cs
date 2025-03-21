@@ -67,8 +67,8 @@ namespace HOTEL.Migrations
                             FirstName = "Admin",
                             IsAdmin = true,
                             LastName = "Matrix",
-                            Password = "admin123",
-                            Photo = "https://via.placeholder.com/150"
+                            Password = "$2a$11$UPgDv1BDIT.Dk/xscmYhQ.VIqRP.pHhxvICTO9/Rmi2XfpIvM5RhW",
+                            Photo = "https://cdn-icons-png.flaticon.com/256/2165/2165674.png"
                         });
                 });
 #pragma warning restore 612, 618

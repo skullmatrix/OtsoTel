@@ -26,12 +26,33 @@ namespace HotelWebsite.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Save the new user to the database
+                // Check if the email already exists
+                var existingUser = _context.Users.FirstOrDefault(u => u.Email == user.Email);
+                if (existingUser != null)
+                {
+                    ModelState.AddModelError("Email", "An account with this email already exists.");
+                    return View(user);
+                }
+
+                // Validate email format
+                if (!IsValidEmail(user.Email))
+                {
+                    ModelState.AddModelError("Email", "Invalid email format.");
+                    return View(user);
+                }
+
+                // Set the default profile image for regular users
+                user.Photo = "https://cdn-icons-png.flaticon.com/256/727/727410.png";
+
+                // Hash the password before saving
+                user.Password = HashPassword(user.Password);
+
+                // Save the new user
                 _context.Users.Add(user);
                 _context.SaveChanges();
 
                 // Redirect to the home page and open the login modal
-                TempData["ShowLoginModal"] = true; // Use TempData to trigger the modal
+                TempData["ShowLoginModal"] = true;
                 return RedirectToAction("Index", "Home");
             }
 
@@ -39,24 +60,42 @@ namespace HotelWebsite.Controllers
             return View(user);
         }
 
+        // Helper method to validate email format
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        // Helper method to hash passwords
+        private string HashPassword(string password)
+        {
+            return BCrypt.Net.BCrypt.HashPassword(password);
+        }
+
         [HttpPost]
         public IActionResult Login([FromBody] LoginRequest request)
         {
             try
             {
-                var user = _context.Users.FirstOrDefault(u => u.Email == request.Email && u.Password == request.Password);
-                if (user != null)
+                var user = _context.Users.FirstOrDefault(u => u.Email == request.Email);
+                if (user != null && BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
                 {
                     // Store user data in session
                     this.HttpContext.Session.SetString("UserId", user.Id.ToString());
-                    this.HttpContext.Session.SetString("UserName", $"{user.FirstName} {user.LastName}"); // Combine first and last name
+                    this.HttpContext.Session.SetString("UserName", $"{user.FirstName} {user.LastName}");
                     this.HttpContext.Session.SetString("UserEmail", user.Email);
                     this.HttpContext.Session.SetString("UserPhoto", user.Photo);
+                    this.HttpContext.Session.SetString("IsAdmin", user.IsAdmin.ToString());
 
-                    // Check if the user is an admin
-                    bool isAdmin = user.Email == "admin@hotel.com" && user.Password == "admin123";
-
-                    return Json(new { success = true, isAdmin });
+                    return Json(new { success = true, isAdmin = user.IsAdmin });
                 }
                 return Json(new { success = false, message = "Invalid email or password." });
             }
@@ -131,19 +170,23 @@ namespace HotelWebsite.Controllers
                     _context.Users.Add(user);
                     _context.SaveChanges();
                 }
+                else
+                {
+                    // Use the existing user
+                    user = existingUser;
+                }
 
                 // Store user data in session
                 this.HttpContext.Session.SetString("UserId", user.Id.ToString());
                 this.HttpContext.Session.SetString("UserName", $"{user.FirstName} {user.LastName}");
                 this.HttpContext.Session.SetString("UserEmail", user.Email);
                 this.HttpContext.Session.SetString("UserPhoto", user.Photo);
+                this.HttpContext.Session.SetString("IsAdmin", user.IsAdmin.ToString());
 
                 return Json(new { success = true });
             }
             return Json(new { success = false });
         }
-
-       
 
         // GET: /Account/Logout
         public IActionResult Logout()

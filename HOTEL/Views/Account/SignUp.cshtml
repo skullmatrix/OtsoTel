@@ -1,65 +1,279 @@
 ﻿@model HotelWebsite.Models.User
-
 @{
     ViewData["Title"] = "Sign Up";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Sign Up</h2>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm" style="border-radius: var(--border-radius-lg); box-shadow: var(--shadow-md);">
+                <div class="card-body p-4 p-md-5">
+                    <h2 class="card-title text-center mb-4" style="color: var(--primary-dark);">Create Your Account</h2>
 
-<form asp-action="SignUp" method="post" onsubmit="return validatePassword()">
-    <div class="form-group">
-        <label asp-for="FirstName" class="control-label"></label>
-        <input asp-for="FirstName" class="form-control" required />
-        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    <form asp-action="SignUp" method="post" id="signupForm" novalidate>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="FirstName" class="form-label" style="color: var(--secondary-dark); font-weight: 500;">First Name</label>
+                                <input asp-for="FirstName" class="form-control" required style="border: 2px solid var(--light-gray); border-radius: var(--border-radius-md); transition: var(--transition-normal);" />
+                                <span asp-validation-for="FirstName" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="LastName" class="form-label" style="color: var(--secondary-dark); font-weight: 500;">Last Name</label>
+                                <input asp-for="LastName" class="form-control" required style="border: 2px solid var(--light-gray); border-radius: var(--border-radius-md); transition: var(--transition-normal);" />
+                                <span asp-validation-for="LastName" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="MiddleName" class="form-label" style="color: var(--secondary-dark); font-weight: 500;">Middle Name <span class="text-muted">(optional)</span></label>
+                            <input asp-for="MiddleName" class="form-control" style="border: 2px solid var(--light-gray); border-radius: var(--border-radius-md); transition: var(--transition-normal);" />
+                            <span asp-validation-for="MiddleName" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Address" class="form-label" style="color: var(--secondary-dark); font-weight: 500;">Address</label>
+                            <input asp-for="Address" class="form-control" required style="border: 2px solid var(--light-gray); border-radius: var(--border-radius-md); transition: var(--transition-normal);" />
+                            <span asp-validation-for="Address" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label" style="color: var(--secondary-dark); font-weight: 500;">Email Address</label>
+                            <input asp-for="Email" type="email" class="form-control" required style="border: 2px solid var(--light-gray); border-radius: var(--border-radius-md); transition: var(--transition-normal);" />
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="Password" class="form-label" style="color: var(--secondary-dark); font-weight: 500;">Password</label>
+                            <div class="input-group">
+                                <input type="password" id="Password" name="Password" class="form-control" required minlength="8" style="border: 2px solid var(--light-gray); border-radius: var(--border-radius-md) 0 0 var(--border-radius-md); transition: var(--transition-normal);" />
+                                <button class="btn btn-outline-secondary" type="button" id="togglePassword" style="border: 2px solid var(--light-gray); border-left: none; border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+
+                            <!-- Password strength meter -->
+                            <div class="mt-2 mb-1">
+                                <div class="progress" style="height: 6px; border-radius: var(--border-radius-full);">
+                                    <div id="passwordStrengthBar" class="progress-bar" role="progressbar" style="width: 0%; border-radius: var(--border-radius-full);" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                            <div id="passwordStrengthText" class="form-text small" style="color: var(--secondary);">Password strength: Too weak</div>
+
+                            <div class="form-text mt-2" id="passwordRequirements" style="color: var(--secondary);">
+                                Your password must:
+                                <ul class="mb-0 ps-3 mt-1">
+                                    <li id="req-length"><span class="text-danger">✗</span> Be at least 8 characters long</li>
+                                    <li id="req-uppercase"><span class="text-danger">✗</span> Include at least one uppercase letter</li>
+                                    <li id="req-lowercase"><span class="text-danger">✗</span> Include at least one lowercase letter</li>
+                                    <li id="req-number"><span class="text-danger">✗</span> Include at least one number</li>
+                                    <li id="req-special"><span class="text-danger">✗</span> Include at least one special character</li>
+                                </ul>
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="ConfirmPassword" class="form-label" style="color: var(--secondary-dark); font-weight: 500;">Confirm Password</label>
+                            <div class="input-group">
+                                <input type="password" id="ConfirmPassword" class="form-control" required style="border: 2px solid var(--light-gray); border-radius: var(--border-radius-md) 0 0 var(--border-radius-md); transition: var(--transition-normal);" />
+                                <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword" style="border: 2px solid var(--light-gray); border-left: none; border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                            <span id="confirmPasswordError" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-signin" id="submitBtn">Create Account</button>
+                        </div>
+
+                        <div class="text-center mt-3">
+                            <p class="mb-0" style="color: var(--secondary);">Already have an account? <a href="/Account/Login" style="color: var(--primary); font-weight: 500;">Sign In</a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        <label asp-for="LastName" class="control-label"></label>
-        <input asp-for="LastName" class="form-control" required />
-        <span asp-validation-for="LastName" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="MiddleName" class="control-label"></label>
-        <input asp-for="MiddleName" class="form-control" />
-        <span asp-validation-for="MiddleName" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Address" class="control-label"></label>
-        <input asp-for="Address" class="form-control" required />
-        <span asp-validation-for="Address" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Email" class="control-label"></label>
-        <input asp-for="Email" class="form-control" required />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label for="Password" class="control-label">Password</label>
-        <input type="password" id="Password" name="Password" class="form-control" required />
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label for="ConfirmPassword" class="control-label">Confirm Password</label>
-        <input type="password" id="ConfirmPassword" class="form-control" required />
-        <span id="confirmPasswordError" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Sign Up</button>
-    </div>
-</form>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
 <script>
-    function validatePassword() {
-        const password = document.getElementById("Password").value;
-        const confirmPassword = document.getElementById("ConfirmPassword").value;
-        const errorElement = document.getElementById("confirmPasswordError");
+    document.addEventListener('DOMContentLoaded', function() {
+        // Password visibility toggle
+        const togglePassword = document.getElementById('togglePassword');
+        const password = document.getElementById('Password');
 
-        if (password !== confirmPassword) {
-            errorElement.textContent = "Passwords do not match.";
-            return false; // Prevent form submission
-        } else {
-            errorElement.textContent = "";
-            return true; // Allow form submission
+        togglePassword.addEventListener('click', function() {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            this.querySelector('i').classList.toggle('bi-eye');
+            this.querySelector('i').classList.toggle('bi-eye-slash');
+        });
+
+        // Confirm Password visibility toggle
+        const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+        const confirmPassword = document.getElementById('ConfirmPassword');
+
+        toggleConfirmPassword.addEventListener('click', function() {
+            const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+            confirmPassword.setAttribute('type', type);
+            this.querySelector('i').classList.toggle('bi-eye');
+            this.querySelector('i').classList.toggle('bi-eye-slash');
+        });
+
+        // Form validation
+        const form = document.getElementById('signupForm');
+        const errorElement = document.getElementById('confirmPasswordError');
+        const submitBtn = document.getElementById('submitBtn');
+        const passwordStrengthBar = document.getElementById('passwordStrengthBar');
+        const passwordStrengthText = document.getElementById('passwordStrengthText');
+
+        // Password requirements elements
+        const reqLength = document.getElementById('req-length');
+        const reqUppercase = document.getElementById('req-uppercase');
+        const reqLowercase = document.getElementById('req-lowercase');
+        const reqNumber = document.getElementById('req-number');
+        const reqSpecial = document.getElementById('req-special');
+
+        // Password strength checker
+        function checkPasswordStrength(password) {
+            let strength = 0;
+            let feedback = [];
+
+            // Check length
+            if (password.length >= 8) {
+                strength += 20;
+                reqLength.innerHTML = '<span class="text-success">✓</span> Be at least 8 characters long';
+            } else {
+                reqLength.innerHTML = '<span class="text-danger">✗</span> Be at least 8 characters long';
+            }
+
+            // Check for uppercase letters
+            if (/[A-Z]/.test(password)) {
+                strength += 20;
+                reqUppercase.innerHTML = '<span class="text-success">✓</span> Include at least one uppercase letter';
+            } else {
+                reqUppercase.innerHTML = '<span class="text-danger">✗</span> Include at least one uppercase letter';
+            }
+
+            // Check for lowercase letters
+            if (/[a-z]/.test(password)) {
+                strength += 20;
+                reqLowercase.innerHTML = '<span class="text-success">✓</span> Include at least one lowercase letter';
+            } else {
+                reqLowercase.innerHTML = '<span class="text-danger">✗</span> Include at least one lowercase letter';
+            }
+
+            // Check for numbers
+            if (/[0-9]/.test(password)) {
+                strength += 20;
+                reqNumber.innerHTML = '<span class="text-success">✓</span> Include at least one number';
+            } else {
+                reqNumber.innerHTML = '<span class="text-danger">✗</span> Include at least one number';
+            }
+
+            // Check for special characters
+            if (/[^A-Za-z0-9]/.test(password)) {
+                strength += 20;
+                reqSpecial.innerHTML = '<span class="text-success">✓</span> Include at least one special character';
+            } else {
+                reqSpecial.innerHTML = '<span class="text-danger">✗</span> Include at least one special character';
+            }
+
+            // Update strength meter
+            passwordStrengthBar.style.width = strength + '%';
+            passwordStrengthBar.setAttribute('aria-valuenow', strength);
+
+            // Set color based on strength
+            if (strength < 40) {
+                passwordStrengthBar.className = 'progress-bar bg-danger';
+                passwordStrengthText.innerHTML = 'Password strength: Too weak';
+                return false;
+            } else if (strength < 70) {
+                passwordStrengthBar.className = 'progress-bar bg-warning';
+                passwordStrengthText.innerHTML = 'Password strength: Medium';
+                return true;
+            } else {
+                passwordStrengthBar.className = 'progress-bar bg-success';
+                passwordStrengthText.innerHTML = 'Password strength: Strong';
+                return true;
+            }
         }
-    }
+
+        // Check password strength on input
+        password.addEventListener('input', function() {
+            checkPasswordStrength(this.value);
+
+            // Check if passwords match
+            if (confirmPassword.value && this.value !== confirmPassword.value) {
+                errorElement.textContent = "Passwords do not match.";
+                confirmPassword.classList.add('is-invalid');
+            } else if (confirmPassword.value) {
+                errorElement.textContent = "";
+                confirmPassword.classList.remove('is-invalid');
+            }
+        });
+
+        // Form submit handler
+        form.addEventListener('submit', function(event) {
+            // Prevent submission if password is not strong enough
+            if (!checkPasswordStrength(password.value)) {
+                event.preventDefault();
+                password.classList.add('is-invalid');
+            }
+
+            // Check if passwords match
+            if (password.value !== confirmPassword.value) {
+                event.preventDefault();
+                errorElement.textContent = "Passwords do not match.";
+                confirmPassword.classList.add('is-invalid');
+            } else {
+                errorElement.textContent = "";
+                confirmPassword.classList.remove('is-invalid');
+            }
+
+            // Check required fields
+            const inputs = form.querySelectorAll('input[required]');
+            inputs.forEach(input => {
+                if (!input.value) {
+                    input.classList.add('is-invalid');
+                    event.preventDefault();
+                } else {
+                    input.classList.remove('is-invalid');
+                }
+            });
+        });
+
+        // Real-time validation feedback
+        const inputs = form.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('blur', function() {
+                if (this.hasAttribute('required') && !this.value) {
+                    this.classList.add('is-invalid');
+                } else {
+                    this.classList.remove('is-invalid');
+                }
+            });
+
+            input.addEventListener('input', function() {
+                if (this.classList.contains('is-invalid') && this.value) {
+                    this.classList.remove('is-invalid');
+                }
+            });
+        });
+
+        // Real-time password matching
+        confirmPassword.addEventListener('input', function() {
+            if (this.value && this.value !== password.value) {
+                errorElement.textContent = "Passwords do not match.";
+                this.classList.add('is-invalid');
+            } else {
+                errorElement.textContent = "";
+                this.classList.remove('is-invalid');
+            }
+        });
+    });
 </script>
