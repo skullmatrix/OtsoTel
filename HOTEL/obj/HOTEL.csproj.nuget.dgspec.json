@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Lenovo\\Documents\\Planas\\mnewww\\HOTEL\\HOTEL.csproj": {}
+    "C:\\Users\\Lenovo\\Documents\\Planas\\toch\\HOTEL\\HOTEL.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Lenovo\\Documents\\Planas\\mnewww\\HOTEL\\HOTEL.csproj": {
+    "C:\\Users\\Lenovo\\Documents\\Planas\\toch\\HOTEL\\HOTEL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Lenovo\\Documents\\Planas\\mnewww\\HOTEL\\HOTEL.csproj",
+        "projectUniqueName": "C:\\Users\\Lenovo\\Documents\\Planas\\toch\\HOTEL\\HOTEL.csproj",
         "projectName": "HOTEL",
-        "projectPath": "C:\\Users\\Lenovo\\Documents\\Planas\\mnewww\\HOTEL\\HOTEL.csproj",
+        "projectPath": "C:\\Users\\Lenovo\\Documents\\Planas\\toch\\HOTEL\\HOTEL.csproj",
         "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Lenovo\\Documents\\Planas\\mnewww\\HOTEL\\obj\\",
+        "outputPath": "C:\\Users\\Lenovo\\Documents\\Planas\\toch\\HOTEL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -71,6 +71,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[8.0.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
             },
             "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",

@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Auth Callback</title>
+    <script>
+        window.onload = function() {
+            // Log the URL fragment for debugging
+            console.log("URL Fragment:", window.location.hash);
+
+            // Extract the token from the URL fragment
+            const fragment = window.location.hash.substring(1);
+            const params = new URLSearchParams(fragment);
+            const idToken = params.get('id_token');
+
+            if (idToken) {
+                try {
+                    // Decode the ID token
+                    const payload = JSON.parse(atob(idToken.split('.')[1]));
+                    console.log("Decoded Payload:", payload);
+
+                    // Create user data object
+                    const userData = {
+                        lastName: payload.family_name || "",
+                        firstName: payload.given_name || "",
+                        middleName: "",
+                        email: payload.email || "",
+                        password: "google-auth",
+                        address: "",
+                        photo: payload.picture || ""
+                    };
+
+                    // Send the user data back to the opener window
+                    window.opener.postMessage(userData, window.opener.location.origin);
+                } catch (error) {
+                    console.error("Error decoding token:", error);
+                    window.opener.postMessage({ error: "Failed to decode token" }, window.opener.location.origin);
+                }
+            } else {
+                console.error("ID token not found in URL fragment");
+                window.opener.postMessage({ error: "Authentication failed: ID token missing" }, window.opener.location.origin);
+            }
+
+            // Close the popup window
+            window.close();
+        };
+    </script>
+</head>
+<body>
+    <div>
+        <p>Authenticating with Google... This window will close automatically.</p>
+    </div>
+</body>
+</html>

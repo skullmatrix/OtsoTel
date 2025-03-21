@@ -166,6 +166,11 @@ namespace HotelWebsite.Controllers
                 var existingUser = _context.Users.FirstOrDefault(u => u.Email == user.Email);
                 if (existingUser == null)
                 {
+                    // Set default values for required fields
+                    user.Password = "google-auth"; // Placeholder for Google-authenticated users
+                    user.IsAdmin = false; // Default to non-admin
+                    user.Photo = user.Photo ?? "https://cdn-icons-png.flaticon.com/256/727/727410.png"; // Default profile image
+
                     // Save the new user
                     _context.Users.Add(user);
                     _context.SaveChanges();
@@ -177,15 +182,15 @@ namespace HotelWebsite.Controllers
                 }
 
                 // Store user data in session
-                this.HttpContext.Session.SetString("UserId", user.Id.ToString());
-                this.HttpContext.Session.SetString("UserName", $"{user.FirstName} {user.LastName}");
-                this.HttpContext.Session.SetString("UserEmail", user.Email);
-                this.HttpContext.Session.SetString("UserPhoto", user.Photo);
-                this.HttpContext.Session.SetString("IsAdmin", user.IsAdmin.ToString());
+                HttpContext.Session.SetString("UserId", user.Id.ToString());
+                HttpContext.Session.SetString("UserName", $"{user.FirstName} {user.LastName}");
+                HttpContext.Session.SetString("UserEmail", user.Email);
+                HttpContext.Session.SetString("UserPhoto", user.Photo);
+                HttpContext.Session.SetString("IsAdmin", user.IsAdmin.ToString());
 
                 return Json(new { success = true });
             }
-            return Json(new { success = false });
+            return Json(new { success = false, message = "Invalid user data." });
         }
 
         // GET: /Account/Logout
@@ -200,6 +205,8 @@ namespace HotelWebsite.Controllers
             public string Email { get; set; } = string.Empty; // Initialize with default value
             public string Password { get; set; } = string.Empty; // Initialize with default value
         }
+
+
 
     }
 
