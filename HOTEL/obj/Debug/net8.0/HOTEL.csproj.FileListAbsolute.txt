@@ -1377,3 +1377,4 @@ C:\Users\Lenovo\Documents\Planas\toch\HOTEL\obj\Debug\net8.0\staticwebassets.pac
 C:\Users\Lenovo\Documents\Planas\toch\HOTEL\obj\Debug\net8.0\HOTEL.csproj.Up2Date
 C:\Users\Lenovo\Documents\Planas\toch\HOTEL\obj\Debug\net8.0\HOTEL.genruntimeconfig.cache
 C:\Users\Lenovo\Documents\Planas\toch\HOTEL\obj\Debug\net8.0\ref\HOTEL.dll
+C:\Users\Lenovo\Documents\Planas\toch\HOTEL\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

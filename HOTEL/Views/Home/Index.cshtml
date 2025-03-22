@@ -5,12 +5,15 @@
 
 <!-- Hero Section with Carousel -->
 <section class="hero-section position-relative vh-100">
-    <div id="heroCarousel" class="carousel slide carousel-fade h-100" data-bs-ride="carousel" data-bs-interval="5000">
+    <!-- Carousel -->
+    <div id="heroCarousel" class="carousel slide h-100" data-bs-ride="carousel">
+        <!-- Carousel Indicators -->
         <div class="carousel-indicators">
             <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
             <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
             <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
         </div>
+        <!-- Carousel Items -->
         <div class="carousel-inner h-100">
             <div class="carousel-item active h-100">
                 <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80" class="d-block w-100 h-100 object-fit-cover" alt="The Matrix Hotel Exterior">
@@ -22,35 +25,35 @@
                 <img src="https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80" class="d-block w-100 h-100 object-fit-cover" alt="Hotel Pool">
             </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+        <!-- Carousel Controls - Explicitly set z-index and ensure full clickable area -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev" style="z-index: 5;">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Previous</span>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next" style="z-index: 5;">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Next</span>
         </button>
     </div>
-
+    <!-- Hero Content -->
     <div class="hero-content position-absolute top-50 start-0 translate-middle-y px-4 px-lg-5 w-100">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6 col-md-8 bg-dark bg-opacity-75 text-white p-4 p-md-5 rounded backdrop-blur">
-                    <h2 class="hero-subtitle fs-4 text-success mb-2">THE MATRIX</h2>
-                    <h1 class="hero-title display-4 fw-bold">Where reality meets luxury</h1>
-                    <p class="lead mb-4">Experience a stay beyond the ordinary</p>
+                <div class="col-lg-6 col-md-8 solid-hero-bg p-4 p-md-5 rounded">
+                    <h2 class="hero-subtitle fs-4 text-white mb-2">THE MATRIX</h2>
+                    <h1 class="hero-title display-4 fw-bold text-white">Where reality meets luxury</h1>
+                    <p class="lead mb-4 text-white">Experience a stay beyond the ordinary</p>
                     <div class="d-flex gap-3">
-                        <button class="btn btn-success book-now-btn" data-bs-toggle="modal" data-bs-target="#loginModal">Book Now</button>
+                        <button class="btn btn-primary book-now-btn" data-bs-toggle="modal" data-bs-target="#loginModal">Book Now</button>
                         <button class="btn btn-outline-light">Take a Tour</button>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 </section>
 
 <!-- Booking Section -->
-<section class="booking-section py-4 shadow sticky-top bg-white">
+<section class="booking-section py-4 shadow bg-white">
     <div class="container">
         <form class="booking-form">
             <div class="row g-3 justify-content-center">
@@ -88,7 +91,7 @@
                 </div>
                 <div class="col-md-2 col-sm-6 d-grid">
                     <label class="invisible form-label">Book</label>
-                    <button class="btn btn-success book-now-btn fw-bold" data-bs-toggle="modal" data-bs-target="#loginModal">Check Availability</button>
+                    <button class="btn btn-primary book-now-btn fw-bold" data-bs-toggle="modal" data-bs-target="#loginModal">Check Availability</button>
                 </div>
             </div>
         </form>
@@ -105,49 +108,49 @@
         <div class="row g-4">
             <div class="col-lg-3 col-md-4 col-6">
                 <div class="facility-card p-3 text-center bg-light rounded shadow-sm h-100 transition-all hover-lift">
-                    <i class="fas fa-swimming-pool facility-icon fs-1 text-success mb-3"></i>
+                    <i class="fas fa-swimming-pool facility-icon fs-1 text-primary mb-3"></i>
                     <h4 class="fs-5">Swimming Pool</h4>
                 </div>
             </div>
             <div class="col-lg-3 col-md-4 col-6">
                 <div class="facility-card p-3 text-center bg-light rounded shadow-sm h-100 transition-all hover-lift">
-                    <i class="fas fa-wifi facility-icon fs-1 text-success mb-3"></i>
+                    <i class="fas fa-wifi facility-icon fs-1 text-primary mb-3"></i>
                     <h4 class="fs-5">Free Wi-Fi</h4>
                 </div>
             </div>
             <div class="col-lg-3 col-md-4 col-6">
                 <div class="facility-card p-3 text-center bg-light rounded shadow-sm h-100 transition-all hover-lift">
-                    <i class="fas fa-utensils facility-icon fs-1 text-success mb-3"></i>
+                    <i class="fas fa-utensils facility-icon fs-1 text-primary mb-3"></i>
                     <h4 class="fs-5">Gourmet Breakfast</h4>
                 </div>
             </div>
             <div class="col-lg-3 col-md-4 col-6">
                 <div class="facility-card p-3 text-center bg-light rounded shadow-sm h-100 transition-all hover-lift">
-                    <i class="fas fa-dumbbell facility-icon fs-1 text-success mb-3"></i>
+                    <i class="fas fa-dumbbell facility-icon fs-1 text-primary mb-3"></i>
                     <h4 class="fs-5">Fitness Center</h4>
                 </div>
             </div>
             <div class="col-lg-3 col-md-4 col-6">
                 <div class="facility-card p-3 text-center bg-light rounded shadow-sm h-100 transition-all hover-lift">
-                    <i class="fas fa-gamepad facility-icon fs-1 text-success mb-3"></i>
+                    <i class="fas fa-gamepad facility-icon fs-1 text-primary mb-3"></i>
                     <h4 class="fs-5">Game Center</h4>
                 </div>
             </div>
             <div class="col-lg-3 col-md-4 col-6">
                 <div class="facility-card p-3 text-center bg-light rounded shadow-sm h-100 transition-all hover-lift">
-                    <i class="fas fa-lightbulb facility-icon fs-1 text-success mb-3"></i>
+                    <i class="fas fa-lightbulb facility-icon fs-1 text-primary mb-3"></i>
                     <h4 class="fs-5">24/7 Power</h4>
                 </div>
             </div>
             <div class="col-lg-3 col-md-4 col-6">
                 <div class="facility-card p-3 text-center bg-light rounded shadow-sm h-100 transition-all hover-lift">
-                    <i class="fas fa-soap facility-icon fs-1 text-success mb-3"></i>
+                    <i class="fas fa-soap facility-icon fs-1 text-primary mb-3"></i>
                     <h4 class="fs-5">Laundry Service</h4>
                 </div>
             </div>
             <div class="col-lg-3 col-md-4 col-6">
                 <div class="facility-card p-3 text-center bg-light rounded shadow-sm h-100 transition-all hover-lift">
-                    <i class="fas fa-parking facility-icon fs-1 text-success mb-3"></i>
+                    <i class="fas fa-parking facility-icon fs-1 text-primary mb-3"></i>
                     <h4 class="fs-5">Secure Parking</h4>
                 </div>
             </div>
@@ -175,11 +178,11 @@
                                 <h3 class="mb-3">Standard Room</h3>
                                 <p class="mb-4">Our standard rooms offer comfort and style with television, extra sheets, and complimentary breakfast.</p>
                                 <ul class="list-unstyled mb-4">
-                                    <li class="mb-2"><i class="fas fa-tv me-2 text-success"></i> Television Set</li>
-                                    <li class="mb-2"><i class="fas fa-bed me-2 text-success"></i> Extra Sheets</li>
-                                    <li class="mb-2"><i class="fas fa-coffee me-2 text-success"></i> Breakfast</li>
+                                    <li class="mb-2"><i class="fas fa-tv me-2 text-primary"></i> Television Set</li>
+                                    <li class="mb-2"><i class="fas fa-bed me-2 text-primary"></i> Extra Sheets</li>
+                                    <li class="mb-2"><i class="fas fa-coffee me-2 text-primary"></i> Breakfast</li>
                                 </ul>
-                                <button class="btn btn-success book-now-btn" data-bs-toggle="modal" data-bs-target="#loginModal">Book Now</button>
+                                <button class="btn btn-primary book-now-btn" data-bs-toggle="modal" data-bs-target="#loginModal">Book Now</button>
                             </div>
                         </div>
                     </div>
@@ -194,12 +197,12 @@
                                 <h3 class="mb-3">Deluxe Room</h3>
                                 <p class="mb-4">Our deluxe rooms offer enhanced comfort with television, extra sheets, breakfast, and a cozy fireplace.</p>
                                 <ul class="list-unstyled mb-4">
-                                    <li class="mb-2"><i class="fas fa-tv me-2 text-success"></i> Television Set</li>
-                                    <li class="mb-2"><i class="fas fa-bed me-2 text-success"></i> Extra Sheets</li>
-                                    <li class="mb-2"><i class="fas fa-coffee me-2 text-success"></i> Breakfast</li>
-                                    <li class="mb-2"><i class="fas fa-fire me-2 text-success"></i> Fireplace</li>
+                                    <li class="mb-2"><i class="fas fa-tv me-2 text-primary"></i> Television Set</li>
+                                    <li class="mb-2"><i class="fas fa-bed me-2 text-primary"></i> Extra Sheets</li>
+                                    <li class="mb-2"><i class="fas fa-coffee me-2 text-primary"></i> Breakfast</li>
+                                    <li class="mb-2"><i class="fas fa-fire me-2 text-primary"></i> Fireplace</li>
                                 </ul>
-                                <button class="btn btn-success book-now-btn" data-bs-toggle="modal" data-bs-target="#loginModal">Book Now</button>
+                                <button class="btn btn-primary book-now-btn" data-bs-toggle="modal" data-bs-target="#loginModal">Book Now</button>
                             </div>
                         </div>
                     </div>
@@ -214,25 +217,25 @@
                                 <h3 class="mb-3">Premium Suite</h3>
                                 <p class="mb-4">Our premium suites offer the ultimate luxury experience with all amenities for a perfect stay.</p>
                                 <ul class="list-unstyled mb-4">
-                                    <li class="mb-2"><i class="fas fa-tv me-2 text-success"></i> Television Set</li>
-                                    <li class="mb-2"><i class="fas fa-bed me-2 text-success"></i> Extra Sheets</li>
-                                    <li class="mb-2"><i class="fas fa-coffee me-2 text-success"></i> Breakfast</li>
-                                    <li class="mb-2"><i class="fas fa-fire me-2 text-success"></i> Fireplace</li>
-                                    <li class="mb-2"><i class="fas fa-gamepad me-2 text-success"></i> Gaming Console</li>
-                                    <li class="mb-2"><i class="fas fa-bath me-2 text-success"></i> Luxury Bathroom</li>
+                                    <li class="mb-2"><i class="fas fa-tv me-2 text-primary"></i> Television Set</li>
+                                    <li class="mb-2"><i class="fas fa-bed me-2 text-primary"></i> Extra Sheets</li>
+                                    <li class="mb-2"><i class="fas fa-coffee me-2 text-primary"></i> Breakfast</li>
+                                    <li class="mb-2"><i class="fas fa-fire me-2 text-primary"></i> Fireplace</li>
+                                    <li class="mb-2"><i class="fas fa-gamepad me-2 text-primary"></i> Gaming Console</li>
+                                    <li class="mb-2"><i class="fas fa-bath me-2 text-primary"></i> Luxury Bathroom</li>
                                 </ul>
-                                <button class="btn btn-success book-now-btn" data-bs-toggle="modal" data-bs-target="#loginModal">Book Now</button>
+                                <button class="btn btn-primary book-now-btn" data-bs-toggle="modal" data-bs-target="#loginModal">Book Now</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#roomsCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon bg-success rounded-circle p-3" aria-hidden="true"></span>
+                <span class="carousel-control-prev-icon bg-primary rounded-circle p-3" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
             </button>
             <button class="carousel-control-next" type="button" data-bs-target="#roomsCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon bg-success rounded-circle p-3" aria-hidden="true"></span>
+                <span class="carousel-control-next-icon bg-primary rounded-circle p-3" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
@@ -255,7 +258,7 @@
                             <div class="col-md-3 col-12 mb-3 mb-md-0 text-center">
                                 <img src="https://randomuser.me/api/portraits/men/32.jpg" class="rounded-circle mb-3 shadow" width="120" height="120" alt="Anthony Bruff">
                                 <h5>Anthony Bruff</h5>
-                                <div class="text-success mb-2">
+                                <div class="text-warning mb-2">
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>
@@ -265,7 +268,7 @@
                             </div>
                             <div class="col-md-9 col-12">
                                 <blockquote class="blockquote">
-                                    <p><i class="fas fa-quote-left text-success me-2 opacity-50"></i>There was absolutely no issue that was not addressed timely and with satisfactory results. We were particularly impressed with how the hotel staff anticipated our needs. Numerous conference attendees commented on the quality of the food, the quality of the service, and overall positive attitude toward the conference site.<i class="fas fa-quote-right text-success ms-2 opacity-50"></i></p>
+                                    <p><i class="fas fa-quote-left text-primary me-2 opacity-50"></i>There was absolutely no issue that was not addressed timely and with satisfactory results. We were particularly impressed with how the hotel staff anticipated our needs. Numerous conference attendees commented on the quality of the food, the quality of the service, and overall positive attitude toward the conference site.<i class="fas fa-quote-right text-primary ms-2 opacity-50"></i></p>
                                 </blockquote>
                             </div>
                         </div>
@@ -277,7 +280,7 @@
                             <div class="col-md-3 col-12 mb-3 mb-md-0 text-center">
                                 <img src="https://randomuser.me/api/portraits/women/44.jpg" class="rounded-circle mb-3 shadow" width="120" height="120" alt="Jennyn Aliyu">
                                 <h5>Jennyn Aliyu</h5>
-                                <div class="text-success mb-2">
+                                <div class="text-warning mb-2">
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>
@@ -287,7 +290,7 @@
                             </div>
                             <div class="col-md-9 col-12">
                                 <blockquote class="blockquote">
-                                    <p><i class="fas fa-quote-left text-success me-2 opacity-50"></i>There was absolutely no issue that was not timely and with satisfactory results. We were impressed with how the hotel staff anticipated our needs. Numerous conference attendees commented on the quality of the food, the quality of the service, and positive attitude toward the conference site.<i class="fas fa-quote-right text-success ms-2 opacity-50"></i></p>
+                                    <p><i class="fas fa-quote-left text-primary me-2 opacity-50"></i>There was absolutely no issue that was not timely and with satisfactory results. We were impressed with how the hotel staff anticipated our needs. Numerous conference attendees commented on the quality of the food, the quality of the service, and positive attitude toward the conference site.<i class="fas fa-quote-right text-primary ms-2 opacity-50"></i></p>
                                 </blockquote>
                             </div>
                         </div>
@@ -299,7 +302,7 @@
                             <div class="col-md-3 col-12 mb-3 mb-md-0 text-center">
                                 <img src="https://randomuser.me/api/portraits/women/68.jpg" class="rounded-circle mb-3 shadow" width="120" height="120" alt="Sarah Johnson">
                                 <h5>Sarah Johnson</h5>
-                                <div class="text-success mb-2">
+                                <div class="text-warning mb-2">
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>
@@ -309,7 +312,7 @@
                             </div>
                             <div class="col-md-9 col-12">
                                 <blockquote class="blockquote">
-                                    <p><i class="fas fa-quote-left text-success me-2 opacity-50"></i>My stay at The Matrix was nothing short of exceptional. The room was immaculate, the bed incredibly comfortable, and the service was attentive without being intrusive. The breakfast buffet offered a wide variety of delicious options. I particularly enjoyed the pool area which was well maintained and peaceful.<i class="fas fa-quote-right text-success ms-2 opacity-50"></i></p>
+                                    <p><i class="fas fa-quote-left text-primary me-2 opacity-50"></i>My stay at The Matrix was nothing short of exceptional. The room was immaculate, the bed incredibly comfortable, and the service was attentive without being intrusive. The breakfast buffet offered a wide variety of delicious options. I particularly enjoyed the pool area which was well maintained and peaceful.<i class="fas fa-quote-right text-primary ms-2 opacity-50"></i></p>
                                 </blockquote>
                             </div>
                         </div>
@@ -317,9 +320,9 @@
                 </div>
             </div>
             <div class="d-flex justify-content-center mt-4">
-                <button class="btn btn-sm btn-success mx-1 rounded-circle" type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="0" aria-current="true" aria-label="Testimonial 1">1</button>
-                <button class="btn btn-sm btn-outline-success mx-1 rounded-circle" type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="1" aria-label="Testimonial 2">2</button>
-                <button class="btn btn-sm btn-outline-success mx-1 rounded-circle" type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="2" aria-label="Testimonial 3">3</button>
+                <button class="btn btn-sm btn-primary mx-1 rounded-circle" type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="0" aria-current="true" aria-label="Testimonial 1">1</button>
+                <button class="btn btn-sm btn-outline-primary mx-1 rounded-circle" type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="1" aria-label="Testimonial 2">2</button>
+                <button class="btn btn-sm btn-outline-primary mx-1 rounded-circle" type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="2" aria-label="Testimonial 3">3</button>
             </div>
         </div>
     </div>
@@ -329,7 +332,7 @@
 <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow">
-            <div class="modal-header bg-success bg-opacity-10 border-0">
+            <div class="modal-header bg-primary bg-opacity-10 border-0">
                 <h5 class="modal-title" id="loginModalLabel">Login to Book Your Stay</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -363,28 +366,33 @@
                                 Remember me
                             </label>
                         </div>
-                        <a href="#" class="text-decoration-none text-success">Forgot password?</a>
+                        <a href="#" class="text-decoration-none text-primary">Forgot password?</a>
                     </div>
-                    <button type="submit" class="btn btn-success w-100 mb-3">Sign In</button>
+                    <button type="submit" class="btn btn-primary w-100 mb-3">Sign In</button>
                 </form>
                 <div class="position-relative my-4">
                     <hr>
                     <span class="position-absolute top-50 start-50 translate-middle px-3 bg-white text-muted">OR</span>
                 </div>
-                <!-- Replace the entire Google Sign-In Button section in your modal with this -->
-                <div class="d-grid mb-3">
-                    <!-- Custom Google button -->
-                    <button type="button" id="customGoogleSignIn" class="btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center gap-2 py-2">
-                        <img src="https://cdn.cdnlogo.com/logos/g/35/google-icon.svg" alt="Google logo" width="20" height="20">
-                        <span>Sign in with Google</span>
-                    </button>
+                <!-- Google Sign-In Button (Google Identity Services) -->
+                <div class="d-grid gap-2 mb-3 google-signin-container">
+                    <div id="g_id_onload"
+                         data-client_id="854052749798-r8jnqlh5e7vlgkneeg3jdsjei7l3a466.apps.googleusercontent.com"
+                         data-callback="handleCredentialResponse">
+                    </div>
+                    <div class="g_id_signin"
+                         data-type="standard"
+                         data-size="large"
+                         data-theme="outline"
+                         data-text="sign_in_with"
+                         data-shape="pill"
+                         data-logo_alignment="center"
+                         data-width="100%">
+                    </div>
                 </div>
-
-                <!-- Make sure this is included at the end of your page -->
-                <script src="https://accounts.google.com/gsi/client" async defer></script>
                 <!-- Sign Up Link -->
                 <div class="text-center mt-3">
-                    <p class="mb-0">Don't have an account? <a href="/Account/SignUp" class="text-success fw-bold">Sign Up</a></p>
+                    <p class="mb-0">Don't have an account? <a href="/Account/SignUp" class="text-primary fw-bold">Sign Up</a></p>
                 </div>
             </div>
         </div>
@@ -394,6 +402,40 @@
 <!-- Additional JavaScript -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        // Get the hero carousel
+        const heroCarousel = document.getElementById('heroCarousel');
+        const heroContent = document.querySelector('.hero-content');
+
+        if (heroCarousel) {
+            // Initialize Bootstrap carousel with slide effect instead of fade
+            const bsHeroCarousel = new bootstrap.Carousel(heroCarousel, {
+                interval: 5000,
+                ride: 'carousel',
+                wrap: true
+            });
+
+            // Make sure hero content stays visible
+            heroCarousel.addEventListener('slide.bs.carousel', function() {
+                // Keep hero content visible during slides
+                heroContent.style.opacity = '1';
+            });
+
+            // Initialize hero content to be visible after initial load
+            heroContent.style.opacity = '1';
+
+            // Ensure navigation buttons work properly
+            const prevButton = document.querySelector('.carousel-control-prev');
+            const nextButton = document.querySelector('.carousel-control-next');
+
+            prevButton.addEventListener('click', function() {
+                bsHeroCarousel.prev();
+            });
+
+            nextButton.addEventListener('click', function() {
+                bsHeroCarousel.next();
+            });
+        }
+
         // Login form handling
         const loginForm = document.getElementById('loginForm');
         const errorMessageContainer = document.getElementById('loginErrorMessage');
@@ -464,7 +506,7 @@
             });
         }
 
-        // Initialize room carousel auto-scroll on visibility
+        // Initialize room carousel
         const roomsCarousel = document.getElementById('roomsCarousel');
         if (roomsCarousel) {
             // Create IntersectionObserver to detect when carousel is visible
@@ -486,33 +528,25 @@
             observer.observe(roomsCarousel);
         }
 
-        // Initialize Google Sign-In manually
-        initializeGoogleSignIn();
-    });
+        // Initialize testimonial carousel with improved controls
+        const testimonialCarousel = document.getElementById('testimonialCarousel');
+        if (testimonialCarousel) {
+            const testimonialButtons = document.querySelectorAll('[data-bs-target="#testimonialCarousel"]');
+            testimonialButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    testimonialButtons.forEach(btn => {
+                        btn.classList.remove('btn-success');
+                        btn.classList.add('btn-outline-success');
+                    });
 
-    // Separate function to initialize Google Sign-In
-    function initializeGoogleSignIn() {
-        // Wait for Google script to load completely
-        if (typeof google !== 'undefined' && google.accounts && google.accounts.id) {
-            // Configure Google Sign-In
-            google.accounts.id.initialize({
-                client_id: "854052749798-r8jnqlh5e7vlgkneeg3jdsjei7l3a466.apps.googleusercontent.com",
-                callback: handleCredentialResponse,
-                auto_select: false
-            });
-
-            // Set up the custom button click handler
-            const customGoogleBtn = document.getElementById('customGoogleSignIn');
-            if (customGoogleBtn) {
-                customGoogleBtn.addEventListener('click', function() {
-                    google.accounts.id.prompt();
+                    // Add active class to clicked button
+                    this.classList.remove('btn-outline-success');
+                    this.classList.add('btn-success');
                 });
-            }
-        } else {
-            // If Google API isn't loaded yet, try again in 100ms
-            setTimeout(initializeGoogleSignIn, 100);
+            });
         }
-    }
+    });
 
     // Google Sign In callback function
     function handleCredentialResponse(response) {
@@ -560,3 +594,17 @@
         });
     }
 </script>
+
+<!-- Include Google Identity Services Script -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+
+<!-- Script to Open Login Modal -->
+@if (TempData["ShowLoginModal"] != null && (bool)TempData["ShowLoginModal"])
+{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+            loginModal.show();
+        });
+    </script>
+}

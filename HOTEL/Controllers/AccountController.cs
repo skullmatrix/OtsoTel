@@ -12,7 +12,7 @@ namespace HotelWebsite.Controllers
         public AccountController(ApplicationDbContext context)
         {
             _context = context;
-        }
+        }   
 
         // GET: /Account/SignUp
         public IActionResult SignUp()
@@ -160,14 +160,19 @@ namespace HotelWebsite.Controllers
         [HttpPost]
         public IActionResult SaveGoogleUser([FromBody] User user)
         {
-            if (ModelState.IsValid)
+            try
             {
+                if (user == null || string.IsNullOrEmpty(user.Email))
+                {
+                    return Json(new { success = false, message = "Invalid user data." });
+                }
+
                 // Check if the user already exists
                 var existingUser = _context.Users.FirstOrDefault(u => u.Email == user.Email);
                 if (existingUser == null)
                 {
-                    // Set default values for required fields
-                    user.Password = "google-auth"; // Placeholder for Google-authenticated users
+                    // Set default values for new users
+                    user.Password = "google-auth"; // Placeholder password for Google users
                     user.IsAdmin = false; // Default to non-admin
                     user.Photo = user.Photo ?? "https://cdn-icons-png.flaticon.com/256/727/727410.png"; // Default profile image
 
@@ -182,15 +187,22 @@ namespace HotelWebsite.Controllers
                 }
 
                 // Store user data in session
-                HttpContext.Session.SetString("UserId", user.Id.ToString());
-                HttpContext.Session.SetString("UserName", $"{user.FirstName} {user.LastName}");
-                HttpContext.Session.SetString("UserEmail", user.Email);
-                HttpContext.Session.SetString("UserPhoto", user.Photo);
-                HttpContext.Session.SetString("IsAdmin", user.IsAdmin.ToString());
+                this.HttpContext.Session.SetString("UserId", user.Id.ToString());
+                this.HttpContext.Session.SetString("UserName", $"{user.FirstName} {user.LastName}");
+                this.HttpContext.Session.SetString("UserEmail", user.Email);
+                this.HttpContext.Session.SetString("UserPhoto", user.Photo);
+                this.HttpContext.Session.SetString("IsAdmin", user.IsAdmin.ToString());
 
                 return Json(new { success = true });
             }
-            return Json(new { success = false, message = "Invalid user data." });
+            catch (Exception ex)
+            {
+                // Log the exception (optional)
+                Console.Error.WriteLine($"Error saving Google user: {ex}");
+
+                // Return a JSON response with the error message
+                return Json(new { success = false, message = "An error occurred while saving user data. Please try again." });
+            }
         }
 
         // GET: /Account/Logout
@@ -206,11 +218,9 @@ namespace HotelWebsite.Controllers
             public string Password { get; set; } = string.Empty; // Initialize with default value
         }
 
-
-
     }
 
-    
+
 
 
 }
