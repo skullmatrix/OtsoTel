@@ -4,13 +4,13 @@
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\site.css'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
       <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-hTaUaqe2WbBNtzgW2eXca6GGn0FOmg2CxNLFkWtbyWs="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"11703"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022hTaUaqe2WbBNtzgW2eXca6GGn0FOmg2CxNLFkWtbyWs=\u0022"},{"Name":"Last-Modified","Value":"Sat, 22 Mar 2025 01:38:09 GMT"}]]]></ResponseHeaders>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"11703"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022hTaUaqe2WbBNtzgW2eXca6GGn0FOmg2CxNLFkWtbyWs=\u0022"},{"Name":"Last-Modified","Value":"Sat, 22 Mar 2025 11:31:49 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/HOTEL/css/site.duw5ddkl8m.css">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\site.css'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
       <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"duw5ddkl8m"},{"Name":"integrity","Value":"sha256-hTaUaqe2WbBNtzgW2eXca6GGn0FOmg2CxNLFkWtbyWs="},{"Name":"label","Value":"_content/HOTEL/css/site.css"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"11703"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022hTaUaqe2WbBNtzgW2eXca6GGn0FOmg2CxNLFkWtbyWs=\u0022"},{"Name":"Last-Modified","Value":"Sat, 22 Mar 2025 01:38:09 GMT"}]]]></ResponseHeaders>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"11703"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022hTaUaqe2WbBNtzgW2eXca6GGn0FOmg2CxNLFkWtbyWs=\u0022"},{"Name":"Last-Modified","Value":"Sat, 22 Mar 2025 11:31:49 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/HOTEL/favicon.61n19gt1b8.ico">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\favicon.ico'))</AssetFile>

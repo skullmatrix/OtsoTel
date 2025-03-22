@@ -546,6 +546,13 @@
                 });
             });
         }
+
+        // Check URL parameters for showing login modal
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('showLogin') === 'true') {
+            const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+            loginModal.show();
+        }
     });
 
     // Google Sign In callback function

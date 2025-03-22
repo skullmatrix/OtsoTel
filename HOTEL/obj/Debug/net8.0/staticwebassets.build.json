@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "Jpj4Zfcqn9wqggpXZJ4JpvGo0S8zhkluEfjrWEIcaxA=",
+  "Hash": "pRNo2CaemwDTUabawRnkMcfwKL9BSHFh+K6tasTup24=",
   "Source": "HOTEL",
   "BasePath": "_content/HOTEL",
   "Mode": "Default",
@@ -1343,7 +1343,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 22 Mar 2025 01:38:09 GMT"
+          "Value": "Sat, 22 Mar 2025 11:31:49 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1380,7 +1380,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 22 Mar 2025 01:38:09 GMT"
+          "Value": "Sat, 22 Mar 2025 11:31:49 GMT"
         },
         {
           "Name": "Cache-Control",

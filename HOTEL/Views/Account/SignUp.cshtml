@@ -32,6 +32,9 @@
                                 <div id="signupErrorMessage" class="alert alert-danger d-none mb-4" role="alert"></div>
 
                                 <form asp-action="SignUp" method="post" id="signupForm" novalidate>
+                                    <!-- Add a hidden field for redirect -->
+                                    <input type="hidden" name="redirectToLogin" value="true" />
+
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <label asp-for="FirstName" class="form-label">First Name</label>
@@ -127,27 +130,8 @@
                                         <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">Create Account</button>
                                     </div>
 
-                                    <div class="d-flex align-items-center mb-4">
-                                        <hr class="flex-grow-1">
-                                        <span class="px-3 text-muted">OR</span>
-                                        <hr class="flex-grow-1">
-                                    </div>
-
-                                    <!-- Google Sign-Up Button -->
-                                    <div class="d-grid mb-4 google-signin-container">
-                                        <div class="g_id_signin"
-                                             data-type="standard"
-                                             data-size="large"
-                                             data-theme="outline"
-                                             data-text="signup_with"
-                                             data-shape="pill"
-                                             data-logo_alignment="center"
-                                             data-width="100%">
-                                        </div>
-                                    </div>
-
                                     <div class="text-center">
-                                        <p class="mb-0 text-muted">Already have an account? <a href="/Account/Login" class="text-primary fw-medium">Sign In</a></p>
+                                        <p class="mb-0 text-muted">Already have an account? <a href="/?showLogin=true" id="signInLink" class="text-primary fw-medium">Sign In</a></p>
                                     </div>
                                 </form>
                             </div>
@@ -316,7 +300,11 @@
             if (hasErrors) {
                 errorMessageContainer.classList.remove('d-none');
                 errorMessageContainer.innerHTML = errorMessages.map(msg => `<div>${msg}</div>`).join('');
+                return false;
             }
+
+            // Let form submit normally with the redirect parameter
+            // The server-side code will handle the redirect
         });
 
         // Real-time validation feedback
@@ -346,6 +334,11 @@
                 errorElement.textContent = "";
                 this.classList.remove('is-invalid');
             }
+        });
+
+        // Ensure Sign In link redirects to index with login modal
+        document.getElementById('signInLink').addEventListener('click', function(e) {
+            // No need to prevent default - the href is correct
         });
     });
 </script>
