@@ -18,6 +18,89 @@ namespace HOTEL.Migrations
                 .HasAnnotation("ProductVersion", "8.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("HotelWebsite.Models.Room", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("Capacity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<string>("RoomNumber")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Rooms");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Capacity = 2,
+                            Description = "Comfortable standard room with queen bed",
+                            ImageUrl = "https://example.com/standard-room.jpg",
+                            Price = 150.00m,
+                            RoomNumber = "101",
+                            Status = "Vacant",
+                            Type = "Standard"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Capacity = 2,
+                            Description = "Spacious deluxe room with king bed",
+                            ImageUrl = "https://example.com/deluxe-room.jpg",
+                            Price = 250.00m,
+                            RoomNumber = "201",
+                            Status = "Vacant",
+                            Type = "Deluxe"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Capacity = 4,
+                            Description = "Luxurious suite with separate living area",
+                            ImageUrl = "https://example.com/suite-room.jpg",
+                            Price = 400.00m,
+                            RoomNumber = "301",
+                            Status = "Vacant",
+                            Type = "Suite"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Capacity = 2,
+                            Description = "Comfortable standard room with queen bed",
+                            ImageUrl = "https://example.com/standard-room.jpg",
+                            Price = 150.00m,
+                            RoomNumber = "102",
+                            Status = "Under Maintenance",
+                            Type = "Standard"
+                        });
+                });
+
             modelBuilder.Entity("HotelWebsite.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -67,7 +150,7 @@ namespace HOTEL.Migrations
                             FirstName = "Admin",
                             IsAdmin = true,
                             LastName = "Matrix",
-                            Password = "$2a$11$UPgDv1BDIT.Dk/xscmYhQ.VIqRP.pHhxvICTO9/Rmi2XfpIvM5RhW",
+                            Password = "$2a$11$uJPpsiQWEhChhgmIJCNvDOFM9Kyuz3Xte8CpsLfgPRldTWQiRK6Xa",
                             Photo = "https://cdn-icons-png.flaticon.com/256/2165/2165674.png"
                         });
                 });

@@ -287,7 +287,7 @@
                     <a href="/Admin/UserManagement" class="nav-link">
                         <i class="fas fa-users-cog"></i> User Management
                     </a>
-                    <a href="#" class="nav-link">
+                    <a href="/Rooms/Admin" class="nav-link">
                         <i class="fas fa-hotel"></i> Room Management
                     </a>
                     <a href="#" class="nav-link">
@@ -333,7 +333,7 @@
                 <a href="#" class="nav-link">
                     <i class="fas fa-home"></i> Home
                 </a>
-                <a href="#" class="nav-link">
+                <a href="/Rooms" class="nav-link">
                     <i class="fas fa-hotel"></i> Rooms
                 </a>
                 <a href="#" class="nav-link">
@@ -351,7 +351,6 @@
 
     <!-- Main Content Wrapper -->
     <div class="main-content">
-        <!-- Header -->
         <!-- Header -->
         <header class="header">
             <nav class="navbar navbar-expand-lg navbar-light bg-white py-2">
@@ -405,16 +404,16 @@
                     <div class="col-md-3">
                         <h5 class="footer-heading">Quick Links</h5>
                         <a href="#" class="footer-link">Room Booking</a>
-                        <a href="#" class="footer-link">Rooms</a>
-                        <a href="#" class="footer-link">Contact</a>
-                        <a href="#" class="footer-link">Explore</a>
+                        <a href="/Rooms" class="footer-link">Rooms</a>
+                        <a href="/Contact" class="footer-link">Contact</a>
+                        <a href="/Explore" class="footer-link">Explore</a>
                     </div>
                     <div class="col-md-3">
                         <h5 class="footer-heading">Company</h5>
                         <a href="#" class="footer-link">Privacy Policy</a>
                         <a href="#" class="footer-link">Refund Policy</a>
                         <a href="#" class="footer-link">F.A.Q</a>
-                        <a href="#" class="footer-link">About</a>
+                        <a href="/About" class="footer-link">About</a>
                     </div>
                     <div class="col-md-3">
                         <h5 class="footer-heading">Social Media</h5>
@@ -512,25 +511,10 @@
         @if (TempData["ShowLoginModal"] != null && (bool)TempData["ShowLoginModal"])
         {
             <text>
-                        const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
-                        loginModal.show();
+                            const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+                            loginModal.show();
             </text>
         }
-
-            // Global function to handle profile update success
-            window.handleProfileUpdateSuccess = function() {
-                // Close any open modals
-                const modals = document.querySelectorAll('.modal');
-                modals.forEach(modal => {
-                    const bsModal = bootstrap.Modal.getInstance(modal);
-                    if (bsModal) {
-                        bsModal.hide();
-                    }
-                });
-
-                // Reload the page to update the header and sidebar
-                window.location.href = '/';
-            };
         });
     </script>
 

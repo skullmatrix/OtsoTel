@@ -1,20 +1,50 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using HOTEL.Models;
+using Microsoft.EntityFrameworkCore;
+using HotelWebsite.Models;
+using Microsoft.AspNetCore.Authorization;
 
-namespace HOTEL.Controllers
+namespace HotelWebsite.Controllers
 {
     public class RoomsController : Controller
     {
-        public IActionResult Index()
-        {
-            var rooms = new List<Room>
-            {
-                new Room { Id = 1, Name = "Deluxe Room", ImageUrl = "/images/deluxe.jpg", Price = 25000, IsAvailable = true },
-                new Room { Id = 2, Name = "Luxury Suite", ImageUrl = "/images/luxury.jpg", Price = 50000, IsAvailable = false },
-                new Room { Id = 3, Name = "Family Suite", ImageUrl = "/images/family.jpg", Price = 35000, IsAvailable = true }
-            };
+        private readonly ApplicationDbContext _context;
 
+        public RoomsController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        // GET: Rooms
+        public async Task<IActionResult> Index()
+        {
+            var rooms = await _context.Rooms.Where(r => r.Status == "Vacant").ToListAsync();
             return View(rooms);
+        }
+
+        // GET: Rooms/Admin
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Admin()
+        {
+            var rooms = await _context.Rooms.ToListAsync();
+            return View(rooms);
+        }
+
+        // POST: Rooms/UpdateStatus
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UpdateStatus(int id, string status)
+        {
+            var room = await _context.Rooms.FindAsync(id);
+            if (room == null)
+            {
+                return NotFound();
+            }
+
+            room.Status = status;
+            _context.Update(room);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Admin));
         }
     }
 }
