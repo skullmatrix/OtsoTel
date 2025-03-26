@@ -352,10 +352,11 @@
     <!-- Main Content Wrapper -->
     <div class="main-content">
         <!-- Header -->
+        <!-- Header -->
         <header class="header">
             <nav class="navbar navbar-expand-lg navbar-light bg-white py-2">
                 <div class="container">
-                    <a class="navbar-brand" href="#">
+                    <a class="navbar-brand" href="/">
                         <span class="fw-bold text-success">THE MATRIX</span>
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -363,11 +364,11 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav me-auto">
-                            <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#">Explore</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#">Rooms</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#">About</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/Explore">Explore</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/Rooms">Rooms</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/About">About</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/Contact">Contact</a></li>
                         </ul>
                         @if (!string.IsNullOrEmpty(userId))
                         {
@@ -515,6 +516,21 @@
                         loginModal.show();
             </text>
         }
+
+            // Global function to handle profile update success
+            window.handleProfileUpdateSuccess = function() {
+                // Close any open modals
+                const modals = document.querySelectorAll('.modal');
+                modals.forEach(modal => {
+                    const bsModal = bootstrap.Modal.getInstance(modal);
+                    if (bsModal) {
+                        bsModal.hide();
+                    }
+                });
+
+                // Reload the page to update the header and sidebar
+                window.location.href = '/';
+            };
         });
     </script>
 

@@ -478,7 +478,7 @@
 </style>
 
 <script>
-        document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() {
         // Form elements
         const profileForm = document.getElementById('profileForm');
         const photoUpload = document.getElementById('photoUpload');
@@ -747,67 +747,78 @@
             }
         }
 
-        // Handle form submission with better feedback
-        profileForm.addEventListener('submit', function(event) {
-            event.preventDefault();
+            // Handle form submission with better feedback
+    profileForm.addEventListener('submit', function(event) {
+        event.preventDefault();
 
-            // Reset messages
-            errorMessageContainer.classList.add('d-none');
-            successMessageContainer.classList.add('d-none');
+        // Reset messages
+        errorMessageContainer.classList.add('d-none');
+        successMessageContainer.classList.add('d-none');
 
-            // Validate all required fields
-            let isValid = true;
-            let firstInvalidInput = null;
+        // Validate all required fields
+        let isValid = true;
+        let firstInvalidInput = null;
 
-            requiredInputs.forEach(input => {
-                if (!validateInput(input)) {
-                    isValid = false;
-                    if (!firstInvalidInput) firstInvalidInput = input;
-                }
-            });
+        requiredInputs.forEach(input => {
+            if (!validateInput(input)) {
+                isValid = false;
+                if (!firstInvalidInput) firstInvalidInput = input;
+            }
+        });
 
-            if (!isValid) {
-                // Show error message
-                errorMessageContainer.textContent = 'Please fill in all required fields.';
-                errorMessageContainer.classList.remove('d-none');
+        if (!isValid) {
+            errorMessageContainer.textContent = 'Please fill in all required fields.';
+            errorMessageContainer.classList.remove('d-none');
 
-                // Focus first invalid input
-                if (firstInvalidInput) {
-                    firstInvalidInput.focus();
+            if (firstInvalidInput) {
+                firstInvalidInput.focus();
+                const scrollToElement = firstInvalidInput.closest('.mb-2') || firstInvalidInput;
+                const headerOffset = 80;
+                const elementPosition = scrollToElement.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
-                    // Scroll into view with offset for mobile
-                    const scrollToElement = firstInvalidInput.closest('.mb-2') || firstInvalidInput;
-                    const headerOffset = 80;
-                    const elementPosition = scrollToElement.getBoundingClientRect().top;
-                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-                    window.scrollTo({
-                        top: offsetPosition,
-                        behavior: 'smooth'
-                    });
-                }
-
-                // Add shake animation to button
-                saveChangesBtn.classList.add('btn-shake');
-                setTimeout(() => {
-                    saveChangesBtn.classList.remove('btn-shake');
-                }, 500);
-
-                return;
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
             }
 
-            // Show loading state
-            saveChangesBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Saving...';
-            saveChangesBtn.disabled = true;
+            saveChangesBtn.classList.add('btn-shake');
+            setTimeout(() => {
+                saveChangesBtn.classList.remove('btn-shake');
+            }, 500);
+            return;
+        }
 
-            // Simulate form submission (replace with actual AJAX submission)
-            setTimeout(function() {
-                // Show success message with animation
+        // Show loading state
+        saveChangesBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Saving...';
+        saveChangesBtn.disabled = true;
+
+        // Create FormData object
+        const formData = new FormData(profileForm);
+
+        // Convert to JSON object
+        const jsonData = {};
+        formData.forEach((value, key) => {
+            jsonData[key] = value;
+        });
+
+        // AJAX call to update profile
+        fetch('/Account/UpdateProfile', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(jsonData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Show success message
                 successMessageContainer.classList.remove('d-none');
                 successMessageContainer.style.transform = 'translateY(-10px)';
                 successMessageContainer.style.opacity = '0';
 
-                // Animate in
                 setTimeout(() => {
                     successMessageContainer.style.transition = 'all 0.3s ease';
                     successMessageContainer.style.transform = 'translateY(0)';
@@ -817,15 +828,42 @@
                 // Update button
                 saveChangesBtn.innerHTML = '<i class="fas fa-check me-2"></i> Saved';
 
-                // Scroll to success message
-                successMessageContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // Update profile photo in session if changed
+                if (jsonData.Photo) {
+                    const profilePhotos = document.querySelectorAll('.profile-photo');
+                    profilePhotos.forEach(photo => {
+                        photo.src = jsonData.Photo;
+                    });
+                }
 
-                // Redirect after delay
-                setTimeout(function() {
-                    window.location.href = '/';
-                }, 1500);
-            }, 1000);
+                // Call the global function to handle navigation and UI updates
+                if (window.handleProfileUpdateSuccess) {
+                    // Delay slightly to show success message
+                    setTimeout(() => {
+                        window.handleProfileUpdateSuccess();
+                    }, 1500);
+                } else {
+                    // Fallback if global function isn't available
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 1500);
+                }
+            } else {
+                // Show error message
+                errorMessageContainer.textContent = data.message || 'Failed to update profile.';
+                errorMessageContainer.classList.remove('d-none');
+                saveChangesBtn.innerHTML = '<i class="fas fa-save me-2"></i> Save Changes';
+                saveChangesBtn.disabled = false;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            errorMessageContainer.textContent = 'An error occurred while updating the profile.';
+            errorMessageContainer.classList.remove('d-none');
+            saveChangesBtn.innerHTML = '<i class="fas fa-save me-2"></i> Save Changes';
+            saveChangesBtn.disabled = false;
         });
+    });
 
         // Enhanced Password functionality
         const togglePasswordButtons = document.querySelectorAll('.toggle-password');
@@ -1050,57 +1088,87 @@
                 savePasswordBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Saving...';
                 savePasswordBtn.disabled = true;
 
-                // Simulate form submission (replace with actual AJAX submission)
-                setTimeout(function() {
-                    // Show success message
-                    passwordSuccessMessage.classList.remove('d-none');
-                    passwordSuccessMessage.style.transform = 'translateY(-10px)';
-                    passwordSuccessMessage.style.opacity = '0';
+                // Prepare data
+                const passwordData = {
+                    CurrentPassword: currentPassword.value,
+                    NewPassword: newPassword.value,
+                    ConfirmNewPassword: confirmNewPassword.value
+                };
 
-                    // Animate in
-                    setTimeout(() => {
-                        passwordSuccessMessage.style.transition = 'all 0.3s ease';
-                        passwordSuccessMessage.style.transform = 'translateY(0)';
-                        passwordSuccessMessage.style.opacity = '1';
-                    }, 10);
+                // AJAX call to change password
+                fetch('/Account/ChangePassword', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(passwordData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Show success message
+                        passwordSuccessMessage.classList.remove('d-none');
+                        passwordSuccessMessage.style.transform = 'translateY(-10px)';
+                        passwordSuccessMessage.style.opacity = '0';
 
-                    // Update button
-                    savePasswordBtn.innerHTML = '<i class="fas fa-check me-2"></i> Saved';
-
-                    // Close modal after delay
-                    setTimeout(function() {
-                        const modal = bootstrap.Modal.getInstance(document.getElementById('changePasswordModal'));
-                        modal.hide();
-
-                        // Reset form and button after modal is hidden
                         setTimeout(() => {
-                            changePasswordForm.reset();
-                            savePasswordBtn.innerHTML = 'Save New Password';
-                            savePasswordBtn.disabled = false;
-                            passwordSuccessMessage.classList.add('d-none');
+                            passwordSuccessMessage.style.transition = 'all 0.3s ease';
+                            passwordSuccessMessage.style.transform = 'translateY(0)';
+                            passwordSuccessMessage.style.opacity = '1';
+                        }, 10);
 
-                            // Reset password strength
-                            if (passwordStrengthBar) passwordStrengthBar.style.width = '0%';
-                            if (passwordStrengthText) passwordStrengthText.innerHTML = 'Password strength';
+                        // Update button
+                        savePasswordBtn.innerHTML = '<i class="fas fa-check me-2"></i> Saved';
 
-                            // Reset requirements
-                            if (reqLength) reqLength.innerHTML = '<i class="fas fa-times-circle text-danger"></i> 8+ characters';
-                            if (reqUppercase) reqUppercase.innerHTML = '<i class="fas fa-times-circle text-danger"></i> Uppercase';
-                            if (reqLowercase) reqLowercase.innerHTML = '<i class="fas fa-times-circle text-danger"></i> Lowercase';
-                            if (reqNumber) reqNumber.innerHTML = '<i class="fas fa-times-circle text-danger"></i> Number';
-                        }, 300);
-                    }, 1500);
-                }, 1000);
+                        // Close modal after delay
+                        setTimeout(function() {
+                            const modal = bootstrap.Modal.getInstance(document.getElementById('changePasswordModal'));
+                            modal.hide();
+
+                            // Reset form and button after modal is hidden
+                            setTimeout(() => {
+                                changePasswordForm.reset();
+                                savePasswordBtn.innerHTML = 'Save New Password';
+                                savePasswordBtn.disabled = false;
+                                passwordSuccessMessage.classList.add('d-none');
+
+                                // Reset password strength
+                                if (passwordStrengthBar) passwordStrengthBar.style.width = '0%';
+                                if (passwordStrengthText) passwordStrengthText.innerHTML = 'Password strength';
+
+                                // Reset requirements
+                                if (reqLength) reqLength.innerHTML = '<i class="fas fa-times-circle text-danger"></i> 8+ characters';
+                                if (reqUppercase) reqUppercase.innerHTML = '<i class="fas fa-times-circle text-danger"></i> Uppercase';
+                                if (reqLowercase) reqLowercase.innerHTML = '<i class="fas fa-times-circle text-danger"></i> Lowercase';
+                                if (reqNumber) reqNumber.innerHTML = '<i class="fas fa-times-circle text-danger"></i> Number';
+                            }, 300);
+                        }, 1500);
+                    } else {
+                        // Show error message
+                        passwordErrorMessage.textContent = data.message || 'Failed to change password.';
+                        passwordErrorMessage.classList.remove('d-none');
+                        savePasswordBtn.innerHTML = 'Save New Password';
+                        savePasswordBtn.disabled = false;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    passwordErrorMessage.textContent = 'An error occurred while changing the password.';
+                    passwordErrorMessage.classList.remove('d-none');
+                    savePasswordBtn.innerHTML = 'Save New Password';
+                    savePasswordBtn.disabled = false;
+                });
             });
         }
 
         // Add some CSS for animations
         const style = document.createElement('style');
         style.textContent = `
-
             .btn-shake {
                 animation: btn-shake 0.5s ease;
             }
+
+    
 
             .profile-photo-container {
                 cursor: pointer;

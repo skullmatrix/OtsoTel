@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http; // Add this for session management
+using Microsoft.AspNetCore.Http;
 using HotelWebsite.Models;
 using System.Linq;
+using System;
 
 namespace HotelWebsite.Controllers
 {
@@ -12,7 +13,7 @@ namespace HotelWebsite.Controllers
         public AccountController(ApplicationDbContext context)
         {
             _context = context;
-        }   
+        }
 
         // GET: /Account/SignUp
         public IActionResult SignUp()
@@ -110,34 +111,118 @@ namespace HotelWebsite.Controllers
         }
 
         [HttpPost]
-        public IActionResult UpdateProfile(User updatedUser)
+        public IActionResult UpdateProfile([FromBody] User updatedUser)
         {
-            var userId = this.HttpContext.Session.GetString("UserId");
-            if (string.IsNullOrEmpty(userId))
+            try
             {
-                return RedirectToAction("Index", "Home"); // Redirect if not logged in
-            }
+                var userId = this.HttpContext.Session.GetString("UserId");
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return Json(new { success = false, message = "User not logged in" });
+                }
 
-            var user = _context.Users.FirstOrDefault(u => u.Id == int.Parse(userId));
-            if (user == null)
+                var user = _context.Users.FirstOrDefault(u => u.Id == int.Parse(userId));
+                if (user == null)
+                {
+                    return Json(new { success = false, message = "User not found" });
+                }
+
+                // Check if email is being changed to one that already exists
+                if (user.Email != updatedUser.Email && _context.Users.Any(u => u.Email == updatedUser.Email))
+                {
+                    return Json(new { success = false, message = "Email already in use by another account" });
+                }
+
+                // Update user details
+                user.FirstName = updatedUser.FirstName;
+                user.LastName = updatedUser.LastName;
+                user.MiddleName = updatedUser.MiddleName;
+                user.Email = updatedUser.Email;
+                user.Address = updatedUser.Address;
+
+                // Only update photo if a new one was provided
+                if (!string.IsNullOrEmpty(updatedUser.Photo) && updatedUser.Photo != user.Photo)
+                {
+                    user.Photo = updatedUser.Photo;
+                }
+
+                _context.SaveChanges();
+
+                // Update session data
+                this.HttpContext.Session.SetString("UserName", $"{user.FirstName} {user.LastName}");
+                this.HttpContext.Session.SetString("UserEmail", user.Email);
+                this.HttpContext.Session.SetString("UserPhoto", user.Photo);
+
+                return Json(new { success = true, message = "Profile updated successfully", photo = user.Photo });
+            }
+            catch (Exception ex)
             {
-                return RedirectToAction("Index", "Home"); // Redirect if user not found
+                // Log the error
+                Console.Error.WriteLine($"Error updating profile: {ex}");
+                return Json(new { success = false, message = "An error occurred while updating the profile" });
             }
+        }
 
-            // Update user details
-            user.FirstName = updatedUser.FirstName;
-            user.LastName = updatedUser.LastName;
-            user.MiddleName = updatedUser.MiddleName;
-            user.Email = updatedUser.Email;
-            user.Address = updatedUser.Address;
-            user.Photo = updatedUser.Photo;
-            _context.SaveChanges();
+        [HttpPost]
+        public IActionResult ChangePassword([FromBody] ChangePasswordRequest request)
+        {
+            try
+            {
+                var userId = this.HttpContext.Session.GetString("UserId");
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return Json(new { success = false, message = "User not logged in" });
+                }
 
-            // Update session data
-            this.HttpContext.Session.SetString("UserName", $"{user.FirstName} {user.LastName}"); // Combine first and last name
-            this.HttpContext.Session.SetString("UserPhoto", user.Photo);
+                var user = _context.Users.FirstOrDefault(u => u.Id == int.Parse(userId));
+                if (user == null)
+                {
+                    return Json(new { success = false, message = "User not found" });
+                }
 
-            return RedirectToAction("UserProfile");
+                // Verify current password
+                if (!BCrypt.Net.BCrypt.Verify(request.CurrentPassword, user.Password))
+                {
+                    return Json(new { success = false, message = "Current password is incorrect" });
+                }
+
+                // Validate new password
+                if (string.IsNullOrEmpty(request.NewPassword) || request.NewPassword.Length < 8)
+                {
+                    return Json(new { success = false, message = "New password must be at least 8 characters long" });
+                }
+
+                // Check if new password is same as current
+                if (BCrypt.Net.BCrypt.Verify(request.NewPassword, user.Password))
+                {
+                    return Json(new { success = false, message = "New password cannot be the same as current password" });
+                }
+
+                // Check if passwords match
+                if (request.NewPassword != request.ConfirmNewPassword)
+                {
+                    return Json(new { success = false, message = "New passwords do not match" });
+                }
+
+                // Hash and update the new password
+                user.Password = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
+                _context.SaveChanges();
+
+                return Json(new { success = true, message = "Password changed successfully" });
+            }
+            catch (Exception ex)
+            {
+                // Log the error
+                Console.Error.WriteLine($"Error changing password: {ex}");
+                return Json(new { success = false, message = "An error occurred while changing the password" });
+            }
+        }
+
+        public class ChangePasswordRequest
+        {
+            public string CurrentPassword { get; set; } = string.Empty;
+            public string NewPassword { get; set; } = string.Empty;
+            public string ConfirmNewPassword { get; set; } = string.Empty;
         }
 
         public IActionResult UserProfile()
@@ -212,15 +297,17 @@ namespace HotelWebsite.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public class LoginRequest
+        [HttpGet]
+        public IActionResult CheckSession()
         {
-            public string Email { get; set; } = string.Empty; // Initialize with default value
-            public string Password { get; set; } = string.Empty; // Initialize with default value
+            var userId = HttpContext.Session.GetString("UserId");
+            return Json(new { isAuthenticated = !string.IsNullOrEmpty(userId) });
         }
 
+        public class LoginRequest
+        {
+            public string Email { get; set; } = string.Empty;
+            public string Password { get; set; } = string.Empty;
+        }
     }
-
-
-
-
 }
