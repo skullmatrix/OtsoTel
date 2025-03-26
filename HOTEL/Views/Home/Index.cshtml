@@ -1,0 +1,631 @@
+﻿@{
+    ViewData["Title"] = "Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Hero Section with Carousel -->
+<section class="hero-section position-relative vh-100">
+    <!-- Carousel -->
+    <div id="heroCarousel" class="carousel slide h-100" data-bs-ride="carousel">
+        <!-- Carousel Indicators -->
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <!-- Carousel Items -->
+        <div class="carousel-inner h-100">
+            <div class="carousel-item active h-100">
+                <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80" class="d-block w-100 h-100 object-fit-cover" alt="The Matrix Hotel Exterior">
+            </div>
+            <div class="carousel-item h-100">
+                <img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80" class="d-block w-100 h-100 object-fit-cover" alt="Luxury Suite">
+            </div>
+            <div class="carousel-item h-100">
+                <img src="https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80" class="d-block w-100 h-100 object-fit-cover" alt="Hotel Pool">
+            </div>
+        </div>
+        <!-- Carousel Controls - Explicitly set z-index and ensure full clickable area -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev" style="z-index: 5;">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next" style="z-index: 5;">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    <!-- Hero Content -->
+    <div class="hero-content position-absolute top-50 start-0 translate-middle-y px-4 px-lg-5 w-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-8 solid-hero-bg p-4 p-md-5 rounded">
+                    <h2 class="hero-subtitle fs-4 text-white mb-2">THE MATRIX</h2>
+                    <h1 class="hero-title display-4 fw-bold text-white">Where reality meets luxury</h1>
+                    <p class="lead mb-4 text-white">Experience a stay beyond the ordinary</p>
+                    <div class="d-flex gap-3">
+                        <button class="btn btn-primary book-now-btn" data-bs-toggle="modal" data-bs-target="#loginModal">Book Now</button>
+                        <button class="btn btn-outline-light">Take a Tour</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+
+<!-- Booking Section -->
+<section class="booking-section py-4 shadow bg-white">
+    <div class="container">
+        <form class="booking-form">
+            <div class="row g-3 justify-content-center">
+                <div class="col-md-2 col-sm-6">
+                    <label class="form-label">Location</label>
+                    <select class="form-select">
+                        <option selected>Abuja</option>
+                        <option>Lagos</option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-6">
+                    <label class="form-label">Room Type</label>
+                    <select class="form-select">
+                        <option selected>Standard</option>
+                        <option>Deluxe</option>
+                        <option>Premium</option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-6">
+                    <label class="form-label">Guests</label>
+                    <select class="form-select">
+                        <option selected>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-6">
+                    <label class="form-label">Check In</label>
+                    <input type="date" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                </div>
+                <div class="col-md-2 col-sm-6">
+                    <label class="form-label">Check Out</label>
+                    <input type="date" class="form-control" value="@DateTime.Now.AddDays(4).ToString("yyyy-MM-dd")">
+                </div>
+                <div class="col-md-2 col-sm-6 d-grid">
+                    <label class="invisible form-label">Book</label>
+                    <button class="btn btn-primary book-now-btn" data-bs-toggle="modal" data-bs-target="#loginModal">Check Availability</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- Facilities Section -->
+<section class="facilities-section py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold mb-3">Our Facilities</h2>
+            <p class="text-muted">Experience the extraordinary at The Matrix.</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-4 col-6">
+                <div class="facility-card p-3 text-center bg-light rounded shadow-sm h-100 transition-all hover-lift">
+                    <i class="fas fa-swimming-pool facility-icon fs-1 text-primary mb-3"></i>
+                    <h4 class="fs-5">Swimming Pool</h4>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-6">
+                <div class="facility-card p-3 text-center bg-light rounded shadow-sm h-100 transition-all hover-lift">
+                    <i class="fas fa-wifi facility-icon fs-1 text-primary mb-3"></i>
+                    <h4 class="fs-5">Free Wi-Fi</h4>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-6">
+                <div class="facility-card p-3 text-center bg-light rounded shadow-sm h-100 transition-all hover-lift">
+                    <i class="fas fa-utensils facility-icon fs-1 text-primary mb-3"></i>
+                    <h4 class="fs-5">Gourmet Breakfast</h4>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-6">
+                <div class="facility-card p-3 text-center bg-light rounded shadow-sm h-100 transition-all hover-lift">
+                    <i class="fas fa-dumbbell facility-icon fs-1 text-primary mb-3"></i>
+                    <h4 class="fs-5">Fitness Center</h4>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-6">
+                <div class="facility-card p-3 text-center bg-light rounded shadow-sm h-100 transition-all hover-lift">
+                    <i class="fas fa-gamepad facility-icon fs-1 text-primary mb-3"></i>
+                    <h4 class="fs-5">Game Center</h4>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-6">
+                <div class="facility-card p-3 text-center bg-light rounded shadow-sm h-100 transition-all hover-lift">
+                    <i class="fas fa-lightbulb facility-icon fs-1 text-primary mb-3"></i>
+                    <h4 class="fs-5">24/7 Power</h4>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-6">
+                <div class="facility-card p-3 text-center bg-light rounded shadow-sm h-100 transition-all hover-lift">
+                    <i class="fas fa-soap facility-icon fs-1 text-primary mb-3"></i>
+                    <h4 class="fs-5">Laundry Service</h4>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-6">
+                <div class="facility-card p-3 text-center bg-light rounded shadow-sm h-100 transition-all hover-lift">
+                    <i class="fas fa-parking facility-icon fs-1 text-primary mb-3"></i>
+                    <h4 class="fs-5">Secure Parking</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Rooms Section with Carousel -->
+<section class="rooms-section py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold mb-3">Choose Your Reality</h2>
+            <p class="text-muted">Our rooms are designed to transcend ordinary accommodations.</p>
+        </div>
+
+        <div id="roomsCarousel" class="carousel slide shadow-lg rounded overflow-hidden" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="row g-0">
+                        <div class="col-lg-6">
+                            <img src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="d-block w-100 h-100 object-fit-cover" alt="Standard Room">
+                        </div>
+                        <div class="col-lg-6 d-flex align-items-center bg-white">
+                            <div class="p-4 p-lg-5">
+                                <h3 class="mb-3">Standard Room</h3>
+                                <p class="mb-4">Our standard rooms offer comfort and style with television, extra sheets, and complimentary breakfast.</p>
+                                <ul class="list-unstyled mb-4">
+                                    <li class="mb-2"><i class="fas fa-tv me-2 text-primary"></i> Television Set</li>
+                                    <li class="mb-2"><i class="fas fa-bed me-2 text-primary"></i> Extra Sheets</li>
+                                    <li class="mb-2"><i class="fas fa-coffee me-2 text-primary"></i> Breakfast</li>
+                                </ul>
+                                <button class="btn btn-primary book-now-btn" data-bs-toggle="modal" data-bs-target="#loginModal">Book Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="row g-0">
+                        <div class="col-lg-6">
+                            <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="d-block w-100 h-100 object-fit-cover" alt="Deluxe Room">
+                        </div>
+                        <div class="col-lg-6 d-flex align-items-center bg-white">
+                            <div class="p-4 p-lg-5">
+                                <h3 class="mb-3">Deluxe Room</h3>
+                                <p class="mb-4">Our deluxe rooms offer enhanced comfort with television, extra sheets, breakfast, and a cozy fireplace.</p>
+                                <ul class="list-unstyled mb-4">
+                                    <li class="mb-2"><i class="fas fa-tv me-2 text-primary"></i> Television Set</li>
+                                    <li class="mb-2"><i class="fas fa-bed me-2 text-primary"></i> Extra Sheets</li>
+                                    <li class="mb-2"><i class="fas fa-coffee me-2 text-primary"></i> Breakfast</li>
+                                    <li class="mb-2"><i class="fas fa-fire me-2 text-primary"></i> Fireplace</li>
+                                </ul>
+                                <button class="btn btn-primary book-now-btn" data-bs-toggle="modal" data-bs-target="#loginModal">Book Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="row g-0">
+                        <div class="col-lg-6">
+                            <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="d-block w-100 h-100 object-fit-cover" alt="Premium Room">
+                        </div>
+                        <div class="col-lg-6 d-flex align-items-center bg-white">
+                            <div class="p-4 p-lg-5">
+                                <h3 class="mb-3">Premium Suite</h3>
+                                <p class="mb-4">Our premium suites offer the ultimate luxury experience with all amenities for a perfect stay.</p>
+                                <ul class="list-unstyled mb-4">
+                                    <li class="mb-2"><i class="fas fa-tv me-2 text-primary"></i> Television Set</li>
+                                    <li class="mb-2"><i class="fas fa-bed me-2 text-primary"></i> Extra Sheets</li>
+                                    <li class="mb-2"><i class="fas fa-coffee me-2 text-primary"></i> Breakfast</li>
+                                    <li class="mb-2"><i class="fas fa-fire me-2 text-primary"></i> Fireplace</li>
+                                    <li class="mb-2"><i class="fas fa-gamepad me-2 text-primary"></i> Gaming Console</li>
+                                    <li class="mb-2"><i class="fas fa-bath me-2 text-primary"></i> Luxury Bathroom</li>
+                                </ul>
+                                <button class="btn btn-primary book-now-btn" data-bs-toggle="modal" data-bs-target="#loginModal">Book Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#roomsCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon bg-primary rounded-circle p-3" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#roomsCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon bg-primary rounded-circle p-3" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section with Slider -->
+<section class="testimonials-section py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold mb-3">Guest Experiences</h2>
+            <p class="text-muted">See what others have discovered at The Matrix.</p>
+        </div>
+
+        <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="testimonial-card bg-white p-4 rounded shadow">
+                        <div class="row">
+                            <div class="col-md-3 col-12 mb-3 mb-md-0 text-center">
+                                <img src="https://randomuser.me/api/portraits/men/32.jpg" class="rounded-circle mb-3 shadow" width="120" height="120" alt="Anthony Bruff">
+                                <h5>Anthony Bruff</h5>
+                                <div class="text-warning mb-2">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                            <div class="col-md-9 col-12">
+                                <blockquote class="blockquote">
+                                    <p><i class="fas fa-quote-left text-primary me-2 opacity-50"></i>There was absolutely no issue that was not addressed timely and with satisfactory results. We were particularly impressed with how the hotel staff anticipated our needs. Numerous conference attendees commented on the quality of the food, the quality of the service, and overall positive attitude toward the conference site.<i class="fas fa-quote-right text-primary ms-2 opacity-50"></i></p>
+                                </blockquote>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="testimonial-card bg-white p-4 rounded shadow">
+                        <div class="row">
+                            <div class="col-md-3 col-12 mb-3 mb-md-0 text-center">
+                                <img src="https://randomuser.me/api/portraits/women/44.jpg" class="rounded-circle mb-3 shadow" width="120" height="120" alt="Jennyn Aliyu">
+                                <h5>Jennyn Aliyu</h5>
+                                <div class="text-warning mb-2">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                            <div class="col-md-9 col-12">
+                                <blockquote class="blockquote">
+                                    <p><i class="fas fa-quote-left text-primary me-2 opacity-50"></i>There was absolutely no issue that was not timely and with satisfactory results. We were impressed with how the hotel staff anticipated our needs. Numerous conference attendees commented on the quality of the food, the quality of the service, and positive attitude toward the conference site.<i class="fas fa-quote-right text-primary ms-2 opacity-50"></i></p>
+                                </blockquote>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="testimonial-card bg-white p-4 rounded shadow">
+                        <div class="row">
+                            <div class="col-md-3 col-12 mb-3 mb-md-0 text-center">
+                                <img src="https://randomuser.me/api/portraits/women/68.jpg" class="rounded-circle mb-3 shadow" width="120" height="120" alt="Sarah Johnson">
+                                <h5>Sarah Johnson</h5>
+                                <div class="text-warning mb-2">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </div>
+                            </div>
+                            <div class="col-md-9 col-12">
+                                <blockquote class="blockquote">
+                                    <p><i class="fas fa-quote-left text-primary me-2 opacity-50"></i>My stay at The Matrix was nothing short of exceptional. The room was immaculate, the bed incredibly comfortable, and the service was attentive without being intrusive. The breakfast buffet offered a wide variety of delicious options. I particularly enjoyed the pool area which was well maintained and peaceful.<i class="fas fa-quote-right text-primary ms-2 opacity-50"></i></p>
+                                </blockquote>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center mt-4">
+                <button class="btn btn-sm btn-primary mx-1 rounded-circle" type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="0" aria-current="true" aria-label="Testimonial 1">1</button>
+                <button class="btn btn-sm btn-outline-primary mx-1 rounded-circle" type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="1" aria-label="Testimonial 2">2</button>
+                <button class="btn btn-sm btn-outline-primary mx-1 rounded-circle" type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="2" aria-label="Testimonial 3">3</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-primary bg-opacity-10 border-0">
+                <h5 class="modal-title" id="loginModalLabel">Login to Book Your Stay</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <!-- Add error message container -->
+                <div id="loginErrorMessage" class="alert alert-danger d-none mb-3" role="alert">
+                </div>
+                <!-- Login Form -->
+                <form id="loginForm">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email address</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="fas fa-envelope text-muted"></i></span>
+                            <input type="email" class="form-control" id="email" name="email" required placeholder="your@email.com">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="fas fa-lock text-muted"></i></span>
+                            <input type="password" class="form-control" id="password" name="password" required placeholder="Your password">
+                            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="rememberMe">
+                            <label class="form-check-label" for="rememberMe">
+                                Remember me
+                            </label>
+                        </div>
+                        <a href="#" class="text-decoration-none text-primary">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 mb-3">Sign In</button>
+                </form>
+                <div class="position-relative my-4">
+                    <hr>
+                    <span class="position-absolute top-50 start-50 translate-middle px-3 bg-white text-muted">OR</span>
+                </div>
+                <!-- Google Sign-In Button -->
+                <div class="d-grid gap-2 mb-3">
+                    <div id="googleSignInButton" class="d-flex justify-content-center"></div>
+                </div>
+                <!-- Sign Up Link -->
+                <div class="text-center mt-3">
+                    <p class="mb-0">Don't have an account? <a href="/Account/SignUp" class="text-primary fw-bold">Sign Up</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Load Google Identity Services API -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+
+<!-- Additional JavaScript -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Get the hero carousel
+        const heroCarousel = document.getElementById('heroCarousel');
+        const heroContent = document.querySelector('.hero-content');
+
+        if (heroCarousel) {
+            // Initialize Bootstrap carousel with slide effect instead of fade
+            const bsHeroCarousel = new bootstrap.Carousel(heroCarousel, {
+                interval: 5000,
+                ride: 'carousel',
+                wrap: true
+            });
+
+            // Make sure hero content stays visible
+            heroCarousel.addEventListener('slide.bs.carousel', function() {
+                // Keep hero content visible during slides
+                heroContent.style.opacity = '1';
+            });
+
+            // Initialize hero content to be visible after initial load
+            heroContent.style.opacity = '1';
+
+            // Ensure navigation buttons work properly
+            const prevButton = document.querySelector('.carousel-control-prev');
+            const nextButton = document.querySelector('.carousel-control-next');
+
+            prevButton.addEventListener('click', function() {
+                bsHeroCarousel.prev();
+            });
+
+            nextButton.addEventListener('click', function() {
+                bsHeroCarousel.next();
+            });
+        }
+
+        // Login form handling
+        const loginForm = document.getElementById('loginForm');
+        const errorMessageContainer = document.getElementById('loginErrorMessage');
+
+        if (loginForm) {
+            loginForm.addEventListener('submit', function (e) {
+                e.preventDefault(); // Prevent default form submission
+
+                // Clear previous error messages
+                errorMessageContainer.classList.add('d-none');
+                errorMessageContainer.textContent = '';
+
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+
+                fetch('/Account/Login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password }),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        // Handle server errors (e.g., 500 Internal Server Error)
+                        return response.json().then(error => {
+                            throw new Error(error.message || "An error occurred during login.");
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        // Close the modal
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+                        modal.hide();
+
+                        // Refresh the page to update the header
+                        window.location.reload();
+                    } else {
+                        // Show error in the modal instead of alert
+                        errorMessageContainer.textContent = data.message || "Invalid login attempt. Please check your credentials.";
+                        errorMessageContainer.classList.remove('d-none');
+                    }
+                })
+                .catch(error => {
+                    console.error("Error during login:", error);
+                    // Show error in the modal instead of alert
+                    errorMessageContainer.textContent = error.message || "An error occurred during login. Please try again.";
+                    errorMessageContainer.classList.remove('d-none');
+                });
+            });
+        }
+
+        // Toggle password visibility
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+
+        if (togglePassword && passwordInput) {
+            togglePassword.addEventListener('click', function () {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+
+                // Toggle icon
+                const eyeIcon = this.querySelector('i');
+                eyeIcon.classList.toggle('fa-eye');
+                eyeIcon.classList.toggle('fa-eye-slash');
+            });
+        }
+
+        // Initialize room carousel
+        const roomsCarousel = document.getElementById('roomsCarousel');
+        if (roomsCarousel) {
+            // Create IntersectionObserver to detect when carousel is visible
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Start auto-scroll when visible
+                        const carousel = new bootstrap.Carousel(roomsCarousel, {
+                            interval: 5000,
+                            ride: 'carousel'
+                        });
+                        // Once started, no need to observe anymore
+                        observer.unobserve(roomsCarousel);
+                    }
+                });
+            }, { threshold: 0.3 }); // Trigger when 30% of element is visible
+
+            // Start observing the carousel
+            observer.observe(roomsCarousel);
+        }
+
+        // Initialize testimonial carousel with improved controls
+        const testimonialCarousel = document.getElementById('testimonialCarousel');
+        if (testimonialCarousel) {
+            const testimonialButtons = document.querySelectorAll('[data-bs-target="#testimonialCarousel"]');
+            testimonialButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    testimonialButtons.forEach(btn => {
+                        btn.classList.remove('btn-primary');
+                        btn.classList.add('btn-outline-primary');
+                    });
+
+                    // Add active class to clicked button
+                    this.classList.remove('btn-outline-primary');
+                    this.classList.add('btn-primary');
+                });
+            });
+        }
+
+        // Render Google Sign-In button immediately after DOM is loaded
+        // This ensures the button is properly rendered
+        if (google && google.accounts && google.accounts.id) {
+            google.accounts.id.initialize({
+                client_id: '169081676062-t3r9jstprgb94ase74rukhj81tuu43aj.apps.googleusercontent.com',
+                callback: handleCredentialResponse
+            });
+            google.accounts.id.renderButton(
+                document.getElementById('googleSignInButton'),
+                {
+                    theme: 'outline',
+                    size: 'large',
+                    type: 'standard',
+                    shape: 'pill',
+                    text: 'signin_with',
+                    width: '100%'
+                }
+            );
+        } else {
+            console.error("Google Identity Services not loaded properly");
+        }
+
+        // Check URL parameters for showing login modal
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('showLogin') === 'true') {
+            const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+            loginModal.show();
+        }
+    });
+
+    // Google Sign In callback function
+    function handleCredentialResponse(response) {
+        console.log("ID Token received");
+
+        // Decode the ID token to get user info
+        const payload = JSON.parse(atob(response.credential.split('.')[1]));
+        const userData = {
+            lastName: payload.family_name, // Last name from Google
+            firstName: payload.given_name, // First name from Google
+            middleName: "", // Middle name is not provided by Google
+            email: payload.email,
+            password: "google-auth", // Placeholder password for Google users
+            address: "", // Address is not provided by Google
+            photo: payload.picture
+        };
+
+        // Send user data to the server
+        fetch('/Account/SaveGoogleUser', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Close the modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+                modal.hide();
+
+                // Refresh the page to update the header
+                window.location.reload();
+            } else {
+                console.error("Error saving user:", data);
+                // Show error message
+                const errorMessageContainer = document.getElementById('loginErrorMessage');
+                errorMessageContainer.textContent = data.message || "Error processing Google sign-in.";
+                errorMessageContainer.classList.remove('d-none');
+            }
+        })
+        .catch(error => {
+            console.error("Error saving user:", error);
+            // Show error message
+            const errorMessageContainer = document.getElementById('loginErrorMessage');
+            errorMessageContainer.textContent = "Error processing Google sign-in. Please try again.";
+            errorMessageContainer.classList.remove('d-none');
+        });
+    }
+</script>
+
+<!-- Script to Open Login Modal -->
+@if (TempData["ShowLoginModal"] != null && (bool)TempData["ShowLoginModal"])
+{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+            loginModal.show();
+        });
+    </script>
+}
