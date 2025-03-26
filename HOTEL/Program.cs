@@ -6,14 +6,17 @@ using Microsoft.EntityFrameworkCore;
 using HotelWebsite.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
 // Register ApplicationDbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("DefaultConnection"),
         ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
     ));
+
 // Add session support
 builder.Services.AddSession(options =>
 {
@@ -21,6 +24,7 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+
 // Add IHttpContextAccessor
 builder.Services.AddHttpContextAccessor();
 
@@ -33,23 +37,11 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-// Add CSP middleware before other middleware
-app.Use(async (context, next) =>
-{
-    context.Response.Headers.Add("Content-Security-Policy",
-        "default-src 'self'; " +
-        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; " +
-        "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://apis.google.com https://www.gstatic.com https://cdn.jsdelivr.net https://accounts.google.com https://cdnjs.cloudflare.com; " +
-        "img-src 'self' data: https: http:; " +
-        "connect-src 'self' https://accounts.google.com ws: wss: http: https:;");
-
-    await next();
-});
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
+
 // Enable session
 app.UseSession();
 

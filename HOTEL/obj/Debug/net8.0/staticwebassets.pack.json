@@ -245,6 +245,10 @@
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
     },
     {
+      "Id": "C:\\Users\\Lenovo\\Documents\\Planas\\toch\\HOTEL\\wwwroot\\uploads\\791c95e7-1ada-4c2b-b690-ef67679e53a6_the-matrix-logo-png-transparent.png",
+      "PackagePath": "staticwebassets\\uploads\\791c95e7-1ada-4c2b-b690-ef67679e53a6_the-matrix-logo-png-transparent.png"
+    },
+    {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.HOTEL.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
     },

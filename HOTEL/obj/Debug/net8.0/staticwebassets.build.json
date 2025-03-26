@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "pRNo2CaemwDTUabawRnkMcfwKL9BSHFh+K6tasTup24=",
+  "Hash": "XNM4T4l6u0Saynnb3+PWbFHcyq9Bv11daNSmOlLeO5I=",
   "Source": "HOTEL",
   "BasePath": "_content/HOTEL",
   "Mode": "Default",
@@ -73,8 +73,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "duw5ddkl8m",
-      "Integrity": "hTaUaqe2WbBNtzgW2eXca6GGn0FOmg2CxNLFkWtbyWs=",
+      "Fingerprint": "q973bdmgvw",
+      "Integrity": "chlbbWHUeuuAmG517N7XkB0Cg8mMzqtWNzy0fvWXXi8=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\site.css"
@@ -1317,6 +1317,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
+    },
+    {
+      "Identity": "C:\\Users\\Lenovo\\Documents\\Planas\\toch\\HOTEL\\wwwroot\\uploads\\791c95e7-1ada-4c2b-b690-ef67679e53a6_the-matrix-logo-png-transparent.png",
+      "SourceId": "HOTEL",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Lenovo\\Documents\\Planas\\toch\\HOTEL\\wwwroot\\",
+      "BasePath": "_content/HOTEL",
+      "RelativePath": "uploads/791c95e7-1ada-4c2b-b690-ef67679e53a6_the-matrix-logo-png-transparent#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "l3ek07p8s1",
+      "Integrity": "YZCDaYbzSocREeoLyDrIcxP+93HdVPB4G/7QHLgpSVY=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\791c95e7-1ada-4c2b-b690-ef67679e53a6_the-matrix-logo-png-transparent.png"
     }
   ],
   "Endpoints": [
@@ -1331,7 +1352,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "11703"
+          "Value": "14937"
         },
         {
           "Name": "Content-Type",
@@ -1339,11 +1360,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"hTaUaqe2WbBNtzgW2eXca6GGn0FOmg2CxNLFkWtbyWs=\""
+          "Value": "\"chlbbWHUeuuAmG517N7XkB0Cg8mMzqtWNzy0fvWXXi8=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 22 Mar 2025 11:31:49 GMT"
+          "Value": "Sun, 23 Mar 2025 07:06:04 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1353,12 +1374,12 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-hTaUaqe2WbBNtzgW2eXca6GGn0FOmg2CxNLFkWtbyWs="
+          "Value": "sha256-chlbbWHUeuuAmG517N7XkB0Cg8mMzqtWNzy0fvWXXi8="
         }
       ]
     },
     {
-      "Route": "css/site.duw5ddkl8m.css",
+      "Route": "css/site.q973bdmgvw.css",
       "AssetFile": "C:\\Users\\Lenovo\\Documents\\Planas\\toch\\HOTEL\\wwwroot\\css\\site.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -1368,7 +1389,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "11703"
+          "Value": "14937"
         },
         {
           "Name": "Content-Type",
@@ -1376,11 +1397,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"hTaUaqe2WbBNtzgW2eXca6GGn0FOmg2CxNLFkWtbyWs=\""
+          "Value": "\"chlbbWHUeuuAmG517N7XkB0Cg8mMzqtWNzy0fvWXXi8=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 22 Mar 2025 11:31:49 GMT"
+          "Value": "Sun, 23 Mar 2025 07:06:04 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1390,7 +1411,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "duw5ddkl8m"
+          "Value": "q973bdmgvw"
         },
         {
           "Name": "label",
@@ -1398,7 +1419,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-hTaUaqe2WbBNtzgW2eXca6GGn0FOmg2CxNLFkWtbyWs="
+          "Value": "sha256-chlbbWHUeuuAmG517N7XkB0Cg8mMzqtWNzy0fvWXXi8="
         }
       ]
     },
@@ -6401,6 +6422,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-16aFlqtpsG9RyieKZUUUjkJpqTgcJtWXwT312I4Iz1s="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/791c95e7-1ada-4c2b-b690-ef67679e53a6_the-matrix-logo-png-transparent.l3ek07p8s1.png",
+      "AssetFile": "C:\\Users\\Lenovo\\Documents\\Planas\\toch\\HOTEL\\wwwroot\\uploads\\791c95e7-1ada-4c2b-b690-ef67679e53a6_the-matrix-logo-png-transparent.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "77630"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"YZCDaYbzSocREeoLyDrIcxP+93HdVPB4G/7QHLgpSVY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 23 Mar 2025 05:15:59 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "l3ek07p8s1"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/791c95e7-1ada-4c2b-b690-ef67679e53a6_the-matrix-logo-png-transparent.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-YZCDaYbzSocREeoLyDrIcxP+93HdVPB4G/7QHLgpSVY="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/791c95e7-1ada-4c2b-b690-ef67679e53a6_the-matrix-logo-png-transparent.png",
+      "AssetFile": "C:\\Users\\Lenovo\\Documents\\Planas\\toch\\HOTEL\\wwwroot\\uploads\\791c95e7-1ada-4c2b-b690-ef67679e53a6_the-matrix-logo-png-transparent.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "77630"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"YZCDaYbzSocREeoLyDrIcxP+93HdVPB4G/7QHLgpSVY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 23 Mar 2025 05:15:59 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-YZCDaYbzSocREeoLyDrIcxP+93HdVPB4G/7QHLgpSVY="
         }
       ]
     }

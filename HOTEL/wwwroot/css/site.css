@@ -1,5 +1,5 @@
 /* 
- * The Matrix Hotel - Enhanced CSS
+ * The Matrix Hotel - Combined CSS
  * Modern, responsive design with earthy colors and green as the main color
  */
 
@@ -8,6 +8,7 @@
     --primary: #2d6a4f; /* Deep Forest Green */
     --primary-light: #40916c; /* Medium Forest Green */
     --primary-dark: #1b4332; /* Dark Forest Green */
+    --primary-rgb: 45, 106, 79;
     --secondary: #b7b7a4; /* Sage */
     --secondary-dark: #a5a58d; /* Dark Sage */
     --accent: #dda15e; /* Warm Gold */
@@ -114,16 +115,29 @@ img {
     color: var(--accent) !important;
 }
 
+.btn {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
 .btn-success,
 .btn-primary {
     background-color: var(--primary) !important;
     border-color: var(--primary) !important;
+    box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.2);
 }
 
     .btn-success:hover,
     .btn-primary:hover {
         background-color: var(--primary-dark) !important;
         border-color: var(--primary-dark) !important;
+        box-shadow: 0 6px 16px rgba(var(--primary-rgb), 0.3);
+        transform: translateY(-2px);
+    }
+
+    .btn-primary:active {
+        transform: translateY(0);
     }
 
 .btn-outline-light:hover {
@@ -142,6 +156,15 @@ img {
 .hover-lift:hover {
     transform: translateY(-5px);
     box-shadow: var(--shadow-md);
+}
+
+.btn-pulse {
+    animation: pulse 0.3s cubic-bezier(0.66, 0, 0, 1);
+}
+
+.required-indicator {
+    font-size: 0.8rem;
+    font-weight: bold;
 }
 
 /* ---------- Header & Navigation ---------- */
@@ -304,17 +327,6 @@ img {
             width: 35px;
         }
 
-/* Zoom animation for carousel images */
-@keyframes zoomIn {
-    from {
-        transform: scale(1);
-    }
-
-    to {
-        transform: scale(1.1);
-    }
-}
-
 /* ---------- Booking Section ---------- */
 .booking-section {
     background-color: var(--white);
@@ -327,21 +339,6 @@ img {
         color: var(--primary);
         font-size: var(--font-size-sm);
     }
-
-    .booking-section .form-control,
-    .booking-section .form-select {
-        border: 1px solid var(--sand);
-        border-radius: var(--border-radius-md);
-        padding: 10px 15px;
-        font-size: var(--font-size-sm);
-        transition: var(--transition-normal);
-    }
-
-        .booking-section .form-control:focus,
-        .booking-section .form-select:focus {
-            border-color: var(--primary-light);
-            box-shadow: 0 0 0 0.25rem rgba(45, 106, 79, 0.25);
-        }
 
 /* ---------- Facilities Section ---------- */
 .facilities-section {
@@ -409,19 +406,151 @@ img {
         color: var(--dark);
     }
 
-/* ---------- Modal Styles ---------- */
+/* ---------- Profile Section ---------- */
+.profile-section {
+    min-height: 100vh;
+    height: 100vh;
+    display: flex;
+    align-items: stretch;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+/* Profile photo styling */
+.profile-photo-container {
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    border-radius: 50%;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    border: 4px solid white;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .profile-photo-container:hover {
+        transform: scale(1.02);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+.photo-edit-overlay {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background-color: white;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    opacity: 0.9;
+    cursor: pointer;
+    z-index: 10;
+}
+
+    .photo-edit-overlay:hover {
+        opacity: 1;
+        transform: scale(1.1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+/* ---------- Form Elements ---------- */
+.form-control,
+.form-select {
+    padding: 0.6rem 1rem;
+    font-size: 0.95rem;
+    border-radius: 0.375rem;
+    border: 1px solid var(--sand);
+    transition: all 0.3s ease;
+}
+
+.booking-section .form-control,
+.booking-section .form-select {
+    padding: 10px 15px;
+    font-size: var(--font-size-sm);
+}
+
+    .form-control:focus,
+    .form-select:focus,
+    .booking-section .form-control:focus,
+    .booking-section .form-select:focus {
+        border-color: var(--primary-light);
+        box-shadow: 0 0 0 0.25rem rgba(var(--primary-rgb), 0.25);
+    }
+
+.form-control:hover:not(:focus) {
+    border-color: var(--primary-light);
+}
+
+/* Input group styling */
+.input-group-text {
+    background-color: var(--beige);
+    border-color: var(--sand);
+    color: var(--primary);
+    transition: all 0.3s ease;
+}
+
+.input-group:hover .input-group-text {
+    background-color: #e9ecef;
+    border-color: var(--primary-light);
+}
+
+.input-group:focus-within .input-group-text {
+    background-color: #e9ecef;
+    border-color: var(--primary);
+}
+
+/* Input validation */
+.form-control.is-valid {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2328a745' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+    border-color: #28a745;
+}
+
+/* Password strength features */
+#passwordStrengthBar {
+    transition: width 0.3s ease-in-out;
+    height: 5px;
+}
+
+#passwordRequirements {
+    transition: all 0.3s ease;
+}
+
+/* ---------- Card & Modal Components ---------- */
+.card {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    height: 100vh;
+    margin: 0;
+    border-radius: 0;
+    overflow: visible;
+}
+
 .modal-content {
+    border: none;
     border-radius: var(--border-radius-lg);
     overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
 }
 
 .modal-header {
     border-bottom: none;
-    padding: var(--space-lg) var(--space-lg) var(--space-md);
+    padding: 1.5rem;
 }
 
 .modal-body {
-    padding: 0 var(--space-lg) var(--space-lg);
+    padding: 0 1.5rem 1.5rem;
+}
+
+.modal-footer {
+    border: none;
+    padding: 1.5rem;
 }
 
 .modal-title {
@@ -429,28 +558,22 @@ img {
     font-weight: 600;
 }
 
-/* Align Google Sign-In button center */
+/* Google Sign-In alignment */
 .g_id_signin {
     display: flex !important;
     justify-content: center !important;
     margin: 0 auto !important;
 }
 
-/* Input groups in login form */
-.input-group-text {
-    background-color: var(--beige);
-    border-color: var(--sand);
-    color: var(--primary);
+/* Toast notifications */
+#toast-container {
+    z-index: 9999;
 }
 
-.form-control {
-    border-color: var(--sand);
+.toast {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    opacity: 1 !important;
 }
-
-    .form-control:focus {
-        border-color: var(--primary-light);
-        box-shadow: 0 0 0 0.25rem rgba(45, 106, 79, 0.25);
-    }
 
 /* ---------- Responsive Adjustments ---------- */
 @media (max-width: 992px) {
@@ -488,6 +611,17 @@ img {
 }
 
 /* ---------- Animations ---------- */
+/* Zoom animation for carousel images */
+@keyframes zoomIn {
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(1.1);
+    }
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -521,6 +655,20 @@ img {
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
     }
 }
 

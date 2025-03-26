@@ -91,7 +91,7 @@
                 </div>
                 <div class="col-md-2 col-sm-6 d-grid">
                     <label class="invisible form-label">Book</label>
-                    <button class="btn btn-primary book-now-btn fw-bold" data-bs-toggle="modal" data-bs-target="#loginModal">Check Availability</button>
+                    <button class="btn btn-primary book-now-btn" data-bs-toggle="modal" data-bs-target="#loginModal">Check Availability</button>
                 </div>
             </div>
         </form>
@@ -374,21 +374,9 @@
                     <hr>
                     <span class="position-absolute top-50 start-50 translate-middle px-3 bg-white text-muted">OR</span>
                 </div>
-                <!-- Google Sign-In Button (Google Identity Services) -->
-                <div class="d-grid gap-2 mb-3 google-signin-container">
-                    <div id="g_id_onload"
-                         data-client_id="854052749798-r8jnqlh5e7vlgkneeg3jdsjei7l3a466.apps.googleusercontent.com"
-                         data-callback="handleCredentialResponse">
-                    </div>
-                    <div class="g_id_signin"
-                         data-type="standard"
-                         data-size="large"
-                         data-theme="outline"
-                         data-text="sign_in_with"
-                         data-shape="pill"
-                         data-logo_alignment="center"
-                         data-width="100%">
-                    </div>
+                <!-- Google Sign-In Button -->
+                <div class="d-grid gap-2 mb-3">
+                    <div id="googleSignInButton" class="d-flex justify-content-center"></div>
                 </div>
                 <!-- Sign Up Link -->
                 <div class="text-center mt-3">
@@ -398,6 +386,9 @@
         </div>
     </div>
 </div>
+
+<!-- Load Google Identity Services API -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 
 <!-- Additional JavaScript -->
 <script>
@@ -536,15 +527,37 @@
                 button.addEventListener('click', function() {
                     // Remove active class from all buttons
                     testimonialButtons.forEach(btn => {
-                        btn.classList.remove('btn-success');
-                        btn.classList.add('btn-outline-success');
+                        btn.classList.remove('btn-primary');
+                        btn.classList.add('btn-outline-primary');
                     });
 
                     // Add active class to clicked button
-                    this.classList.remove('btn-outline-success');
-                    this.classList.add('btn-success');
+                    this.classList.remove('btn-outline-primary');
+                    this.classList.add('btn-primary');
                 });
             });
+        }
+
+        // Render Google Sign-In button immediately after DOM is loaded
+        // This ensures the button is properly rendered
+        if (google && google.accounts && google.accounts.id) {
+            google.accounts.id.initialize({
+                client_id: '854052749798-r8jnqlh5e7vlgkneeg3jdsjei7l3a466.apps.googleusercontent.com',
+                callback: handleCredentialResponse
+            });
+            google.accounts.id.renderButton(
+                document.getElementById('googleSignInButton'),
+                {
+                    theme: 'outline',
+                    size: 'large',
+                    type: 'standard',
+                    shape: 'pill',
+                    text: 'signin_with',
+                    width: '100%'
+                }
+            );
+        } else {
+            console.error("Google Identity Services not loaded properly");
         }
 
         // Check URL parameters for showing login modal
@@ -557,7 +570,8 @@
 
     // Google Sign In callback function
     function handleCredentialResponse(response) {
-        console.log("ID Token: " + response.credential);
+        console.log("ID Token received");
+
         // Decode the ID token to get user info
         const payload = JSON.parse(atob(response.credential.split('.')[1]));
         const userData = {
@@ -569,6 +583,7 @@
             address: "", // Address is not provided by Google
             photo: payload.picture
         };
+
         // Send user data to the server
         fetch('/Account/SaveGoogleUser', {
             method: 'POST',
@@ -583,27 +598,26 @@
                 // Close the modal
                 const modal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
                 modal.hide();
+
                 // Refresh the page to update the header
                 window.location.reload();
             } else {
-                // Show error in modal
+                console.error("Error saving user:", data);
+                // Show error message
                 const errorMessageContainer = document.getElementById('loginErrorMessage');
-                errorMessageContainer.textContent = data.message || "Error saving user data.";
+                errorMessageContainer.textContent = data.message || "Error processing Google sign-in.";
                 errorMessageContainer.classList.remove('d-none');
             }
         })
         .catch(error => {
             console.error("Error saving user:", error);
-            // Show error in modal
+            // Show error message
             const errorMessageContainer = document.getElementById('loginErrorMessage');
-            errorMessageContainer.textContent = "Error saving user data. Please try again.";
+            errorMessageContainer.textContent = "Error processing Google sign-in. Please try again.";
             errorMessageContainer.classList.remove('d-none');
         });
     }
 </script>
-
-<!-- Include Google Identity Services Script -->
-<script src="https://accounts.google.com/gsi/client" async defer></script>
 
 <!-- Script to Open Login Modal -->
 @if (TempData["ShowLoginModal"] != null && (bool)TempData["ShowLoginModal"])

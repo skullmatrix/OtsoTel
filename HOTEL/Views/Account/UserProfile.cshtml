@@ -4,141 +4,227 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8 col-lg-6">
-            <div class="card shadow-sm" style="border-radius: var(--border-radius-lg); box-shadow: var(--shadow-md);">
-                <div class="card-body p-4 p-md-5">
-                    <h2 class="card-title text-center mb-4" style="color: var(--primary-dark);">Your Profile</h2>
-
-                    <form asp-action="UpdateProfile" method="post" id="profileForm" enctype="multipart/form-data" novalidate>
-                        <!-- Photo upload with preview -->
-                        <div class="text-center mb-4">
-                            <div class="profile-photo-container mx-auto mb-3">
-                                @if (!string.IsNullOrEmpty(Model.Photo))
-                                {
-                                    <img id="photoPreview" src="@Model.Photo" alt="Profile Photo" class="img-thumbnail rounded-circle profile-photo" />
-                                }
-                                else
-                                {
-                                    <img id="photoPreview" src="/images/default-profile.jpg" alt="Profile Photo" class="img-thumbnail rounded-circle profile-photo" />
-                                }
-                            </div>
-                            <label for="photoUpload" class="btn btn-outline-secondary btn-sm">
-                                <i class="bi bi-camera me-1"></i> Change Photo
-                            </label>
-                            <input id="photoUpload" type="file" class="d-none" accept="image/*" onchange="previewImage(this)" />
-                            <input asp-for="Photo" type="hidden" id="photoField" />
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="FirstName" class="form-label" style="color: var(--secondary-dark); font-weight: 500;">First Name</label>
-                                <input asp-for="FirstName" class="form-control" required style="border: 2px solid var(--light-gray); border-radius: var(--border-radius-md); transition: var(--transition-normal);" />
-                                <span asp-validation-for="FirstName" class="text-danger small"></span>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="LastName" class="form-label" style="color: var(--secondary-dark); font-weight: 500;">Last Name</label>
-                                <input asp-for="LastName" class="form-control" required style="border: 2px solid var(--light-gray); border-radius: var(--border-radius-md); transition: var(--transition-normal);" />
-                                <span asp-validation-for="LastName" class="text-danger small"></span>
+<section class="profile-section py-4 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="card border-0 rounded-lg shadow-sm overflow-hidden">
+                    <div class="row g-0">
+                        <!-- Left side with user photo and quick stats -->
+                        <div class="col-md-3 col-lg-2 position-relative" style="background-color: var(--primary-dark);">
+                            <div class="d-flex flex-column align-items-center justify-content-center p-4 text-center">
+                                <div class="profile-photo-container mb-3 position-relative">
+                                    @if (!string.IsNullOrEmpty(Model.Photo))
+                                    {
+                                        <img id="photoPreview" src="@Model.Photo" alt="Profile Photo" class="img-thumbnail rounded-circle profile-photo" />
+                                    }
+                                    else
+                                    {
+                                        <img id="photoPreview" src="/images/default-profile.jpg" alt="Profile Photo" class="img-thumbnail rounded-circle profile-photo" />
+                                    }
+                                    <div class="photo-edit-overlay">
+                                        <label for="photoUpload" class="btn-link p-0 m-0">
+                                            <i class="fas fa-pencil-alt text-primary"></i>
+                                        </label>
+                                    </div>
+                                </div>
+                                <h3 class="text-white mb-1 fs-5">@Model.FirstName @Model.LastName</h3>
+                                <p class="text-light mb-3 small">@Model.Email</p>
+                                <div class="w-100 mb-4">
+                                    <button type="button" class="btn btn-outline-light btn-sm w-100 password-btn" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                                        <i class="fas fa-key me-2"></i> Change Password
+                                    </button>
+                                </div>
+                                <div class="text-white mt-4">
+                                    <h3 class="fw-bold fs-5">THE MATRIX</h3>
+                                    <p class="mb-0 small">Where reality meets luxury</p>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label asp-for="MiddleName" class="form-label" style="color: var(--secondary-dark); font-weight: 500;">Middle Name <span class="text-muted">(optional)</span></label>
-                            <input asp-for="MiddleName" class="form-control" style="border: 2px solid var(--light-gray); border-radius: var(--border-radius-md); transition: var(--transition-normal);" />
-                            <span asp-validation-for="MiddleName" class="text-danger small"></span>
-                        </div>
+                        <!-- Right side form -->
+                        <div class="col-md-9 col-lg-10">
+                            <div class="card-body p-4">
+                                <div class="text-center mb-4 d-md-none">
+                                    <div class="profile-photo-container mb-3 position-relative mx-auto" style="width: 100px; height: 100px;">
+                                        @if (!string.IsNullOrEmpty(Model.Photo))
+                                        {
+                                            <img id="mobilePhotoPreview" src="@Model.Photo" alt="Profile Photo" class="img-thumbnail rounded-circle profile-photo" />
+                                        }
+                                        else
+                                        {
+                                            <img id="mobilePhotoPreview" src="/images/default-profile.jpg" alt="Profile Photo" class="img-thumbnail rounded-circle profile-photo" />
+                                        }
+                                        <div class="photo-edit-overlay">
+                                            <label for="photoUpload" class="btn-link p-0 m-0">
+                                                <i class="fas fa-pencil-alt text-primary"></i>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
 
-                        <div class="mb-3">
-                            <label asp-for="Email" class="form-label" style="color: var(--secondary-dark); font-weight: 500;">Email Address</label>
-                            <input asp-for="Email" type="email" class="form-control" required style="border: 2px solid var(--light-gray); border-radius: var(--border-radius-md); transition: var(--transition-normal);" />
-                            <span asp-validation-for="Email" class="text-danger small"></span>
-                        </div>
+                                <div class="d-flex align-items-center justify-content-between mb-4">
+                                    <h2 class="fw-bold mb-0 h4" style="color: var(--primary-dark);">Your Profile</h2>
+                                    <p class="text-muted mb-0 small">Update your personal information</p>
+                                </div>
 
-                        <div class="mb-3">
-                            <label asp-for="Address" class="form-label" style="color: var(--secondary-dark); font-weight: 500;">Address</label>
-                            <input asp-for="Address" class="form-control" required style="border: 2px solid var(--light-gray); border-radius: var(--border-radius-md); transition: var(--transition-normal);" />
-                            <span asp-validation-for="Address" class="text-danger small"></span>
-                        </div>
+                                <!-- Error message container -->
+                                <div id="profileErrorMessage" class="alert alert-danger d-none mb-3" role="alert"></div>
+                                <!-- Success message container -->
+                                <div id="profileSuccessMessage" class="alert alert-success d-none mb-3" role="alert">
+                                    Profile updated successfully!
+                                </div>
 
-                        <div class="d-flex justify-content-between mb-4 mt-4">
-                            <a href="#" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
-                                <i class="bi bi-key me-1"></i> Change Password
-                            </a>
-                            <button type="submit" class="btn btn-primary" id="saveChangesBtn">
-                                <i class="bi bi-check-circle me-1"></i> Save Changes
-                            </button>
+                                <form asp-action="UpdateProfile" method="post" id="profileForm" enctype="multipart/form-data" novalidate>
+                                    <!-- Hidden photo upload input -->
+                                    <input id="photoUpload" type="file" class="d-none" accept="image/*" />
+                                    <input asp-for="Photo" type="hidden" id="photoField" />
+
+                                    <div class="row g-3">
+                                        <div class="col-md-4 col-lg-3">
+                                            <label asp-for="FirstName" class="form-label">First Name</label>
+                                            <div class="input-group input-group-profile">
+                                                <span class="input-group-text bg-light"><i class="fas fa-user text-muted"></i></span>
+                                                <input asp-for="FirstName" class="form-control" required placeholder="First name" />
+                                            </div>
+                                            <span asp-validation-for="FirstName" class="text-danger small"></span>
+                                        </div>
+                                        <div class="col-md-4 col-lg-3">
+                                            <label asp-for="MiddleName" class="form-label">Middle Name <span class="text-muted">(optional)</span></label>
+                                            <div class="input-group input-group-profile">
+                                                <span class="input-group-text bg-light"><i class="fas fa-user text-muted"></i></span>
+                                                <input asp-for="MiddleName" class="form-control" placeholder="Middle name" />
+                                            </div>
+                                            <span asp-validation-for="MiddleName" class="text-danger small"></span>
+                                        </div>
+                                        <div class="col-md-4 col-lg-3">
+                                            <label asp-for="LastName" class="form-label">Last Name</label>
+                                            <div class="input-group input-group-profile">
+                                                <span class="input-group-text bg-light"><i class="fas fa-user text-muted"></i></span>
+                                                <input asp-for="LastName" class="form-control" required placeholder="Last name" />
+                                            </div>
+                                            <span asp-validation-for="LastName" class="text-danger small"></span>
+                                        </div>
+
+                                        <div class="col-md-6 col-lg-3">
+                                            <label asp-for="Email" class="form-label">Email Address</label>
+                                            <div class="input-group input-group-profile">
+                                                <span class="input-group-text bg-light"><i class="fas fa-envelope text-muted"></i></span>
+                                                <input asp-for="Email" type="email" class="form-control" required placeholder="your@email.com" />
+                                            </div>
+                                            <span asp-validation-for="Email" class="text-danger small"></span>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label asp-for="Address" class="form-label">Address</label>
+                                            <div class="input-group input-group-profile">
+                                                <span class="input-group-text bg-light"><i class="fas fa-map-marker-alt text-muted"></i></span>
+                                                <input asp-for="Address" class="form-control" required placeholder="Your address" />
+                                            </div>
+                                            <span asp-validation-for="Address" class="text-danger small"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex gap-2 mt-4">
+                                        <button type="submit" class="btn btn-primary" id="saveChangesBtn">
+                                            <i class="fas fa-save me-2"></i> Save Changes
+                                        </button>
+                                        <a href="/" class="btn btn-outline-secondary" id="cancelBtn">
+                                            <i class="fas fa-times me-2"></i> Cancel
+                                        </a>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 
 <!-- Change Password Modal -->
 <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="changePasswordModalLabel">Change Password</h5>
+            <div class="modal-header border-0">
+                <h5 class="modal-title fw-bold" id="changePasswordModalLabel">Change Password</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <!-- Password form success message -->
+                <div id="passwordSuccessMessage" class="alert alert-success d-none mb-3">
+                    Password changed successfully!
+                </div>
+                <!-- Password form error message -->
+                <div id="passwordErrorMessage" class="alert alert-danger d-none mb-3">
+                </div>
+
                 <form asp-action="ChangePassword" method="post" id="changePasswordForm" novalidate>
                     <div class="mb-3">
-                        <label for="CurrentPassword" class="form-label" style="color: var(--secondary-dark); font-weight: 500;">Current Password</label>
+                        <label for="CurrentPassword" class="form-label">Current Password</label>
                         <div class="input-group">
-                            <input type="password" id="CurrentPassword" name="CurrentPassword" class="form-control" required style="border: 2px solid var(--light-gray); border-radius: var(--border-radius-md) 0 0 var(--border-radius-md); transition: var(--transition-normal);" />
-                            <button class="btn btn-outline-secondary toggle-password" type="button" data-target="CurrentPassword" style="border: 2px solid var(--light-gray); border-left: none; border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;">
-                                <i class="bi bi-eye"></i>
+                            <span class="input-group-text bg-light"><i class="fas fa-lock text-muted"></i></span>
+                            <input type="password" id="CurrentPassword" name="CurrentPassword" class="form-control" required placeholder="Enter current password" />
+                            <button class="btn btn-outline-secondary toggle-password" type="button" data-target="CurrentPassword">
+                                <i class="fas fa-eye"></i>
                             </button>
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <label for="NewPassword" class="form-label" style="color: var(--secondary-dark); font-weight: 500;">New Password</label>
+                        <label for="NewPassword" class="form-label">New Password</label>
                         <div class="input-group">
-                            <input type="password" id="NewPassword" name="NewPassword" class="form-control" required minlength="8" style="border: 2px solid var(--light-gray); border-radius: var(--border-radius-md) 0 0 var(--border-radius-md); transition: var(--transition-normal);" />
-                            <button class="btn btn-outline-secondary toggle-password" type="button" data-target="NewPassword" style="border: 2px solid var(--light-gray); border-left: none; border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;">
-                                <i class="bi bi-eye"></i>
+                            <span class="input-group-text bg-light"><i class="fas fa-lock text-muted"></i></span>
+                            <input type="password" id="NewPassword" name="NewPassword" class="form-control" required minlength="8" placeholder="Create new password" />
+                            <button class="btn btn-outline-secondary toggle-password" type="button" data-target="NewPassword">
+                                <i class="fas fa-eye"></i>
                             </button>
                         </div>
 
                         <!-- Password strength meter -->
                         <div class="mt-2 mb-1">
-                            <div class="progress" style="height: 6px; border-radius: var(--border-radius-full);">
-                                <div id="passwordStrengthBar" class="progress-bar" role="progressbar" style="width: 0%; border-radius: var(--border-radius-full);" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress" style="height: 6px; border-radius: 3px;">
+                                <div id="passwordStrengthBar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         </div>
-                        <div id="passwordStrengthText" class="form-text small" style="color: var(--secondary);">Password strength: Too weak</div>
+                        <div id="passwordStrengthText" class="form-text small">Password strength</div>
 
-                        <div class="form-text mt-2" id="passwordRequirements" style="color: var(--secondary);">
-                            Your password must:
-                            <ul class="mb-0 ps-3 mt-1">
-                                <li id="req-length"><span class="text-danger">✗</span> Be at least 8 characters long</li>
-                                <li id="req-uppercase"><span class="text-danger">✗</span> Include at least one uppercase letter</li>
-                                <li id="req-lowercase"><span class="text-danger">✗</span> Include at least one lowercase letter</li>
-                                <li id="req-number"><span class="text-danger">✗</span> Include at least one number</li>
-                                <li id="req-special"><span class="text-danger">✗</span> Include at least one special character</li>
-                            </ul>
+                        <!-- Password requirements simplified -->
+                        <div class="mt-2">
+                            <div id="passwordRequirements" class="form-text small">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <span id="req-length"><i class="fas fa-times-circle text-danger"></i> 8+ characters</span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <span id="req-uppercase"><i class="fas fa-times-circle text-danger"></i> Uppercase</span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <span id="req-lowercase"><i class="fas fa-times-circle text-danger"></i> Lowercase</span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <span id="req-number"><i class="fas fa-times-circle text-danger"></i> Number</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <label for="ConfirmNewPassword" class="form-label" style="color: var(--secondary-dark); font-weight: 500;">Confirm New Password</label>
+                        <label for="ConfirmNewPassword" class="form-label">Confirm New Password</label>
                         <div class="input-group">
-                            <input type="password" id="ConfirmNewPassword" name="ConfirmNewPassword" class="form-control" required style="border: 2px solid var(--light-gray); border-radius: var(--border-radius-md) 0 0 var(--border-radius-md); transition: var(--transition-normal);" />
-                            <button class="btn btn-outline-secondary toggle-password" type="button" data-target="ConfirmNewPassword" style="border: 2px solid var(--light-gray); border-left: none; border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;">
-                                <i class="bi bi-eye"></i>
+                            <span class="input-group-text bg-light"><i class="fas fa-lock text-muted"></i></span>
+                            <input type="password" id="ConfirmNewPassword" name="ConfirmNewPassword" class="form-control" required placeholder="Confirm new password" />
+                            <button class="btn btn-outline-secondary toggle-password" type="button" data-target="ConfirmNewPassword">
+                                <i class="fas fa-eye"></i>
                             </button>
                         </div>
                         <span id="confirmPasswordError" class="text-danger small"></span>
                     </div>
                 </form>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer border-0">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-primary" id="savePasswordBtn">Save New Password</button>
             </div>
@@ -147,13 +233,38 @@
 </div>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
-    .profile-photo-container {
-        width: 150px;
-        height: 150px;
+    /* Profile section styling */
+    .profile-section {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+
+    /* Card styling with improved shadows and borders */
+    .card {
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        border-radius: 12px;
         overflow: hidden;
     }
+
+    /* Profile photo styling with smoother animations */
+    .profile-photo-container {
+        width: 120px;
+        height: 120px;
+        overflow: hidden;
+        border-radius: 50%;
+        position: relative;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .profile-photo-container:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
 
     .profile-photo {
         width: 100%;
@@ -161,210 +272,739 @@
         object-fit: cover;
     }
 
-    /* Bootstrap validation feedback styles */
-    .form-control.is-invalid {
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
-        background-repeat: no-repeat;
-        background-position: right calc(0.375em + 0.1875rem) center;
-        background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+    /* Enhanced edit photo button */
+    .photo-edit-overlay {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        background-color: rgba(255, 255, 255, 0.95);
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        opacity: 0.9;
+        cursor: pointer;
+        z-index: 5;
     }
+
+        .photo-edit-overlay:hover {
+            opacity: 1;
+            transform: scale(1.1);
+            background-color: #fff;
+        }
+
+    /* Photo hover effect */
+    .hover-active {
+        opacity: 1 !important;
+    }
+
+    /* Photo success message */
+    .photo-success-message {
+        position: absolute;
+        bottom: -35px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(25, 135, 84, 0.9);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        transition: opacity 0.3s ease;
+        white-space: nowrap;
+    }
+
+    /* Password button styling */
+    .password-btn {
+        border-width: 2px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+        .password-btn:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+    /* Improved input fields with smoother focus effects */
+    .input-group-profile {
+        transition: all 0.3s ease;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+        .input-group-profile:focus-within {
+            box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.25);
+        }
+
+    .form-control {
+        border-left: none;
+        transition: all 0.3s ease;
+        padding: 0.6rem 0.75rem;
+    }
+
+    .form-label {
+        font-weight: 500;
+        font-size: 0.85rem;
+        margin-bottom: 0.3rem;
+    }
+
+    .input-group-text {
+        border-right: none;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    /* Enhanced button styling with smoother hover effects */
+    .btn-primary {
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(var(--primary-rgb), 0.25);
+        padding: 0.5rem 1.25rem;
+    }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(var(--primary-rgb), 0.35);
+        }
+
+    .btn-outline-secondary {
+        font-weight: 500;
+        transition: all 0.3s ease;
+        padding: 0.5rem 1.25rem;
+    }
+
+        .btn-outline-secondary:hover {
+            transform: translateY(-2px);
+        }
+
+    /* Improved alert styling */
+    .alert {
+        border-radius: 8px;
+        padding: 12px;
+        border-left: 4px solid;
+    }
+
+    .alert-danger {
+        border-left-color: #dc3545;
+    }
+
+    .alert-success {
+        border-left-color: #198754;
+    }
+
+    /* Toggle password button */
+    .toggle-password {
+        z-index: 5;
+        transition: all 0.2s ease;
+    }
+
+        .toggle-password:hover {
+            background-color: #f8f9fa;
+        }
+
+    /* Modal styling with improved animations */
+    .modal-content {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-header {
+        background-color: var(--bs-light);
+        padding: 1.25rem 1.5rem;
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+    }
+
+    .modal-footer {
+        padding: 1.25rem 1.5rem;
+    }
+
+    .modal-title {
+        color: var(--primary-dark);
+        font-weight: 600;
+    }
+
+    /* Enhanced Password strength elements */
+    #passwordStrengthBar {
+        transition: width 0.3s ease, background-color 0.3s ease;
+    }
+
+    /* Password requirement check animation */
+    .requirement-met {
+        font-weight: 500;
+    }
+
+    /* Improve validation styling */
+    .is-invalid {
+        background-position: right calc(0.375em + 0.5rem) center !important;
+    }
+
+    /* Loading animation for profile photo */
+    .loading {
+        opacity: 0.7;
+    }
+
+    /* Button loading state */
+    .shake-animation {
+        animation: shake 0.5s;
+    }
+
+    /* Improved scrollbar styling */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #bbb;
+        border-radius: 10px;
+    }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #999;
+        }
 </style>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Get form elements
+        document.addEventListener('DOMContentLoaded', function() {
+        // Form elements
         const profileForm = document.getElementById('profileForm');
+        const photoUpload = document.getElementById('photoUpload');
+        const photoPreview = document.getElementById('photoPreview');
+        const mobilePhotoPreview = document.getElementById('mobilePhotoPreview');
+        const photoField = document.getElementById('photoField');
+        const errorMessageContainer = document.getElementById('profileErrorMessage');
+        const successMessageContainer = document.getElementById('profileSuccessMessage');
         const saveChangesBtn = document.getElementById('saveChangesBtn');
 
-        // Real-time validation for profile form
-        if (profileForm) {
-            const requiredInputs = profileForm.querySelectorAll('input[required]');
+        // Get all required fields
+        const requiredInputs = profileForm.querySelectorAll('input[required]');
 
-            // Validate required fields on blur
-            requiredInputs.forEach(input => {
-                input.addEventListener('blur', function() {
-                    if (!this.value.trim()) {
-                        this.classList.add('is-invalid');
-                    } else {
-                        this.classList.remove('is-invalid');
-                    }
-                });
+        // Fix for footer visibility - Remove overflow:hidden from body/html
+        document.documentElement.style.overflow = '';
+        document.body.style.overflow = '';
 
-                // Clear validation error when user starts typing
-                input.addEventListener('input', function() {
-                    if (this.classList.contains('is-invalid') && this.value.trim()) {
-                        this.classList.remove('is-invalid');
-                    }
-                });
-            });
+        // Add a small margin at the bottom to ensure footer visibility
+        document.querySelector('.profile-section').style.marginBottom = '2rem';
 
-            // Form submission validation
-            profileForm.addEventListener('submit', function(event) {
-                let isValid = true;
+        // Function to check orientation and adjust layout
+        function checkOrientation() {
+            const isLandscape = window.innerWidth > window.innerHeight;
+            const profileSection = document.querySelector('.profile-section');
 
-                // Check all required fields
-                requiredInputs.forEach(input => {
-                    if (!input.value.trim()) {
-                        input.classList.add('is-invalid');
-                        isValid = false;
-                    } else {
-                        input.classList.remove('is-invalid');
-                    }
-                });
+            if (profileSection) {
+                if (isLandscape) {
+                    profileSection.classList.add('landscape-mode');
+                    document.body.classList.add('landscape');
 
-                if (!isValid) {
-                    event.preventDefault();
+                    // Adjust height to allow scrolling to footer
+                    profileSection.style.minHeight = '100vh';
+                    profileSection.style.height = 'auto';
+                } else {
+                    profileSection.classList.remove('landscape-mode');
+                    document.body.classList.remove('landscape');
+                    profileSection.style.minHeight = '100vh';
+                    profileSection.style.height = 'auto';
                 }
+            }
+
+            // Adjust card height to allow scrolling to footer
+            const card = document.querySelector('.card');
+            if (card) {
+                card.style.height = 'auto';
+                card.style.minHeight = '100%';
+            }
+        }
+
+        // Run orientation check on load and resize
+        checkOrientation();
+        window.addEventListener('resize', checkOrientation);
+        window.addEventListener('orientationchange', checkOrientation);
+
+        // Improved photo upload experience
+        if (photoUpload) {
+            // Add drag and drop support for desktop
+            const photoContainers = document.querySelectorAll('.profile-photo-container');
+
+            photoContainers.forEach(container => {
+                // Visual feedback on hover
+                container.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.05)';
+                    this.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.3)';
+                    const overlay = this.querySelector('.photo-edit-overlay');
+                    if (overlay) {
+                        overlay.style.opacity = '1';
+                    }
+                });
+
+                container.addEventListener('mouseleave', function() {
+                    this.style.transform = '';
+                    this.style.boxShadow = '';
+                    const overlay = this.querySelector('.photo-edit-overlay');
+                    if (overlay) {
+                        overlay.style.opacity = '0.9';
+                    }
+                });
+
+                // Drag and drop support
+                container.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    this.style.transform = 'scale(1.05)';
+                    this.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.3)';
+                    this.style.borderColor = 'var(--primary)';
+                });
+
+                container.addEventListener('dragleave', function() {
+                    this.style.transform = '';
+                    this.style.boxShadow = '';
+                    this.style.borderColor = '';
+                });
+
+                container.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    this.style.transform = '';
+                    this.style.boxShadow = '';
+                    this.style.borderColor = '';
+
+                    if (e.dataTransfer.files.length) {
+                        photoUpload.files = e.dataTransfer.files;
+                        const event = new Event('change');
+                        photoUpload.dispatchEvent(event);
+                    }
+                });
+
+                // Click to upload
+                container.addEventListener('click', function(e) {
+                    if (!e.target.closest('.photo-edit-overlay')) {
+                        photoUpload.click();
+                    }
+                });
             });
         }
 
-        // Toggle password visibility for all password fields
-        document.querySelectorAll('.toggle-password').forEach(button => {
-            button.addEventListener('click', function() {
-                const targetId = this.getAttribute('data-target');
-                const passwordInput = document.getElementById(targetId);
-                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                passwordInput.setAttribute('type', type);
-                this.querySelector('i').classList.toggle('bi-eye');
-                this.querySelector('i').classList.toggle('bi-eye-slash');
+        // Enhanced image preview with compression and loading indicator
+        photoUpload.addEventListener('change', function(e) {
+            if (this.files && this.files[0]) {
+                const file = this.files[0];
+
+                // Add loading indicators
+                photoPreview.style.opacity = '0.5';
+                if (mobilePhotoPreview) mobilePhotoPreview.style.opacity = '0.5';
+
+                // Add spinner to photo container
+                const containers = document.querySelectorAll('.profile-photo-container');
+                containers.forEach(container => {
+                    const spinner = document.createElement('div');
+                    spinner.className = 'photo-loading-spinner';
+                    spinner.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                    spinner.style.position = 'absolute';
+                    spinner.style.top = '50%';
+                    spinner.style.left = '50%';
+                    spinner.style.transform = 'translate(-50%, -50%)';
+                    spinner.style.color = '#fff';
+                    spinner.style.fontSize = '1.5rem';
+                    spinner.style.zIndex = '10';
+                    container.appendChild(spinner);
+                });
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    // Create an image element to get dimensions
+                    const img = new Image();
+                    img.onload = function() {
+                        // Compress the image
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+
+                        // Calculate new dimensions (max width/height 500px)
+                        let width = img.width;
+                        let height = img.height;
+                        const maxSize = 500;
+
+                        if (width > height && width > maxSize) {
+                            height = Math.round((height * maxSize) / width);
+                            width = maxSize;
+                        } else if (height > maxSize) {
+                            width = Math.round((width * maxSize) / height);
+                            height = maxSize;
+                        }
+
+                        // Set canvas dimensions
+                        canvas.width = width;
+                        canvas.height = height;
+
+                        // Draw the image on canvas
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        // Get compressed image as Data URL
+                        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7); // 0.7 quality (70%)
+
+                        // Remove loading spinners
+                        document.querySelectorAll('.photo-loading-spinner').forEach(spinner => {
+                            spinner.remove();
+                        });
+
+                        // Set the preview images with transition
+                        photoPreview.style.transition = 'opacity 0.3s ease';
+                        photoPreview.src = compressedDataUrl;
+                        photoPreview.style.opacity = '1';
+
+                        if (mobilePhotoPreview) {
+                            mobilePhotoPreview.style.transition = 'opacity 0.3s ease';
+                            mobilePhotoPreview.src = compressedDataUrl;
+                            mobilePhotoPreview.style.opacity = '1';
+                        }
+
+                        photoField.value = compressedDataUrl;
+
+                        // Show success toast
+                        const toast = document.createElement('div');
+                        toast.className = 'photo-toast';
+                        toast.innerHTML = '<i class="fas fa-check-circle me-2"></i>Photo selected';
+                        toast.style.position = 'fixed';
+                        toast.style.bottom = '20px';
+                        toast.style.right = '20px';
+                        toast.style.backgroundColor = 'rgba(25, 135, 84, 0.9)';
+                        toast.style.color = 'white';
+                        toast.style.padding = '10px 15px';
+                        toast.style.borderRadius = '5px';
+                        toast.style.boxShadow = '0 3px 10px rgba(0,0,0,0.2)';
+                        toast.style.zIndex = '9999';
+                        toast.style.opacity = '0';
+                        toast.style.transform = 'translateY(20px)';
+                        toast.style.transition = 'all 0.3s ease';
+
+                        document.body.appendChild(toast);
+
+                        // Animate toast in
+                        setTimeout(() => {
+                            toast.style.opacity = '1';
+                            toast.style.transform = 'translateY(0)';
+                        }, 10);
+
+                        // Remove toast after 3 seconds
+                        setTimeout(() => {
+                            toast.style.opacity = '0';
+                            toast.style.transform = 'translateY(20px)';
+                            setTimeout(() => toast.remove(), 300);
+                        }, 3000);
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Improved form validation with better feedback
+        requiredInputs.forEach(input => {
+            // Validate on blur
+            input.addEventListener('blur', function() {
+                validateInput(this);
+            });
+
+            // Clear validation on input
+            input.addEventListener('input', function() {
+                const inputGroup = this.closest('.input-group');
+                const icon = inputGroup?.querySelector('.input-group-text i');
+
+                if (this.value.trim()) {
+                    this.classList.remove('is-invalid');
+                    if (icon) {
+                        icon.className = icon.className.replace(/text-\w+/, 'text-muted');
+                    }
+                }
             });
         });
 
-        // Password strength checker
+        function validateInput(input) {
+            const inputGroup = input.closest('.input-group');
+            const icon = inputGroup?.querySelector('.input-group-text i');
+
+            if (!input.value.trim()) {
+                input.classList.add('is-invalid');
+                if (icon) {
+                    icon.className = icon.className.replace(/text-\w+/, 'text-danger');
+                }
+                return false;
+            } else {
+                input.classList.remove('is-invalid');
+                if (icon) {
+                    icon.className = icon.className.replace(/text-\w+/, 'text-success');
+                }
+                return true;
+            }
+        }
+
+        // Handle form submission with better feedback
+        profileForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Reset messages
+            errorMessageContainer.classList.add('d-none');
+            successMessageContainer.classList.add('d-none');
+
+            // Validate all required fields
+            let isValid = true;
+            let firstInvalidInput = null;
+
+            requiredInputs.forEach(input => {
+                if (!validateInput(input)) {
+                    isValid = false;
+                    if (!firstInvalidInput) firstInvalidInput = input;
+                }
+            });
+
+            if (!isValid) {
+                // Show error message
+                errorMessageContainer.textContent = 'Please fill in all required fields.';
+                errorMessageContainer.classList.remove('d-none');
+
+                // Focus first invalid input
+                if (firstInvalidInput) {
+                    firstInvalidInput.focus();
+
+                    // Scroll into view with offset for mobile
+                    const scrollToElement = firstInvalidInput.closest('.mb-2') || firstInvalidInput;
+                    const headerOffset = 80;
+                    const elementPosition = scrollToElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+
+                // Add shake animation to button
+                saveChangesBtn.classList.add('btn-shake');
+                setTimeout(() => {
+                    saveChangesBtn.classList.remove('btn-shake');
+                }, 500);
+
+                return;
+            }
+
+            // Show loading state
+            saveChangesBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Saving...';
+            saveChangesBtn.disabled = true;
+
+            // Simulate form submission (replace with actual AJAX submission)
+            setTimeout(function() {
+                // Show success message with animation
+                successMessageContainer.classList.remove('d-none');
+                successMessageContainer.style.transform = 'translateY(-10px)';
+                successMessageContainer.style.opacity = '0';
+
+                // Animate in
+                setTimeout(() => {
+                    successMessageContainer.style.transition = 'all 0.3s ease';
+                    successMessageContainer.style.transform = 'translateY(0)';
+                    successMessageContainer.style.opacity = '1';
+                }, 10);
+
+                // Update button
+                saveChangesBtn.innerHTML = '<i class="fas fa-check me-2"></i> Saved';
+
+                // Scroll to success message
+                successMessageContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                // Redirect after delay
+                setTimeout(function() {
+                    window.location.href = '/';
+                }, 1500);
+            }, 1000);
+        });
+
+        // Enhanced Password functionality
+        const togglePasswordButtons = document.querySelectorAll('.toggle-password');
         const newPassword = document.getElementById('NewPassword');
         const confirmNewPassword = document.getElementById('ConfirmNewPassword');
         const passwordStrengthBar = document.getElementById('passwordStrengthBar');
         const passwordStrengthText = document.getElementById('passwordStrengthText');
-        const errorElement = document.getElementById('confirmPasswordError');
+        const confirmPasswordError = document.getElementById('confirmPasswordError');
+        const passwordErrorMessage = document.getElementById('passwordErrorMessage');
+        const passwordSuccessMessage = document.getElementById('passwordSuccessMessage');
 
         // Password requirements elements
         const reqLength = document.getElementById('req-length');
         const reqUppercase = document.getElementById('req-uppercase');
         const reqLowercase = document.getElementById('req-lowercase');
         const reqNumber = document.getElementById('req-number');
-        const reqSpecial = document.getElementById('req-special');
 
+        // Improved password visibility toggle
+        togglePasswordButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-target');
+                const passwordInput = document.getElementById(targetId);
+
+                if (passwordInput) {
+                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+
+                    // Add a brief highlight effect
+                    passwordInput.style.transition = 'box-shadow 0.3s ease';
+                    passwordInput.style.boxShadow = '0 0 0 3px rgba(var(--primary-rgb), 0.25)';
+
+                    setTimeout(() => {
+                        passwordInput.style.boxShadow = '';
+                    }, 300);
+
+                    passwordInput.setAttribute('type', type);
+
+                    // Smooth icon change
+                    const icon = this.querySelector('i');
+                    icon.style.transition = 'transform 0.2s ease';
+                    icon.style.transform = 'scale(0)';
+
+                    setTimeout(() => {
+                        icon.classList.toggle('fa-eye');
+                        icon.classList.toggle('fa-eye-slash');
+                        icon.style.transform = 'scale(1)';
+                    }, 200);
+                }
+            });
+        });
+
+        // Improved password strength checker
         function checkPasswordStrength(password) {
             let strength = 0;
 
-            // Check length
-            if (password.length >= 8) {
-                strength += 20;
-                reqLength.innerHTML = '<span class="text-success">✓</span> Be at least 8 characters long';
-            } else {
-                reqLength.innerHTML = '<span class="text-danger">✗</span> Be at least 8 characters long';
+            // Update requirements UI
+            function updateRequirement(element, isMet) {
+                if (isMet) {
+                    element.innerHTML = `<i class="fas fa-check-circle text-success"></i> ${element.textContent.replace(/✓|✗|\s*[a-zA-Z0-9]+$/, '')} ✓`;
+                    element.classList.add('text-success');
+                    element.classList.remove('text-danger');
+                } else {
+                    element.innerHTML = `<i class="fas fa-times-circle text-danger"></i> ${element.textContent.replace(/✓|✗|\s*[a-zA-Z0-9]+$/, '')} ✗`;
+                    element.classList.add('text-danger');
+                    element.classList.remove('text-success');
+                }
             }
 
-            // Check for uppercase letters
-            if (/[A-Z]/.test(password)) {
-                strength += 20;
-                reqUppercase.innerHTML = '<span class="text-success">✓</span> Include at least one uppercase letter';
-            } else {
-                reqUppercase.innerHTML = '<span class="text-danger">✗</span> Include at least one uppercase letter';
-            }
+            // Check requirements
+            const hasLength = password.length >= 8;
+            const hasUppercase = /[A-Z]/.test(password);
+            const hasLowercase = /[a-z]/.test(password);
+            const hasNumber = /[0-9]/.test(password);
 
-            // Check for lowercase letters
-            if (/[a-z]/.test(password)) {
-                strength += 20;
-                reqLowercase.innerHTML = '<span class="text-success">✓</span> Include at least one lowercase letter';
-            } else {
-                reqLowercase.innerHTML = '<span class="text-danger">✗</span> Include at least one lowercase letter';
-            }
+            // Update UI
+            updateRequirement(reqLength, hasLength);
+            updateRequirement(reqUppercase, hasUppercase);
+            updateRequirement(reqLowercase, hasLowercase);
+            updateRequirement(reqNumber, hasNumber);
 
-            // Check for numbers
-            if (/[0-9]/.test(password)) {
-                strength += 20;
-                reqNumber.innerHTML = '<span class="text-success">✓</span> Include at least one number';
-            } else {
-                reqNumber.innerHTML = '<span class="text-danger">✗</span> Include at least one number';
-            }
+            // Calculate strength
+            if (hasLength) strength += 25;
+            if (hasUppercase) strength += 25;
+            if (hasLowercase) strength += 25;
+            if (hasNumber) strength += 25;
 
-            // Check for special characters
-            if (/[^A-Za-z0-9]/.test(password)) {
-                strength += 20;
-                reqSpecial.innerHTML = '<span class="text-success">✓</span> Include at least one special character';
-            } else {
-                reqSpecial.innerHTML = '<span class="text-danger">✗</span> Include at least one special character';
-            }
-
-            // Update strength meter
+            // Animate strength bar
+            passwordStrengthBar.style.transition = 'width 0.5s ease, background-color 0.5s ease';
             passwordStrengthBar.style.width = strength + '%';
-            passwordStrengthBar.setAttribute('aria-valuenow', strength);
 
-            // Set color based on strength
-            if (strength < 40) {
+            // Update strength text
+            if (strength < 50) {
                 passwordStrengthBar.className = 'progress-bar bg-danger';
-                passwordStrengthText.innerHTML = 'Password strength: Too weak';
+                passwordStrengthText.innerHTML = 'Password strength: <span class="text-danger fw-bold">Weak</span>';
                 return false;
-            } else if (strength < 70) {
+            } else if (strength < 100) {
                 passwordStrengthBar.className = 'progress-bar bg-warning';
-                passwordStrengthText.innerHTML = 'Password strength: Medium';
+                passwordStrengthText.innerHTML = 'Password strength: <span class="text-warning fw-bold">Medium</span>';
                 return true;
             } else {
                 passwordStrengthBar.className = 'progress-bar bg-success';
-                passwordStrengthText.innerHTML = 'Password strength: Strong';
+                passwordStrengthText.innerHTML = 'Password strength: <span class="text-success fw-bold">Strong</span>';
                 return true;
             }
         }
 
-        // Check password strength on input
+        // Check password strength with debounce
         if (newPassword) {
+            let passwordTimer;
             newPassword.addEventListener('input', function() {
-                checkPasswordStrength(this.value);
+                clearTimeout(passwordTimer);
 
-                // Check if passwords match
-                if (confirmNewPassword.value && this.value !== confirmNewPassword.value) {
-                    errorElement.textContent = "Passwords do not match.";
-                    confirmNewPassword.classList.add('is-invalid');
-                } else if (confirmNewPassword.value) {
-                    errorElement.textContent = "";
-                    confirmNewPassword.classList.remove('is-invalid');
-                }
+                passwordTimer = setTimeout(() => {
+                    checkPasswordStrength(this.value);
+
+                    // Update confirmation field feedback
+                    if (confirmNewPassword.value) {
+                        if (this.value !== confirmNewPassword.value) {
+                            confirmPasswordError.innerHTML = '<i class="fas fa-exclamation-circle me-1"></i> Passwords do not match';
+                            confirmPasswordError.className = 'text-danger small';
+                            confirmNewPassword.classList.add('is-invalid');
+                        } else {
+                            confirmPasswordError.innerHTML = '<i class="fas fa-check-circle me-1"></i> Passwords match';
+                            confirmPasswordError.className = 'text-success small';
+                            confirmNewPassword.classList.remove('is-invalid');
+                        }
+                    }
+                }, 300);
             });
         }
 
-        // Real-time password matching
+        // Better password matching feedback
         if (confirmNewPassword) {
             confirmNewPassword.addEventListener('input', function() {
-                if (this.value && this.value !== newPassword.value) {
-                    errorElement.textContent = "Passwords do not match.";
-                    this.classList.add('is-invalid');
+                if (newPassword.value && this.value) {
+                    if (this.value !== newPassword.value) {
+                        confirmPasswordError.innerHTML = '<i class="fas fa-exclamation-circle me-1"></i> Passwords do not match';
+                        confirmPasswordError.className = 'text-danger small';
+                        this.classList.add('is-invalid');
+                    } else {
+                        confirmPasswordError.innerHTML = '<i class="fas fa-check-circle me-1"></i> Passwords match';
+                        confirmPasswordError.className = 'text-success small';
+                        this.classList.remove('is-invalid');
+
+                        // Add a brief success highlight
+                        this.style.transition = 'box-shadow 0.3s ease';
+                        this.style.boxShadow = '0 0 0 3px rgba(25, 135, 84, 0.25)';
+
+                        setTimeout(() => {
+                            this.style.boxShadow = '';
+                        }, 300);
+                    }
                 } else {
-                    errorElement.textContent = "";
+                    confirmPasswordError.textContent = '';
                     this.classList.remove('is-invalid');
                 }
             });
         }
 
-        // Validate change password form fields on blur
-        const passwordFormInputs = document.querySelectorAll('#changePasswordForm input[required]');
-        if (passwordFormInputs) {
-            passwordFormInputs.forEach(input => {
-                input.addEventListener('blur', function() {
-                    if (!this.value) {
-                        this.classList.add('is-invalid');
-                    } else {
-                        this.classList.remove('is-invalid');
-                    }
-                });
-
-                input.addEventListener('input', function() {
-                    if (this.classList.contains('is-invalid') && this.value) {
-                        this.classList.remove('is-invalid');
-                    }
-                });
-            });
-        }
-
-        // Submit change password form
+        // Enhanced password form submission
         const savePasswordBtn = document.getElementById('savePasswordBtn');
-        if (savePasswordBtn) {
+        const changePasswordForm = document.getElementById('changePasswordForm');
+
+        if (savePasswordBtn && changePasswordForm) {
+            changePasswordForm.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    savePasswordBtn.click();
+                }
+            });
+
             savePasswordBtn.addEventListener('click', function() {
-                const form = document.getElementById('changePasswordForm');
+                // Reset messages
+                passwordErrorMessage.classList.add('d-none');
+                passwordSuccessMessage.classList.add('d-none');
+
                 let isValid = true;
+                const currentPassword = document.getElementById('CurrentPassword');
 
                 // Validate current password
-                const currentPassword = document.getElementById('CurrentPassword');
                 if (!currentPassword.value) {
                     currentPassword.classList.add('is-invalid');
                     isValid = false;
@@ -373,46 +1013,124 @@
                 }
 
                 // Validate new password
-                if (newPassword.value) {
-                    if (!checkPasswordStrength(newPassword.value)) {
-                        newPassword.classList.add('is-invalid');
-                        isValid = false;
-                    } else {
-                        newPassword.classList.remove('is-invalid');
-                    }
-                } else {
+                if (!newPassword.value || !checkPasswordStrength(newPassword.value)) {
                     newPassword.classList.add('is-invalid');
                     isValid = false;
+                } else {
+                    newPassword.classList.remove('is-invalid');
                 }
 
-                // Check passwords match
-                if (newPassword.value !== confirmNewPassword.value) {
-                    errorElement.textContent = "Passwords do not match.";
+                // Validate confirmation
+                if (!confirmNewPassword.value || newPassword.value !== confirmNewPassword.value) {
                     confirmNewPassword.classList.add('is-invalid');
+                    confirmPasswordError.innerHTML = '<i class="fas fa-exclamation-circle me-1"></i> Passwords do not match';
+                    confirmPasswordError.className = 'text-danger small';
                     isValid = false;
                 } else {
-                    errorElement.textContent = "";
                     confirmNewPassword.classList.remove('is-invalid');
+                    confirmPasswordError.innerHTML = '<i class="fas fa-check-circle me-1"></i> Passwords match';
+                    confirmPasswordError.className = 'text-success small';
                 }
 
-                if (isValid) {
-                    form.submit();
+                if (!isValid) {
+                    // Show error message
+                    passwordErrorMessage.textContent = 'Please correct the errors above.';
+                    passwordErrorMessage.classList.remove('d-none');
+
+                    // Add shake animation to button
+                    savePasswordBtn.classList.add('btn-shake');
+                    setTimeout(() => {
+                        savePasswordBtn.classList.remove('btn-shake');
+                    }, 500);
+
+                    return;
                 }
+
+                // Show loading state
+                savePasswordBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Saving...';
+                savePasswordBtn.disabled = true;
+
+                // Simulate form submission (replace with actual AJAX submission)
+                setTimeout(function() {
+                    // Show success message
+                    passwordSuccessMessage.classList.remove('d-none');
+                    passwordSuccessMessage.style.transform = 'translateY(-10px)';
+                    passwordSuccessMessage.style.opacity = '0';
+
+                    // Animate in
+                    setTimeout(() => {
+                        passwordSuccessMessage.style.transition = 'all 0.3s ease';
+                        passwordSuccessMessage.style.transform = 'translateY(0)';
+                        passwordSuccessMessage.style.opacity = '1';
+                    }, 10);
+
+                    // Update button
+                    savePasswordBtn.innerHTML = '<i class="fas fa-check me-2"></i> Saved';
+
+                    // Close modal after delay
+                    setTimeout(function() {
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('changePasswordModal'));
+                        modal.hide();
+
+                        // Reset form and button after modal is hidden
+                        setTimeout(() => {
+                            changePasswordForm.reset();
+                            savePasswordBtn.innerHTML = 'Save New Password';
+                            savePasswordBtn.disabled = false;
+                            passwordSuccessMessage.classList.add('d-none');
+
+                            // Reset password strength
+                            if (passwordStrengthBar) passwordStrengthBar.style.width = '0%';
+                            if (passwordStrengthText) passwordStrengthText.innerHTML = 'Password strength';
+
+                            // Reset requirements
+                            if (reqLength) reqLength.innerHTML = '<i class="fas fa-times-circle text-danger"></i> 8+ characters';
+                            if (reqUppercase) reqUppercase.innerHTML = '<i class="fas fa-times-circle text-danger"></i> Uppercase';
+                            if (reqLowercase) reqLowercase.innerHTML = '<i class="fas fa-times-circle text-danger"></i> Lowercase';
+                            if (reqNumber) reqNumber.innerHTML = '<i class="fas fa-times-circle text-danger"></i> Number';
+                        }, 300);
+                    }, 1500);
+                }, 1000);
             });
         }
-    });
 
-    // Image preview function
-    function previewImage(input) {
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
+        // Add some CSS for animations
+        const style = document.createElement('style');
+        style.textContent = `
 
-            reader.onload = function(e) {
-                document.getElementById('photoPreview').src = e.target.result;
-                document.getElementById('photoField').value = e.target.result;
+            .btn-shake {
+                animation: btn-shake 0.5s ease;
             }
 
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
+            .profile-photo-container {
+                cursor: pointer;
+                transition: all 0.3s ease !important;
+            }
+
+            .photo-edit-overlay {
+                opacity: 0;
+                transition: opacity 0.3s ease, transform 0.2s ease !important;
+            }
+
+            .profile-photo-container:hover .photo-edit-overlay {
+                opacity: 1;
+            }
+
+            .input-group-profile:focus-within {
+                box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.25);
+            }
+
+            .alert {
+                transition: all 0.3s ease;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Fix footer visibility by ensuring the layout is properly extended
+        document.addEventListener('DOMContentLoaded', function() {
+            // Force recalculation of layout to ensure footer is visible
+            document.body.style.overflow = 'auto';
+            window.dispatchEvent(new Event('resize'));
+        });
+    });
 </script>

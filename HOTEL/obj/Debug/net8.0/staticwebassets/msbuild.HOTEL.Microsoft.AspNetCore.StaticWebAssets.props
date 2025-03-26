@@ -12,8 +12,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>duw5ddkl8m</Fingerprint>
-      <Integrity>hTaUaqe2WbBNtzgW2eXca6GGn0FOmg2CxNLFkWtbyWs=</Integrity>
+      <Fingerprint>q973bdmgvw</Fingerprint>
+      <Integrity>chlbbWHUeuuAmG517N7XkB0Cg8mMzqtWNzy0fvWXXi8=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\site.css'))</OriginalItemSpec>
@@ -1097,6 +1097,24 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\lib\jquery\LICENSE.txt'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\uploads\791c95e7-1ada-4c2b-b690-ef67679e53a6_the-matrix-logo-png-transparent.png'))">
+      <SourceType>Package</SourceType>
+      <SourceId>HOTEL</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/HOTEL</BasePath>
+      <RelativePath>uploads/791c95e7-1ada-4c2b-b690-ef67679e53a6_the-matrix-logo-png-transparent.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>l3ek07p8s1</Fingerprint>
+      <Integrity>YZCDaYbzSocREeoLyDrIcxP+93HdVPB4G/7QHLgpSVY=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\uploads\791c95e7-1ada-4c2b-b690-ef67679e53a6_the-matrix-logo-png-transparent.png'))</OriginalItemSpec>
     </StaticWebAsset>
   </ItemGroup>
 </Project>
