@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿// RoomsController.cs
+using Microsoft.AspNetCore.Mvc;
 using HotelWebsite.Models;
-using Microsoft.AspNetCore.Authorization;
+using System.Linq;
 
 namespace HotelWebsite.Controllers
 {
@@ -15,36 +15,15 @@ namespace HotelWebsite.Controllers
         }
 
         // GET: Rooms
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var rooms = await _context.Rooms.Where(r => r.Status == "Vacant").ToListAsync();
-            return View(rooms);
+            return View(_context.Rooms.ToList());
         }
 
         // GET: Rooms/Admin
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Admin()
+        public IActionResult Admin()
         {
-            var rooms = await _context.Rooms.ToListAsync();
-            return View(rooms);
-        }
-
-        // POST: Rooms/UpdateStatus
-        [HttpPost]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateStatus(int id, string status)
-        {
-            var room = await _context.Rooms.FindAsync(id);
-            if (room == null)
-            {
-                return NotFound();
-            }
-
-            room.Status = status;
-            _context.Update(room);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction(nameof(Admin));
+            return View(_context.Rooms.ToList());
         }
     }
 }

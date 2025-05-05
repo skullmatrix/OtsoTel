@@ -1,0 +1,88 @@
+﻿@model HotelWebsite.Models.Booking
+@{
+    ViewData["Title"] = "Book Room";
+    var room = ViewBag.Room as HotelWebsite.Models.Room;
+}
+
+<div class="container py-5">
+    <h1 class="text-center mb-4">Book @room?.Type Room - @room?.RoomNumber</h1>
+
+    <div class="row">
+        <div class="col-md-6">
+            <img src="@room?.ImageUrl" class="img-fluid rounded" alt="@room?.Type Room">
+            <div class="mt-3">
+                <h4>Room Details</h4>
+                <p>@room?.Description</p>
+                <p><strong>Capacity:</strong> @room?.Capacity</p>
+                <p><strong>Price:</strong> $@room?.Price per night</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="RoomId" />
+
+                <div class="mb-3">
+                    <label asp-for="GuestName" class="form-label">Full Name</label>
+                    <input asp-for="GuestName" class="form-control" />
+                    <span asp-validation-for="GuestName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="GuestEmail" class="form-label">Email</label>
+                    <input asp-for="GuestEmail" class="form-control" />
+                    <span asp-validation-for="GuestEmail" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="GuestPhone" class="form-label">Phone</label>
+                    <input asp-for="GuestPhone" class="form-control" />
+                    <span asp-validation-for="GuestPhone" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CheckInDate" class="form-label">Check-In</label>
+                    <input asp-for="CheckInDate" type="date" class="form-control" min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                    <span asp-validation-for="CheckInDate" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CheckOutDate" class="form-label">Check-Out</label>
+                    <input asp-for="CheckOutDate" type="date" class="form-control" />
+                    <span asp-validation-for="CheckOutDate" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="NumberOfGuests" class="form-label">Guests</label>
+                    <input asp-for="NumberOfGuests" type="number" min="1" max="@room?.Capacity" class="form-control" />
+                    <span asp-validation-for="NumberOfGuests" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="SpecialRequests" class="form-label">Requests</label>
+                    <textarea asp-for="SpecialRequests" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="SpecialRequests" class="text-danger"></span>
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-success btn-lg">Confirm Booking</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(function() {
+            $('#CheckInDate').change(function() {
+                var checkIn = new Date($(this).val());
+                checkIn.setDate(checkIn.getDate() + 1);
+                $('#CheckOutDate').attr('min', checkIn.toISOString().split('T')[0]);
+            });
+        });
+    </script>
+}

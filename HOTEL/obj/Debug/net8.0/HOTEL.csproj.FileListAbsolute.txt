@@ -1804,3 +1804,16 @@ C:\Users\hh836\Downloads\dasdadasda\HOTEL\obj\Debug\net8.0\HOTEL.pdb
 C:\Users\hh836\Downloads\dasdadasda\HOTEL\obj\Debug\net8.0\HOTEL.genruntimeconfig.cache
 C:\Users\hh836\Downloads\dasdadasda\HOTEL\obj\Debug\net8.0\ref\HOTEL.dll
 C:\Users\hh836\Downloads\dasdadasda\HOTEL\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\Users\user\Source\Repos\OtsoTel\HOTEL\obj\Debug\net8.0\HOTEL.csproj.AssemblyReference.cache
+C:\Users\user\Source\Repos\OtsoTel\HOTEL\obj\Debug\net8.0\HOTEL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user\Source\Repos\OtsoTel\HOTEL\obj\Debug\net8.0\HOTEL.AssemblyInfoInputs.cache
+C:\Users\user\Source\Repos\OtsoTel\HOTEL\obj\Debug\net8.0\HOTEL.AssemblyInfo.cs
+C:\Users\user\Source\Repos\OtsoTel\HOTEL\obj\Debug\net8.0\HOTEL.csproj.CoreCompileInputs.cache
+C:\Users\user\Source\Repos\OtsoTel\HOTEL\obj\Debug\net8.0\HOTEL.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\user\Source\Repos\OtsoTel\HOTEL\obj\Debug\net8.0\HOTEL.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\user\Source\Repos\OtsoTel\HOTEL\obj\Debug\net8.0\HOTEL.RazorAssemblyInfo.cache
+C:\Users\user\Source\Repos\OtsoTel\HOTEL\obj\Debug\net8.0\HOTEL.RazorAssemblyInfo.cs
+C:\Users\user\Source\Repos\OtsoTel\HOTEL\obj\Debug\net8.0\HOTEL.sourcelink.json
+C:\Users\user\Source\Repos\OtsoTel\HOTEL\obj\Debug\net8.0\HOTEL.dll
+C:\Users\user\Source\Repos\OtsoTel\HOTEL\obj\Debug\net8.0\refint\HOTEL.dll
+C:\Users\user\Source\Repos\OtsoTel\HOTEL\obj\Debug\net8.0\HOTEL.pdb
