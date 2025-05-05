@@ -42,8 +42,9 @@ namespace HotelWebsite.Controllers
                     return View(user);
                 }
 
-                // Set the default profile image for regular users
+                // Set the default profile image and role for regular users
                 user.Photo = "https://cdn-icons-png.flaticon.com/256/727/727410.png";
+                user.Role = "Guest";
 
                 // Hash the password before saving
                 user.Password = HashPassword(user.Password);
@@ -95,8 +96,9 @@ namespace HotelWebsite.Controllers
                     this.HttpContext.Session.SetString("UserEmail", user.Email);
                     this.HttpContext.Session.SetString("UserPhoto", user.Photo);
                     this.HttpContext.Session.SetString("IsAdmin", user.IsAdmin.ToString());
+                    this.HttpContext.Session.SetString("UserRole", user.Role);
 
-                    return Json(new { success = true, isAdmin = user.IsAdmin });
+                    return Json(new { success = true, isAdmin = user.IsAdmin, role = user.Role });
                 }
                 return Json(new { success = false, message = "Invalid email or password." });
             }
@@ -259,6 +261,7 @@ namespace HotelWebsite.Controllers
                     // Set default values for new users
                     user.Password = "google-auth"; // Placeholder password for Google users
                     user.IsAdmin = false; // Default to non-admin
+                    user.Role = "Guest"; // Default role for Google users
                     user.Photo = user.Photo ?? "https://cdn-icons-png.flaticon.com/256/727/727410.png"; // Default profile image
 
                     // Save the new user
@@ -277,6 +280,7 @@ namespace HotelWebsite.Controllers
                 this.HttpContext.Session.SetString("UserEmail", user.Email);
                 this.HttpContext.Session.SetString("UserPhoto", user.Photo);
                 this.HttpContext.Session.SetString("IsAdmin", user.IsAdmin.ToString());
+                this.HttpContext.Session.SetString("UserRole", user.Role);
 
                 return Json(new { success = true });
             }

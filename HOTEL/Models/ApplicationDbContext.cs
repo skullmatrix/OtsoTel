@@ -25,7 +25,34 @@ namespace HotelWebsite.Models
                     Password = HashPassword("admin123"),
                     Address = "Admin Address",
                     Photo = "https://cdn-icons-png.flaticon.com/256/2165/2165674.png",
-                    IsAdmin = true
+                    IsAdmin = true,
+                    Role = "Administrator"
+                },
+                // Front desk staff
+                new User
+                {
+                    Id = 2,
+                    FirstName = "John",
+                    LastName = "Doe",
+                    Email = "frontdesk@matrix.com",
+                    Password = HashPassword("frontdesk123"),
+                    Address = "Hotel Front Desk",
+                    Photo = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+                    IsAdmin = false,
+                    Role = "FrontDesk"
+                },
+                // Housekeeping staff
+                new User
+                {
+                    Id = 3,
+                    FirstName = "Jane",
+                    LastName = "Smith",
+                    Email = "housekeeping@matrix.com",
+                    Password = HashPassword("housekeeping123"),
+                    Address = "Hotel Housekeeping",
+                    Photo = "https://cdn-icons-png.flaticon.com/512/4128/4128176.png",
+                    IsAdmin = false,
+                    Role = "Housekeeping"
                 }
             );
 

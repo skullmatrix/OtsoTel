@@ -11,5 +11,6 @@
         public string Address { get; set; } = string.Empty;
         public string Photo { get; set; } = string.Empty;
         public bool IsAdmin { get; set; } = false;
+        public string Role { get; set; } = "Guest"; // New role property with default value
     }
 }
