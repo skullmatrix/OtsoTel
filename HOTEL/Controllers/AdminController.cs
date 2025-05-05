@@ -1,16 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using HotelWebsite.Models;
 using System.Linq;
-
 namespace HotelWebsite.Controllers
 {
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext _context;
-
         public AdminController(ApplicationDbContext context)
         {
             _context = context;
+        }
+
+        // GET: /Admin/
+        public IActionResult Index()
+        {
+            // Return the admin dashboard view
+            return View();
         }
 
         // GET: /Admin/UserManagement

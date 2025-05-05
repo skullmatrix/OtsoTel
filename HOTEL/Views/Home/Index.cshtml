@@ -427,59 +427,64 @@
             });
         }
 
-        // Login form handling
-        const loginForm = document.getElementById('loginForm');
-        const errorMessageContainer = document.getElementById('loginErrorMessage');
+            // Login form handling
+    const loginForm = document.getElementById('loginForm');
+    const errorMessageContainer = document.getElementById('loginErrorMessage');
 
-        if (loginForm) {
-            loginForm.addEventListener('submit', function (e) {
-                e.preventDefault(); // Prevent default form submission
+    if (loginForm) {
+        loginForm.addEventListener('submit', function (e) {
+            e.preventDefault(); // Prevent default form submission
 
-                // Clear previous error messages
-                errorMessageContainer.classList.add('d-none');
-                errorMessageContainer.textContent = '';
+            // Clear previous error messages
+            errorMessageContainer.classList.add('d-none');
+            errorMessageContainer.textContent = '';
 
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
 
-                fetch('/Account/Login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ email, password }),
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        // Handle server errors (e.g., 500 Internal Server Error)
-                        return response.json().then(error => {
-                            throw new Error(error.message || "An error occurred during login.");
-                        });
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.success) {
-                        // Close the modal
-                        const modal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
-                        modal.hide();
+            fetch('/Account/Login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    // Handle server errors (e.g., 500 Internal Server Error)
+                    return response.json().then(error => {
+                        throw new Error(error.message || "An error occurred during login.");
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    // Close the modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+                    modal.hide();
 
-                        // Refresh the page to update the header
-                        window.location.reload();
+                    // Redirect based on role
+                    if (data.role === "Administrator" || data.role === "FrontDesk" || data.role === "Housekeeping") {
+                        window.location.href = "/Admin";
                     } else {
-                        // Show error in the modal instead of alert
-                        errorMessageContainer.textContent = data.message || "Invalid login attempt. Please check your credentials.";
-                        errorMessageContainer.classList.remove('d-none');
+                        // For regular users, just refresh the page
+                        window.location.reload();
                     }
-                })
-                .catch(error => {
-                    console.error("Error during login:", error);
+                } else {
                     // Show error in the modal instead of alert
-                    errorMessageContainer.textContent = error.message || "An error occurred during login. Please try again.";
+                    errorMessageContainer.textContent = data.message || "Invalid login attempt. Please check your credentials.";
                     errorMessageContainer.classList.remove('d-none');
-                });
+                }
+            })
+            .catch(error => {
+                console.error("Error during login:", error);
+                // Show error in the modal instead of alert
+                errorMessageContainer.textContent = error.message || "An error occurred during login. Please try again.";
+                errorMessageContainer.classList.remove('d-none');
             });
-        }
+        });
+    }
 
         // Toggle password visibility
         const togglePassword = document.getElementById('togglePassword');
