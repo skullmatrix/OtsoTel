@@ -54,5 +54,6 @@ namespace HOTEL.Migrations
             migrationBuilder.DropTable(
                 name: "Users");
         }
+
     }
 }

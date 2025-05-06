@@ -1,0 +1,234 @@
+﻿@model HotelWebsite.Models.Booking
+@{
+    ViewData["Title"] = $"Invoice #{Model.Id:D6}";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var invoiceNumber = $"INV-{Model.Id:D6}";
+    var invoiceDate = DateTime.Now.ToString("MMM dd, yyyy");
+    var dueDate = Model.CheckOutDate.ToString("MMM dd, yyyy");
+
+    var hotelName = "The Matrix Hotel";
+    var hotelAddress = "123 Luxury Lane, Cebu City, 6000";
+    var hotelPhone = "+63 32 123 4567";
+    var hotelEmail = "info@matrixhotel.com";
+    var hotelWebsite = "www.matrixhotel.com";
+
+    var logoUrl = "https://i.pinimg.com/736x/2a/11/2f/2a112f695462f797da807fa7a03b6f39.jpg";
+}
+
+<div class="container py-4">
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4 p-md-5">
+            <div class="row mb-5">
+                <div class="col-md-6">
+                    <img src="@logoUrl" alt="The Matrix Hotel" class="mb-3" style="max-height: 100px; max-width: 200px;">
+                    <h2 class="fw-bold text-primary">INVOICE</h2>
+                    <p class="mb-0 text-muted">#@invoiceNumber</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <h4 class="mb-0">@hotelName</h4>
+                    <address class="mb-0 text-muted">
+                        @hotelAddress<br>
+                        @hotelPhone<br>
+                        @hotelEmail<br>
+                        @hotelWebsite
+                    </address>
+                </div>
+            </div>
+
+            <div class="row mb-5">
+                <div class="col-md-6">
+                    <div class="mb-4">
+                        <h5 class="mb-2">Bill To:</h5>
+                        <h6 class="mb-1">@Model.User.FullName</h6>
+                        <p class="mb-0 text-muted">@Model.User.Email</p>
+                        <p class="mb-0 text-muted">@Model.User.Address</p>
+                        @if (!string.IsNullOrEmpty(Model.User.PhoneNumber))
+                        {
+                            <p class="mb-0 text-muted">@Model.User.PhoneNumber</p>
+                        }
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-4 text-md-end">
+                        <h5 class="mb-2">Invoice Details:</h5>
+                        <table class="ms-auto">
+                            <tr>
+                                <td class="pe-3"><strong>Invoice Date:</strong></td>
+                                <td>@invoiceDate</td>
+                            </tr>
+                            <tr>
+                                <td class="pe-3"><strong>Due Date:</strong></td>
+                                <td>@dueDate</td>
+                            </tr>
+                            <tr>
+                                <td class="pe-3"><strong>Status:</strong></td>
+                                <td>
+                                    @if (Model.PaymentStatus == "Paid")
+                                    {
+                                        <span class="badge bg-success">PAID</span>
+                                    }
+                                    else if (Model.PaymentStatus == "Partial")
+                                    {
+                                        <span class="badge bg-info">PARTIALLY PAID</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning text-dark">PENDING</span>
+                                    }
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive mb-4">
+                <table class="table table-striped border">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="text-uppercase small fw-bold">Description</th>
+                            <th class="text-uppercase small fw-bold">Category</th>
+                            <th class="text-uppercase small fw-bold">Date</th>
+                            <th class="text-uppercase small fw-bold text-end">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.BillItems != null && Model.BillItems.Any())
+                        {
+                            foreach (var item in Model.BillItems.OrderBy(b => b.DateAdded))
+                            {
+                                <tr>
+                                    <td>@item.Description</td>
+                                    <td>@item.Category</td>
+                                    <td>@item.DateAdded.ToString("MMM dd, yyyy")</td>
+                                    <td class="text-end">$@item.Amount.ToString("0.00")</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center">No bill items found.</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot class="table-light">
+                        <tr>
+                            <th class="text-end" colspan="3">Subtotal</th>
+                            <th class="text-end">$@Model.TotalBill.ToString("0.00")</th>
+                        </tr>
+                        <tr>
+                            <th class="text-end" colspan="3">Tax (0%)</th>
+                            <th class="text-end">$0.00</th>
+                        </tr>
+                        <tr>
+                            <th class="text-end" colspan="3">Total</th>
+                            <th class="text-end">$@Model.TotalBill.ToString("0.00")</th>
+                        </tr>
+                        <tr>
+                            <th class="text-end" colspan="3">Amount Paid</th>
+                            <th class="text-end">$@Model.TotalPaid.ToString("0.00")</th>
+                        </tr>
+                        <tr>
+                            <th class="text-end" colspan="3">Balance Due</th>
+                            <th class="text-end">$@Model.Balance.ToString("0.00")</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-8">
+                    <h5 class="mb-2">Payment Details:</h5>
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Payment Method</th>
+                                <th>Transaction ID</th>
+                                <th>Date</th>
+                                <th class="text-end">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Payments != null && Model.Payments.Any())
+                            {
+                                foreach (var payment in Model.Payments.Where(p => p.Status == "Completed").OrderBy(p => p.PaymentDate))
+                                {
+                                    <tr>
+                                        <td>@payment.PaymentMethod</td>
+                                        <td>@payment.TransactionReference</td>
+                                        <td>@payment.PaymentDate.ToString("MMM dd, yyyy")</td>
+                                        <td class="text-end">$@payment.Amount.ToString("0.00")</td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="4" class="text-center">No payments recorded.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-4">
+                    <div class="bg-light p-3 rounded text-center">
+                        <h5 class="mb-2">Thank You For Your Stay!</h5>
+                        <p class="mb-0 small">We appreciate your business and hope to see you again soon.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="border-top pt-4">
+                        <p class="mb-0 small text-muted">
+                            <strong>Note:</strong> This is a computer generated invoice and does not require a signature.
+                        </p>
+                        <p class="mb-0 small text-muted">
+                            For questions about this invoice, please contact accounting@matrixhotel.com or call +63 32 123 4567.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer bg-white py-3 text-center">
+            <button onclick="window.print()" class="btn btn-primary">
+                <i class="fas fa-print me-2"></i> Print Invoice
+            </button>
+            <a href="@Url.Action("GuestBill", new { id = Model.Id })" class="btn btn-outline-secondary ms-2">
+                <i class="fas fa-arrow-left me-2"></i> Back to Bill
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    @@media print {
+        body * {
+            visibility: hidden;
+        }
+
+        .card, .card * {
+            visibility: visible;
+        }
+
+        .card {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            box-shadow: none !important;
+        }
+
+        .card-footer {
+            display: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 100%;
+        }
+    }
+</style>

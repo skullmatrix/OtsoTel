@@ -458,25 +458,25 @@
                 }
                 return response.json();
             })
-            .then(data => {
-                if (data.success) {
-                    // Close the modal
-                    const modal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
-                    modal.hide();
+                .then(data => {
+        if (data.success) {
+            // Close the modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+            modal.hide();
 
-                    // Redirect based on role
-                    if (data.role === "Administrator" || data.role === "FrontDesk" || data.role === "Housekeeping") {
-                        window.location.href = "/Admin";
-                    } else {
-                        // For regular users, just refresh the page
-                        window.location.reload();
-                    }
-                } else {
-                    // Show error in the modal instead of alert
-                    errorMessageContainer.textContent = data.message || "Invalid login attempt. Please check your credentials.";
-                    errorMessageContainer.classList.remove('d-none');
-                }
-            })
+            // Redirect based on role
+            if (data.redirectUrl) {
+                window.location.href = data.redirectUrl;
+            } else {
+                // Fallback to refreshing the page
+                window.location.reload();
+            }
+        } else {
+            // Show error in the modal instead of alert
+            errorMessageContainer.textContent = data.message || "Invalid login attempt. Please check your credentials.";
+            errorMessageContainer.classList.remove('d-none');
+        }
+    })
             .catch(error => {
                 console.error("Error during login:", error);
                 // Show error in the modal instead of alert

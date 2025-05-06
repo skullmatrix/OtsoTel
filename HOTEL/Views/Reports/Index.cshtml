@@ -1,0 +1,294 @@
+﻿@{
+    ViewData["Title"] = "Reports & Analytics";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var occupancyRate = ViewBag.OccupancyRate;
+    var totalRevenue = ViewBag.TotalRevenue;
+    var monthlyRevenue = ViewBag.MonthlyRevenue;
+    var totalBookings = ViewBag.TotalBookings;
+    var monthlyBookings = ViewBag.MonthlyBookings;
+    var totalRooms = ViewBag.TotalRooms;
+    var occupiedRooms = ViewBag.OccupiedRooms;
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">Reports & Analytics</h1>
+        <div class="btn-group" role="group">
+            <a href="@Url.Action("OccupancyReport")" class="btn btn-outline-primary">
+                <i class="fas fa-bed me-2"></i> Occupancy Report
+            </a>
+            <a href="@Url.Action("RevenueReport")" class="btn btn-outline-success">
+                <i class="fas fa-chart-line me-2"></i> Revenue Report
+            </a>
+            <a href="@Url.Action("GuestDemographics")" class="btn btn-outline-info">
+                <i class="fas fa-users me-2"></i> Guest Demographics
+            </a>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded-circle bg-success bg-opacity-10 p-3 me-3">
+                            <i class="fas fa-bed text-success fs-4"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-0 text-muted">Occupancy Rate</h6>
+                            <h2 class="mb-0">@occupancyRate.ToString("0.0")%</h2>
+                        </div>
+                    </div>
+                    <div class="progress bg-light" style="height: 6px;">
+                        <div class="progress-bar bg-success" style="width: @occupancyRate%"></div>
+                    </div>
+                    <div class="mt-2 small text-muted">
+                        @occupiedRooms of @totalRooms rooms occupied
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3">
+                            <i class="fas fa-dollar-sign text-primary fs-4"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-0 text-muted">Total Revenue</h6>
+                            <h2 class="mb-0">$@totalRevenue.ToString("N0")</h2>
+                        </div>
+                    </div>
+                    <div class="progress bg-light" style="height: 6px;">
+                        <div class="progress-bar bg-primary" style="width: 100%"></div>
+                    </div>
+                    <div class="mt-2 small text-muted">
+                        $@monthlyRevenue.ToString("N0") this month
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded-circle bg-warning bg-opacity-10 p-3 me-3">
+                            <i class="fas fa-calendar-check text-warning fs-4"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-0 text-muted">Total Bookings</h6>
+                            <h2 class="mb-0">@totalBookings</h2>
+                        </div>
+                    </div>
+                    <div class="progress bg-light" style="height: 6px;">
+                        <div class="progress-bar bg-warning" style="width: 100%"></div>
+                    </div>
+                    <div class="mt-2 small text-muted">
+                        @monthlyBookings bookings this month
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded-circle bg-info bg-opacity-10 p-3 me-3">
+                            <i class="fas fa-chart-pie text-info fs-4"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-0 text-muted">Average Daily Rate</h6>
+                            <h2 class="mb-0">$@((totalRevenue / (totalBookings > 0 ? totalBookings : 1)).ToString("0"))</h2>
+                        </div>
+                    </div>
+                    <div class="progress bg-light" style="height: 6px;">
+                        <div class="progress-bar bg-info" style="width: 100%"></div>
+                    </div>
+                    <div class="mt-2 small text-muted">
+                        Per booking average
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Revenue Overview</h5>
+                    <a href="@Url.Action("RevenueReport")" class="btn btn-sm btn-outline-primary">View Full Report</a>
+                </div>
+                <div class="card-body">
+                    <canvas id="revenueChart" height="250"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Room Occupancy</h5>
+                    <a href="@Url.Action("OccupancyReport")" class="btn btn-sm btn-outline-primary">View Full Report</a>
+                </div>
+                <div class="card-body">
+                    <canvas id="occupancyChart" height="250"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Recent Bookings</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Guest</th>
+                                    <th>Room</th>
+                                    <th>Check-in</th>
+                                    <th>Status</th>
+                                    <th>Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- This would be populated with actual booking data -->
+                                <tr>
+                                    <td>John Smith</td>
+                                    <td>101 (Standard)</td>
+                                    <td>May 5, 2025</td>
+                                    <td><span class="badge bg-success">Checked In</span></td>
+                                    <td>$150.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Jane Doe</td>
+                                    <td>202 (Deluxe)</td>
+                                    <td>May 6, 2025</td>
+                                    <td><span class="badge bg-primary">Confirmed</span></td>
+                                    <td>$250.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Mike Johnson</td>
+                                    <td>301 (Suite)</td>
+                                    <td>May 4, 2025</td>
+                                    <td><span class="badge bg-secondary">Checked Out</span></td>
+                                    <td>$400.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Room Type Distribution</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="roomTypeChart" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Revenue Chart
+            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+            const revenueChart = new Chart(revenueCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    datasets: [{
+                        label: 'Revenue',
+                        data: [4200, 5100, 6200, 5800, 7800, 8200, 7400, 9100, 8700, 9400, 8500, 10200],
+                        borderColor: '#0d6efd',
+                        backgroundColor: 'rgba(13, 110, 253, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + value.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Occupancy Chart
+            const occupancyCtx = document.getElementById('occupancyChart').getContext('2d');
+            const occupancyChart = new Chart(occupancyCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Occupied', 'Vacant', 'Maintenance'],
+                    datasets: [{
+                        data: [@occupiedRooms, @(totalRooms - occupiedRooms - 5), 5],
+                        backgroundColor: ['#198754', '#0d6efd', '#ffc107'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+
+            // Room Type Chart
+            const roomTypeCtx = document.getElementById('roomTypeChart').getContext('2d');
+            const roomTypeChart = new Chart(roomTypeCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Standard', 'Deluxe', 'Suite'],
+                    datasets: [{
+                        label: 'Number of Rooms',
+                        data: [20, 15, 5],
+                        backgroundColor: ['#0d6efd', '#198754', '#ffc107'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+}

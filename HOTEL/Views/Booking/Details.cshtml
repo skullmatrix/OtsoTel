@@ -1,0 +1,218 @@
+﻿@model HotelWebsite.Models.Booking
+@{
+    ViewData["Title"] = "Booking Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-4">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Booking Details</h4>
+                    <div>
+                        <a href="@Url.Action("MyBookings")" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i> Back to My Bookings
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body p-4">
+                    <div class="mb-4 d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="mb-0 text-muted">Booking ID: <strong>@Model.Id</strong></p>
+                            <p class="mb-0 text-muted">Booking Date: <strong>@Model.BookingDate.ToString("MMM dd, yyyy")</strong></p>
+                        </div>
+                        <div>
+                            @if (Model.Status == "Confirmed")
+                            {
+                                <span class="badge bg-primary py-2 px-3">Confirmed</span>
+                            }
+                            else if (Model.Status == "Checked In")
+                            {
+                                <span class="badge bg-success py-2 px-3">Checked In</span>
+                            }
+                            else if (Model.Status == "Checked Out")
+                            {
+                                <span class="badge bg-secondary py-2 px-3">Checked Out</span>
+                            }
+                            else if (Model.Status == "Cancelled")
+                            {
+                                <span class="badge bg-danger py-2 px-3">Cancelled</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-info py-2 px-3">@Model.Status</span>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-5">
+                            <img src="@Model.Room.ImageUrl" class="img-fluid rounded" alt="@Model.Room.Type Room">
+                        </div>
+                        <div class="col-md-7">
+                            <h4 class="mb-2">@Model.Room.Type Room - @Model.Room.RoomNumber</h4>
+                            <p>@Model.Room.Description</p>
+                            <div class="d-flex flex-wrap gap-3 mb-3">
+                                <div class="feature d-flex align-items-center">
+                                    <i class="fas fa-user-friends text-primary me-2"></i>
+                                    <span>@Model.NumberOfGuests guests</span>
+                                </div>
+                                <div class="feature d-flex align-items-center">
+                                    <i class="fas fa-wifi text-primary me-2"></i>
+                                    <span>Free WiFi</span>
+                                </div>
+                                <div class="feature d-flex align-items-center">
+                                    <i class="fas fa-coffee text-primary me-2"></i>
+                                    <span>Breakfast</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5 class="border-bottom pb-2 mb-3">Check-in</h5>
+                            <p class="mb-1"><strong>Date:</strong> @Model.CheckInDate.ToString("dddd, MMM dd, yyyy")</p>
+                            <p class="mb-1"><strong>Time:</strong> 2:00 PM - 10:00 PM</p>
+                            @if (Model.ActualCheckInDate.HasValue)
+                            {
+                                <p class="mb-0 text-success"><strong>Checked in at:</strong> @Model.ActualCheckInDate.Value.ToString("MMM dd, yyyy hh:mm tt")</p>
+                            }
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="border-bottom pb-2 mb-3">Check-out</h5>
+                            <p class="mb-1"><strong>Date:</strong> @Model.CheckOutDate.ToString("dddd, MMM dd, yyyy")</p>
+                            <p class="mb-1"><strong>Time:</strong> 7:00 AM - 12:00 PM</p>
+                            @if (Model.ActualCheckOutDate.HasValue)
+                            {
+                                <p class="mb-0 text-success"><strong>Checked out at:</strong> @Model.ActualCheckOutDate.Value.ToString("MMM dd, yyyy hh:mm tt")</p>
+                            }
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.SpecialRequests))
+                    {
+                        <div class="mb-4">
+                            <h5 class="border-bottom pb-2 mb-3">Special Requests</h5>
+                            <p class="mb-0">@Model.SpecialRequests</p>
+                        </div>
+                    }
+
+                    <div class="mb-4">
+                        <h5 class="border-bottom pb-2 mb-3">Billing Summary</h5>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Description</th>
+                                        <th>Date</th>
+                                        <th class="text-end">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.BillItems != null && Model.BillItems.Any())
+                                    {
+                                        foreach (var item in Model.BillItems)
+                                        {
+                                            <tr>
+                                                <td>@item.Description</td>
+                                                <td>@item.DateAdded.ToString("MMM dd, yyyy")</td>
+                                                <td class="text-end">$@item.Amount.ToString("0.00")</td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="3" class="text-center">No bill items available</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                <tfoot>
+                                    <tr class="table-dark">
+                                        <th colspan="2" class="text-end">Total</th>
+                                        <th class="text-end">$@Model.TotalPrice.ToString("0.00")</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <h5 class="border-bottom pb-2 mb-3">Payment Status</h5>
+                        @if (Model.PaymentStatus == "Paid")
+                        {
+                            <p class="mb-0"><span class="badge bg-success me-2">Paid</span> Your booking has been fully paid.</p>
+                        }
+                        else if (Model.PaymentStatus == "Partial")
+                        {
+                            <p class="mb-0"><span class="badge bg-info me-2">Partially Paid</span> A partial payment has been made for this booking.</p>
+                        }
+                        else
+                        {
+                            <p class="mb-0"><span class="badge bg-warning text-dark me-2">Pending</span> Payment is pending for this booking.</p>
+                        }
+                    </div>
+
+                    @if (Model.Status == "Confirmed" && Model.CheckInDate > DateTime.Now.Date)
+                    {
+                        <div class="mt-4 border-top pt-4">
+                            <div class="d-flex justify-content-end">
+                                <a href="@Url.Action("Cancel", new { id = Model.Id })" class="btn btn-danger">
+                                    <i class="fas fa-times me-2"></i> Cancel Booking
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Hotel Policies</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h6 class="mb-2"><i class="fas fa-calendar-check text-primary me-2"></i> Check-in/Check-out</h6>
+                        <p class="small mb-0">Check-in: 2:00 PM - 10:00 PM</p>
+                        <p class="small mb-0">Check-out: 7:00 AM - 12:00 PM</p>
+                    </div>
+                    <div class="mb-3">
+                        <h6 class="mb-2"><i class="fas fa-credit-card text-primary me-2"></i> Payment</h6>
+                        <p class="small mb-0">Full payment is required at the time of booking.</p>
+                        <p class="small mb-0">We accept Credit Cards, PayPal, and Bank Transfers.</p>
+                    </div>
+                    <div class="mb-3">
+                        <h6 class="mb-2"><i class="fas fa-ban text-primary me-2"></i> Cancellation</h6>
+                        <p class="small mb-0">Free cancellation up to 24 hours before check-in.</p>
+                        <p class="small mb-0">Cancellations within 24 hours of check-in may be charged a one-night fee.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Contact Support</h5>
+                </div>
+                <div class="card-body">
+                    <p class="small mb-3">If you have any questions or need to modify your booking, please contact our support team:</p>
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="fas fa-phone text-primary me-3"></i>
+                        <span>+63 32 123 4567</span>
+                    </div>
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="fas fa-envelope text-primary me-3"></i>
+                        <span>bookings@matrixhotel.com</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-comments text-primary me-3"></i>
+                        <span>Live Chat (8AM - 10PM)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

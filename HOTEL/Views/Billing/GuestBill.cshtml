@@ -1,0 +1,229 @@
+﻿@model HotelWebsite.Models.Booking
+@{
+    ViewData["Title"] = "Guest Bill";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-4">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Guest Bill</h4>
+                    <a href="@Url.Action("Invoice", new { id = Model.Id })" class="btn btn-outline-primary">
+                        <i class="fas fa-print me-2"></i> Print Invoice
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5 class="mb-3">Guest Information</h5>
+                            <div class="d-flex align-items-center mb-3">
+                                <img src="@Model.User.Photo" class="rounded-circle me-3" width="50" height="50" alt="Guest Photo" style="object-fit: cover;">
+                                <div>
+                                    <h6 class="mb-1">@Model.User.FullName</h6>
+                                    <p class="mb-0 small text-muted">@Model.User.Email</p>
+                                </div>
+                            </div>
+                            <p class="mb-1 small"><strong>Phone:</strong> @(string.IsNullOrEmpty(Model.User.PhoneNumber) ? "Not provided" : Model.User.PhoneNumber)</p>
+                            <p class="mb-0 small"><strong>Address:</strong> @Model.User.Address</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="mb-3">Booking Details</h5>
+                            <p class="mb-1 small"><strong>Room:</strong> @Model.Room.Type Room - @Model.Room.RoomNumber</p>
+                            <p class="mb-1 small"><strong>Check-in:</strong> @Model.CheckInDate.ToString("MMM dd, yyyy")</p>
+                            <p class="mb-1 small"><strong>Check-out:</strong> @Model.CheckOutDate.ToString("MMM dd, yyyy")</p>
+                            <p class="mb-1 small">
+                                <strong>Status:</strong>
+                                @if (Model.Status == "Confirmed")
+                                {
+                                    <span class="badge bg-primary">Confirmed</span>
+                                }
+                                else if (Model.Status == "Checked In")
+                                {
+                                    <span class="badge bg-success">Checked In</span>
+                                }
+                                else if (Model.Status == "Checked Out")
+                                {
+                                    <span class="badge bg-secondary">Checked Out</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">@Model.Status</span>
+                                }
+                            </p>
+                            <p class="mb-0 small">
+                                <strong>Payment Status:</strong>
+                                @if (Model.PaymentStatus == "Pending")
+                                {
+                                    <span class="badge bg-warning text-dark">Pending</span>
+                                }
+                                else if (Model.PaymentStatus == "Partial")
+                                {
+                                    <span class="badge bg-info">Partial</span>
+                                }
+                                else if (Model.PaymentStatus == "Paid")
+                                {
+                                    <span class="badge bg-success">Paid</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">@Model.PaymentStatus</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+
+                    <h5 class="border-bottom pb-2 mb-3">Bill Items</h5>
+                    <div class="table-responsive mb-4">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Description</th>
+                                    <th>Category</th>
+                                    <th>Date</th>
+                                    <th class="text-end">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.BillItems != null && Model.BillItems.Any())
+                                {
+                                    foreach (var item in Model.BillItems.OrderBy(b => b.DateAdded))
+                                    {
+                                        <tr>
+                                            <td>@item.Description</td>
+                                            <td>@item.Category</td>
+                                            <td>@item.DateAdded.ToString("MMM dd, yyyy")</td>
+                                            <td class="text-end">$@item.Amount.ToString("0.00")</td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="4" class="text-center">No bill items found.</td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr class="fw-bold table-light">
+                                    <td colspan="3" class="text-end">Total</td>
+                                    <td class="text-end">$@Model.TotalBill.ToString("0.00")</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <h5 class="border-bottom pb-2 mb-3">Payments</h5>
+                    <div class="table-responsive mb-4">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Payment Method</th>
+                                    <th>Reference</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th class="text-end">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.Payments != null && Model.Payments.Any())
+                                {
+                                    foreach (var payment in Model.Payments.OrderBy(p => p.PaymentDate))
+                                    {
+                                        <tr>
+                                            <td>@payment.PaymentMethod</td>
+                                            <td>@payment.TransactionReference</td>
+                                            <td>@payment.PaymentDate.ToString("MMM dd, yyyy")</td>
+                                            <td>
+                                                @if (payment.Status == "Completed")
+                                                {
+                                                    <span class="badge bg-success">Completed</span>
+                                                }
+                                                else if (payment.Status == "Pending")
+                                                {
+                                                    <span class="badge bg-warning text-dark">Pending</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-secondary">@payment.Status</span>
+                                                }
+                                            </td>
+                                            <td class="text-end">$@payment.Amount.ToString("0.00")</td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="5" class="text-center">No payments found.</td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr class="fw-bold table-light">
+                                    <td colspan="4" class="text-end">Total Paid</td>
+                                    <td class="text-end">$@Model.TotalPaid.ToString("0.00")</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <div class="d-flex justify-content-between border-top pt-3">
+                        <div>
+                            <h5 class="mb-1">Balance</h5>
+                            <p class="text-muted mb-0">Amount due to be paid</p>
+                        </div>
+                        <div class="text-end">
+                            <h4 class="mb-0 @(Model.Balance > 0 ? "text-danger" : "text-success")">
+                                $@Model.Balance.ToString("0.00")
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-white d-flex justify-content-end">
+                    <a href="@Url.Action("Index", "Billing")" class="btn btn-outline-secondary me-2">
+                        <i class="fas fa-arrow-left me-2"></i> Back
+                    </a>
+                    <a href="@Url.Action("AddBillItem", new { id = Model.Id })" class="btn btn-outline-primary me-2">
+                        <i class="fas fa-plus me-2"></i> Add Item
+                    </a>
+                    <a href="@Url.Action("AddPayment", new { id = Model.Id })" class="btn btn-primary">
+                        <i class="fas fa-credit-card me-2"></i> Add Payment
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm sticky-top mb-4" style="top: 20px;">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Payment Summary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-3">
+                        <span>Total Bill</span>
+                        <span class="fw-bold">$@Model.TotalBill.ToString("0.00")</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                        <span>Total Paid</span>
+                        <span class="fw-bold">$@Model.TotalPaid.ToString("0.00")</span>
+                    </div>
+                    <div class="d-flex justify-content-between border-top pt-3">
+                        <span class="fw-bold">Balance</span>
+                        <span class="fw-bold @(Model.Balance > 0 ? "text-danger" : "text-success")">$@Model.Balance.ToString("0.00")</span>
+                    </div>
+                </div>
+                <div class="card-footer bg-white">
+                    <div class="d-grid gap-2">
+                        <a href="@Url.Action("AddPayment", new { id = Model.Id })" class="btn btn-primary">
+                            <i class="fas fa-credit-card me-2"></i> Process Payment
+                        </a>
+                        <a href="@Url.Action("Invoice", new { id = Model.Id })" class="btn btn-outline-secondary">
+                            <i class="fas fa-print me-2"></i> Print Invoice
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

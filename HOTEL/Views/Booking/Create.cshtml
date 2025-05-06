@@ -1,0 +1,344 @@
+﻿@model HotelWebsite.Models.Booking
+@{
+    ViewData["Title"] = "Book a Room";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var room = ViewBag.Room as HotelWebsite.Models.Room;
+    var savedPaymentMethods = ViewBag.SavedPaymentMethods as List<string> ?? new List<string>();
+}
+
+<div class="container py-4">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Book Your Stay</h4>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <h5 class="border-bottom pb-2 mb-3">Room Details</h5>
+                        </div>
+                        <div class="col-md-5">
+                            <img src="@room.ImageUrl" class="img-fluid rounded" alt="@room.Type Room">
+                        </div>
+                        <div class="col-md-7">
+                            <h4>@room.Type Room - @room.RoomNumber</h4>
+                            <p>@room.Description</p>
+                            <div class="d-flex flex-wrap gap-3 mb-3">
+                                <div class="feature d-flex align-items-center">
+                                    <i class="fas fa-user-friends text-primary me-2"></i>
+                                    <span>@room.Capacity guests</span>
+                                </div>
+                                <div class="feature d-flex align-items-center">
+                                    <i class="fas fa-wifi text-primary me-2"></i>
+                                    <span>Free WiFi</span>
+                                </div>
+                                <div class="feature d-flex align-items-center">
+                                    <i class="fas fa-coffee text-primary me-2"></i>
+                                    <span>Breakfast</span>
+                                </div>
+                            </div>
+                            <h5 class="text-primary mb-0">$@room.Price / night</h5>
+                        </div>
+                    </div>
+
+                    <form asp-action="Create" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                        <input type="hidden" asp-for="RoomId" />
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="CheckInDate" class="form-label">Check-in Date</label>
+                                <input asp-for="CheckInDate" class="form-control" type="date" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                                <span asp-validation-for="CheckInDate" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="CheckOutDate" class="form-label">Check-out Date</label>
+                                <input asp-for="CheckOutDate" class="form-control" type="date" min="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" />
+                                <span asp-validation-for="CheckOutDate" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="NumberOfGuests" class="form-label">Number of Guests</label>
+                            <select asp-for="NumberOfGuests" class="form-select">
+                                @for (int i = 1; i <= room.Capacity; i++)
+                                {
+                                    <option value="@i">@i</option>
+                                }
+                            </select>
+                            <span asp-validation-for="NumberOfGuests" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="SpecialRequests" class="form-label">Special Requests</label>
+                            <textarea asp-for="SpecialRequests" class="form-control" rows="3" placeholder="Any special requests or requirements?"></textarea>
+                            <span asp-validation-for="SpecialRequests" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <h5 class="border-bottom pb-2 mb-3">Payment Information</h5>
+
+                            <div class="mb-3">
+                                <label for="paymentMethod" class="form-label">Payment Method</label>
+                                @if (savedPaymentMethods.Any())
+                                {
+                                    <select id="paymentMethod" name="paymentMethod" class="form-select">
+                                        <option value="">Select payment method</option>
+                                        @foreach (var method in savedPaymentMethods)
+                                        {
+                                            <option value="@method">@method</option>
+                                        }
+                                        <option value="new">Add new payment method</option>
+                                    </select>
+                                }
+                                else
+                                {
+                                    <select id="paymentMethod" name="paymentMethod" class="form-select">
+                                        <option value="">Select payment method</option>
+                                        <option value="new">Add new payment method</option>
+                                    </select>
+                                }
+                            </div>
+
+                            <div id="newPaymentMethodDiv" class="mb-3 d-none">
+                                <label for="newPaymentMethod" class="form-label">New Payment Method</label>
+                                <select id="newPaymentMethod" name="newPaymentMethod" class="form-select">
+                                    <option value="">Select payment type</option>
+                                    <option value="Credit Card">Credit Card</option>
+                                    <option value="Debit Card">Debit Card</option>
+                                    <option value="PayPal">PayPal</option>
+                                    <option value="Bank Transfer">Bank Transfer</option>
+                                    <option value="Cash">Cash</option>
+                                </select>
+                            </div>
+
+                            <div id="paymentDetails" class="d-none">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="cardNumber" class="form-label">Card Number</label>
+                                        <input type="text" id="cardNumber" class="form-control" placeholder="XXXX XXXX XXXX XXXX">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="expiration" class="form-label">Expiration</label>
+                                        <input type="text" id="expiration" class="form-control" placeholder="MM/YY">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="cvv" class="form-label">CVV</label>
+                                        <input type="text" id="cvv" class="form-control" placeholder="XXX">
+                                    </div>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="savePaymentMethod" name="savePaymentMethod" value="true">
+                                    <label class="form-check-label" for="savePaymentMethod">
+                                        Save this payment method for future bookings
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card bg-light mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Booking Summary</h5>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Room:</span>
+                                    <span>@room.Type Room (@room.RoomNumber)</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Price per night:</span>
+                                    <span>$@room.Price</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Number of nights:</span>
+                                    <span id="numNights">1</span>
+                                </div>
+                                <div class="d-flex justify-content-between font-weight-bold">
+                                    <strong>Total:</strong>
+                                    <strong id="totalPrice">$@room.Price</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="termsCheck" required>
+                            <label class="form-check-label" for="termsCheck">I agree to the terms and conditions</label>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">Confirm Booking</button>
+                            <a asp-controller="Rooms" asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Booking Policy</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h6 class="mb-2"><i class="fas fa-calendar-check text-primary me-2"></i> Check-in/Check-out</h6>
+                        <p class="small mb-0">Check-in: 2:00 PM - 10:00 PM</p>
+                        <p class="small mb-0">Check-out: 7:00 AM - 12:00 PM</p>
+                    </div>
+                    <div class="mb-3">
+                        <h6 class="mb-2"><i class="fas fa-credit-card text-primary me-2"></i> Payment</h6>
+                        <p class="small mb-0">Full payment is required at the time of booking.</p>
+                        <p class="small mb-0">We accept Credit Cards, PayPal, and Bank Transfers.</p>
+                    </div>
+                    <div class="mb-3">
+                        <h6 class="mb-2"><i class="fas fa-ban text-primary me-2"></i> Cancellation</h6>
+                        <p class="small mb-0">Free cancellation up to 24 hours before check-in.</p>
+                        <p class="small mb-0">Cancellations within 24 hours of check-in may be charged a one-night fee.</p>
+                    </div>
+                    <div>
+                        <h6 class="mb-2"><i class="fas fa-info-circle text-primary me-2"></i> Additional Information</h6>
+                        <p class="small mb-0">Pets are not allowed.</p>
+                        <p class="small mb-0">Smoking is not permitted in the rooms.</p>
+                        <p class="small mb-0">ID verification required at check-in.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Need Help?</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Have questions about your booking? Contact our support team:</p>
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="fas fa-phone text-primary me-3"></i>
+                        <span>+63 32 123 4567</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-envelope text-primary me-3"></i>
+                        <span>support@matrixhotel.com</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to calculate total price
+            function calculateTotal() {
+                const checkInDate = new Date(document.getElementById('CheckInDate').value);
+                const checkOutDate = new Date(document.getElementById('CheckOutDate').value);
+                const pricePerNight = @room.Price;
+
+                // Calculate days (MS to days conversion)
+                const timeDiff = checkOutDate.getTime() - checkInDate.getTime();
+                const days = Math.max(1, Math.ceil(timeDiff / (1000 * 3600 * 24)));
+
+                // Update number of nights
+                document.getElementById('numNights').textContent = days;
+
+                // Update total price
+                const totalPrice = days * pricePerNight;
+                document.getElementById('totalPrice').textContent = '$' + totalPrice.toFixed(2);
+            }
+
+            // Add event listeners to date inputs
+            document.getElementById('CheckInDate').addEventListener('change', calculateTotal);
+            document.getElementById('CheckOutDate').addEventListener('change', calculateTotal);
+
+            // Calculate initial total
+            calculateTotal();
+
+            // Payment method handling
+            const paymentMethodSelect = document.getElementById('paymentMethod');
+            const newPaymentMethodDiv = document.getElementById('newPaymentMethodDiv');
+            const newPaymentMethodSelect = document.getElementById('newPaymentMethod');
+            const paymentDetails = document.getElementById('paymentDetails');
+            const savePaymentMethodCheckbox = document.getElementById('savePaymentMethod');
+
+            paymentMethodSelect.addEventListener('change', function() {
+                if (this.value === 'new') {
+                    newPaymentMethodDiv.classList.remove('d-none');
+                    savePaymentMethodCheckbox.checked = true;
+
+                    // Reset the new payment method select
+                    newPaymentMethodSelect.value = '';
+                    paymentDetails.classList.add('d-none');
+                } else {
+                    newPaymentMethodDiv.classList.add('d-none');
+
+                    // Show payment details for credit/debit cards
+                    if (this.value === 'Credit Card' || this.value === 'Debit Card') {
+                        paymentDetails.classList.remove('d-none');
+                        savePaymentMethodCheckbox.checked = false;
+                    } else {
+                        paymentDetails.classList.add('d-none');
+                    }
+                }
+            });
+
+            newPaymentMethodSelect.addEventListener('change', function() {
+                // Show payment details for credit/debit cards
+                if (this.value === 'Credit Card' || this.value === 'Debit Card') {
+                    paymentDetails.classList.remove('d-none');
+                } else {
+                    paymentDetails.classList.add('d-none');
+                }
+            });
+
+            // Form validation
+            const form = document.querySelector('form');
+
+            form.addEventListener('submit', function(e) {
+                const checkInDate = new Date(document.getElementById('CheckInDate').value);
+                const checkOutDate = new Date(document.getElementById('CheckOutDate').value);
+                const termsCheck = document.getElementById('termsCheck');
+                const paymentMethod = document.getElementById('paymentMethod');
+                const newPaymentMethod = document.getElementById('newPaymentMethod');
+
+                let isValid = true;
+
+                // Check if check-in date is in the past
+                if (checkInDate < new Date().setHours(0, 0, 0, 0)) {
+                    e.preventDefault();
+                    isValid = false;
+                    document.getElementById('CheckInDate').classList.add('is-invalid');
+                    alert('Check-in date cannot be in the past.');
+                }
+
+                // Check if check-out date is before check-in date
+                if (checkOutDate <= checkInDate) {
+                    e.preventDefault();
+                    isValid = false;
+                    document.getElementById('CheckOutDate').classList.add('is-invalid');
+                    alert('Check-out date must be after check-in date.');
+                }
+
+                // Check if payment method is selected
+                if (paymentMethod.value === 'new' && !newPaymentMethod.value) {
+                    e.preventDefault();
+                    isValid = false;
+                    newPaymentMethod.classList.add('is-invalid');
+                    alert('Please select a payment method.');
+                } else if (paymentMethod.value === '' && newPaymentMethod.value === '') {
+                    e.preventDefault();
+                    isValid = false;
+                    paymentMethod.classList.add('is-invalid');
+                    alert('Please select a payment method.');
+                }
+
+                // Check if terms are accepted
+                if (!termsCheck.checked) {
+                    e.preventDefault();
+                    isValid = false;
+                    termsCheck.classList.add('is-invalid');
+                    alert('You must agree to the terms and conditions.');
+                }
+
+                return isValid;
+            });
+        });
+    </script>
+}

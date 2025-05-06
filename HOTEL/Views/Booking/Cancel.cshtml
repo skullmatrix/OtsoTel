@@ -1,0 +1,51 @@
+﻿@model HotelWebsite.Models.Booking
+@{
+    ViewData["Title"] = "Cancel Booking";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm text-center">
+                <div class="card-body p-5">
+                    <div class="mb-4">
+                        <i class="fas fa-exclamation-triangle text-warning" style="font-size: 4rem;"></i>
+                    </div>
+
+                    <h3 class="mb-4">Cancel Your Booking?</h3>
+
+                    <p class="mb-4">Are you sure you want to cancel your booking for:</p>
+
+                    <div class="mb-4">
+                        <div class="bg-light p-4 rounded">
+                            <h5 class="mb-3">@Model.Room.Type Room - @Model.Room.RoomNumber</h5>
+                            <p class="mb-2"><strong>Check-in:</strong> @Model.CheckInDate.ToString("MMM dd, yyyy")</p>
+                            <p class="mb-2"><strong>Check-out:</strong> @Model.CheckOutDate.ToString("MMM dd, yyyy")</p>
+                            <p class="mb-0"><strong>Total Amount:</strong> $@Model.TotalPrice.ToString("0.00")</p>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="alert alert-warning">
+                            <p class="mb-0"><strong>Note:</strong> This action cannot be undone. If you cancel this booking, you will need to make a new booking if you want to stay with us.</p>
+                        </div>
+                    </div>
+
+                    <form asp-action="Cancel" method="post">
+                        <input type="hidden" name="id" value="@Model.Id" />
+
+                        <div class="d-flex justify-content-center gap-3">
+                            <a href="@Url.Action("Details", new { id = Model.Id })" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-2"></i> No, Keep My Booking
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-check me-2"></i> Yes, Cancel Booking
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

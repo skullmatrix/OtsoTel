@@ -10,5 +10,8 @@
         public string Description { get; set; }
         public int Capacity { get; set; }
         public string ImageUrl { get; set; }
+
+        // Additional properties for booking functionality
+        public bool IsAvailable => Status == "Vacant";
     }
 }

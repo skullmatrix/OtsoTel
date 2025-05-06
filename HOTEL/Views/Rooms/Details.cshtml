@@ -1,0 +1,110 @@
+﻿@model HotelWebsite.Models.Room
+@{
+    ViewData["Title"] = Model.Type + " Room Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm overflow-hidden mb-4">
+                <img src="@Model.ImageUrl" class="card-img-top img-fluid" alt="@Model.Type Room">
+                <div class="card-body p-4">
+                    <h1 class="card-title fw-bold mb-3">@Model.Type Room - @Model.RoomNumber</h1>
+                    <div class="d-flex align-items-center mb-4">
+                        <span class="badge bg-primary me-2">@Model.Type</span>
+                        <span class="badge bg-success me-2">Available</span>
+                        <div class="ms-auto">
+                            <span class="fw-bold text-primary fs-4">$@Model.Price<small class="text-muted fs-6">/night</small></span>
+                        </div>
+                    </div>
+
+                    <h5 class="mb-3">Description</h5>
+                    <p class="card-text">@Model.Description</p>
+
+                    <h5 class="mb-3">Amenities</h5>
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-wifi text-primary me-2"></i> Free WiFi</li>
+                                <li class="mb-2"><i class="fas fa-tv text-primary me-2"></i> Smart TV</li>
+                                <li class="mb-2"><i class="fas fa-snowflake text-primary me-2"></i> Air Conditioning</li>
+                                <li class="mb-2"><i class="fas fa-coffee text-primary me-2"></i> Coffee Maker</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-utensils text-primary me-2"></i> Breakfast Included</li>
+                                <li class="mb-2"><i class="fas fa-bath text-primary me-2"></i> Private Bathroom</li>
+                                <li class="mb-2"><i class="fas fa-concierge-bell text-primary me-2"></i> Room Service</li>
+                                <li class="mb-2"><i class="fas fa-user-friends text-primary me-2"></i> @Model.Capacity guests</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h4 class="card-title fw-bold mb-4">Book this room</h4>
+
+                    <form action="@Url.Action("Create", "Booking")" method="get">
+                        <input type="hidden" name="roomId" value="@Model.Id" />
+
+                        <div class="mb-3">
+                            <label for="checkInDate" class="form-label">Check-in Date</label>
+                            <input type="date" class="form-control" id="checkInDate" name="checkInDate" 
+                                   value="@DateTime.Now.ToString("yyyy-MM-dd")" min="@DateTime.Now.ToString("yyyy-MM-dd")" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="checkOutDate" class="form-label">Check-out Date</label>
+                            <input type="date" class="form-control" id="checkOutDate" name="checkOutDate" 
+                                   value="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" min="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="guests" class="form-label">Number of Guests</label>
+                            <select class="form-select" id="guests" name="guests">
+                                @for (int i = 1; i <= Model.Capacity; i++)
+                                {
+                                        <option value="@i">@i</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">Book Now</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h4 class="card-title fw-bold mb-3">Why Book with Us?</h4>
+                    <ul class="list-unstyled">
+                        <li class="mb-3">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <span>Best price guarantee</span>
+                        </li>
+                        <li class="mb-3">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <span>Free cancellation</span>
+                        </li>
+                        <li class="mb-3">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <span>No booking fees</span>
+                        </li>
+                        <li class="mb-3">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <span>24/7 customer service</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

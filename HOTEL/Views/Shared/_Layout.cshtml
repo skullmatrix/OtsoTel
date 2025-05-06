@@ -7,6 +7,22 @@
     var userPhoto = HttpContextAccessor.HttpContext?.Session.GetString("UserPhoto");
     var isAdmin = HttpContextAccessor.HttpContext?.Session.GetString("IsAdmin") == "True";
     var userRole = HttpContextAccessor.HttpContext?.Session.GetString("UserRole") ?? "Guest";
+
+    // Active page check helper
+    string IsActive(string controller, string action = "")
+    {
+        var currentController = ViewContext.RouteData.Values["Controller"]?.ToString();
+        var currentAction = ViewContext.RouteData.Values["Action"]?.ToString();
+
+        if (controller == currentController)
+        {
+            if (string.IsNullOrEmpty(action) || action == currentAction)
+            {
+                return "active";
+            }
+        }
+        return "";
+    }
 }
 
 <!DOCTYPE html>
@@ -14,7 +30,6 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Removed CSP meta tag that was used for Google Sign-in -->
     <title>@ViewData["Title"] - The Matrix Hotel</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/css/site.css">
@@ -25,6 +40,7 @@
         /* Custom styles for the sidebar */
         body {
             overflow-x: hidden;
+            font-family: 'Poppins', sans-serif;
         }
 
         /* Main content adjustments */
@@ -265,6 +281,11 @@
             color: #212529;
         }
 
+        .role-badge-maintenance {
+            background-color: #fd7e14;
+            color: #212529;
+        }
+
         .role-badge-guest {
             background-color: #6c757d;
         }
@@ -293,7 +314,8 @@
                 <h4>@userName</h4>
                 <span class="badge @(userRole == "Administrator" ? "role-badge-admin" :
                                   userRole == "FrontDesk" ? "role-badge-frontdesk" :
-                                  userRole == "Housekeeping" ? "role-badge-housekeeping" : "role-badge-guest")">
+                                  userRole == "Housekeeping" ? "role-badge-housekeeping" :
+                                  userRole == "Maintenance" ? "role-badge-maintenance" : "role-badge-guest")">
                     @userRole
                 </span>
             </div>
@@ -301,80 +323,116 @@
             <div class="sidebar-nav">
                 @if (userRole == "Administrator")
                 {
-                    <a href="#" class="nav-link">
+                    <a href="@Url.Action("Index", "Admin")" class="nav-link @IsActive("Admin", "Index")">
                         <i class="fas fa-home"></i> Dashboard
                     </a>
-                    <a href="/Admin/UserManagement" class="nav-link">
+                    <a href="@Url.Action("UserManagement", "Admin")" class="nav-link @IsActive("Admin", "UserManagement")">
                         <i class="fas fa-users-cog"></i> User Management
                     </a>
-                    <a href="/Rooms/Admin" class="nav-link">
+                    <a href="@Url.Action("Admin", "Rooms")" class="nav-link @IsActive("Rooms", "Admin")">
                         <i class="fas fa-hotel"></i> Room Management
                     </a>
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-calendar-check"></i> Bookings
+                    <a href="@Url.Action("Index", "Billing")" class="nav-link @IsActive("Billing")">
+                        <i class="fas fa-file-invoice-dollar"></i> Billing
                     </a>
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-chart-line"></i> Analytics
+                    <a href="@Url.Action("FrontDesk", "CheckInOut")" class="nav-link @IsActive("CheckInOut")">
+                        <i class="fas fa-calendar-check"></i> Check In/Out
+                    </a>
+                    <a href="@Url.Action("Index", "Reports")" class="nav-link @IsActive("Reports")">
+                        <i class="fas fa-chart-line"></i> Reports
+                    </a>
+                    <a href="@Url.Action("Index", "Housekeeping")" class="nav-link @IsActive("Housekeeping")">
+                        <i class="fas fa-broom"></i> Housekeeping
+                    </a>
+                    <a href="@Url.Action("Index", "Maintenance")" class="nav-link @IsActive("Maintenance")">
+                        <i class="fas fa-tools"></i> Maintenance
                     </a>
                 }
                 else if (userRole == "FrontDesk")
                 {
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-home"></i> Dashboard
+                    <a href="@Url.Action("FrontDesk", "CheckInOut")" class="nav-link @IsActive("CheckInOut", "FrontDesk")">
+                        <i class="fas fa-home"></i> Front Desk
                     </a>
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-calendar-check"></i> Reservations
+                    <a href="@Url.Action("Index", "Rooms")" class="nav-link @IsActive("Rooms", "Index")">
+                        <i class="fas fa-hotel"></i> Rooms
                     </a>
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-user-check"></i> Guest Check-In/Out
+                    <a href="@Url.Action("Index", "Billing")" class="nav-link @IsActive("Billing")">
+                        <i class="fas fa-file-invoice-dollar"></i> Billing
                     </a>
-                    <a href="#" class="nav-link">
+                    <a href="@Url.Action("GuestDirectory", "FrontDesk")" class="nav-link @IsActive("FrontDesk", "GuestDirectory")">
+                        <i class="fas fa-address-book"></i> Guest Directory
+                    </a>
+                    <a href="@Url.Action("Services", "FrontDesk")" class="nav-link @IsActive("FrontDesk", "Services")">
                         <i class="fas fa-concierge-bell"></i> Services
                     </a>
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-comments"></i> Guest Requests
+                    <a href="@Url.Action("Requests", "FrontDesk")" class="nav-link @IsActive("FrontDesk", "Requests")">
+                        <i class="fas fa-clipboard-list"></i> Guest Requests
                     </a>
                 }
                 else if (userRole == "Housekeeping")
                 {
-                    <a href="#" class="nav-link">
+                    <a href="@Url.Action("Index", "Housekeeping")" class="nav-link @IsActive("Housekeeping", "Index")">
                         <i class="fas fa-home"></i> Dashboard
                     </a>
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-broom"></i> Cleaning Schedule
+                    <a href="@Url.Action("Schedule", "Housekeeping")" class="nav-link @IsActive("Housekeeping", "Schedule")">
+                        <i class="fas fa-calendar-alt"></i> Schedule
                     </a>
-                    <a href="#" class="nav-link">
+                    <a href="@Url.Action("RoomStatus", "Housekeeping")" class="nav-link @IsActive("Housekeeping", "RoomStatus")">
                         <i class="fas fa-clipboard-check"></i> Room Status
                     </a>
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-tools"></i> Maintenance
+                    <a href="@Url.Action("Inventory", "Housekeeping")" class="nav-link @IsActive("Housekeeping", "Inventory")">
+                        <i class="fas fa-boxes"></i> Inventory
                     </a>
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-boxes"></i> Supplies
+                    <a href="@Url.Action("Create", "Maintenance")" class="nav-link @IsActive("Maintenance", "Create")">
+                        <i class="fas fa-tools"></i> Report Maintenance
+                    </a>
+                }
+                else if (userRole == "Maintenance")
+                {
+                    <a href="@Url.Action("Index", "Maintenance")" class="nav-link @IsActive("Maintenance", "Index")">
+                        <i class="fas fa-home"></i> Dashboard
+                    </a>
+                    <a href="@Url.Action("Assignments", "Maintenance")" class="nav-link @IsActive("Maintenance", "Assignments")">
+                        <i class="fas fa-tasks"></i> My Assignments
+                    </a>
+                    <a href="@Url.Action("Create", "Maintenance")" class="nav-link @IsActive("Maintenance", "Create")">
+                        <i class="fas fa-plus-circle"></i> New Request
+                    </a>
+                    <a href="@Url.Action("Inventory", "Maintenance")" class="nav-link @IsActive("Maintenance", "Inventory")">
+                        <i class="fas fa-toolbox"></i> Inventory
+                    </a>
+                    <a href="@Url.Action("History", "Maintenance")" class="nav-link @IsActive("Maintenance", "History")">
+                        <i class="fas fa-history"></i> Work History
                     </a>
                 }
                 else
                 {
-                    <!-- Regular user menu -->
-                    <a href="/Account/UserProfile" class="nav-link">
+                    <!-- Regular guest menu -->
+                    <a href="/" class="nav-link @IsActive("Home", "Index")">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                    <a href="@Url.Action("Index", "Rooms")" class="nav-link @IsActive("Rooms", "Index")">
+                        <i class="fas fa-hotel"></i> Rooms & Suites
+                    </a>
+                    <a href="@Url.Action("UserProfile", "Account")" class="nav-link @IsActive("Account", "UserProfile")">
                         <i class="fas fa-user"></i> My Profile
                     </a>
-                    <a href="#" class="nav-link">
+                    <a href="@Url.Action("MyBookings", "Booking")" class="nav-link @IsActive("Booking", "MyBookings")">
                         <i class="fas fa-bookmark"></i> My Bookings
                     </a>
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-star"></i> My Reviews
+                    <a href="@Url.Action("Services", "Guest")" class="nav-link @IsActive("Guest", "Services")">
+                        <i class="fas fa-concierge-bell"></i> Hotel Services
                     </a>
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-bell"></i> Notifications
+                    <a href="@Url.Action("Feedback", "Guest")" class="nav-link @IsActive("Guest", "Feedback")">
+                        <i class="fas fa-comment-alt"></i> Feedback
                     </a>
                 }
 
                 <!-- Common menu items for all roles -->
-                <a href="#" class="nav-link">
+                <a href="@Url.Action("Settings", "Account")" class="nav-link @IsActive("Account", "Settings")">
                     <i class="fas fa-cog"></i> Settings
                 </a>
-                <a href="/Account/Logout" class="nav-link">
+                <a href="@Url.Action("Logout", "Account")" class="nav-link">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
             </div>
@@ -389,19 +447,19 @@
                         Sign In
                     </button>
                 </div>
-                <a href="#" class="nav-link">
+                <a href="/" class="nav-link @IsActive("Home", "Index")">
                     <i class="fas fa-home"></i> Home
                 </a>
-                <a href="/Rooms" class="nav-link">
-                    <i class="fas fa-hotel"></i> Rooms
+                <a href="@Url.Action("Index", "Rooms")" class="nav-link @IsActive("Rooms", "Index")">
+                    <i class="fas fa-hotel"></i> Rooms & Suites
                 </a>
-                <a href="#" class="nav-link">
+                <a href="@Url.Action("Services", "Guest")" class="nav-link @IsActive("Guest", "Services")">
                     <i class="fas fa-concierge-bell"></i> Services
                 </a>
-                <a href="#" class="nav-link">
+                <a href="@Url.Action("About", "Home")" class="nav-link @IsActive("Home", "About")">
                     <i class="fas fa-info-circle"></i> About
                 </a>
-                <a href="#" class="nav-link">
+                <a href="@Url.Action("Contact", "Home")" class="nav-link @IsActive("Home", "Contact")">
                     <i class="fas fa-phone"></i> Contact
                 </a>
             </div>
@@ -422,15 +480,30 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav me-auto">
-                            <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                            @if (userRole == "Administrator" || userRole == "FrontDesk")
+                            <li class="nav-item"><a class="nav-link @IsActive("Home", "Index")" href="/">Home</a></li>
+                            @if (userRole == "Administrator")
                             {
-                                <li class="nav-item"><a class="nav-link" href="/Admin">Admin</a></li>
+                                <li class="nav-item"><a class="nav-link @IsActive("Admin")" href="@Url.Action("Index", "Admin")">Admin</a></li>
                             }
-                            <li class="nav-item"><a class="nav-link" href="/Explore">Explore</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/Rooms">Rooms</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/About">About</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/Contact">Contact</a></li>
+                            @if (userRole == "FrontDesk")
+                            {
+                                <li class="nav-item"><a class="nav-link @IsActive("CheckInOut")" href="@Url.Action("FrontDesk", "CheckInOut")">Front Desk</a></li>
+                            }
+                            @if (userRole == "Housekeeping")
+                            {
+                                <li class="nav-item"><a class="nav-link @IsActive("Housekeeping")" href="@Url.Action("Index", "Housekeeping")">Housekeeping</a></li>
+                            }
+                            @if (userRole == "Maintenance")
+                            {
+                                <li class="nav-item"><a class="nav-link @IsActive("Maintenance")" href="@Url.Action("Index", "Maintenance")">Maintenance</a></li>
+                            }
+                            <li class="nav-item"><a class="nav-link @IsActive("Rooms")" href="@Url.Action("Index", "Rooms")">Rooms</a></li>
+                            @if (userRole == "Guest" || string.IsNullOrEmpty(userId))
+                            {
+                                <li class="nav-item"><a class="nav-link @IsActive("Guest", "Services")" href="@Url.Action("Services", "Guest")">Services</a></li>
+                                <li class="nav-item"><a class="nav-link @IsActive("Home", "About")" href="@Url.Action("About", "Home")">About</a></li>
+                                <li class="nav-item"><a class="nav-link @IsActive("Home", "Contact")" href="@Url.Action("Contact", "Home")">Contact</a></li>
+                            }
                         </ul>
                         @if (!string.IsNullOrEmpty(userId))
                         {
@@ -443,7 +516,8 @@
                                 <span class="me-2">@userName</span>
                                 <span class="badge @(userRole == "Administrator" ? "role-badge-admin" :
                                                   userRole == "FrontDesk" ? "role-badge-frontdesk" :
-                                                  userRole == "Housekeeping" ? "role-badge-housekeeping" : "role-badge-guest")">
+                                                  userRole == "Housekeeping" ? "role-badge-housekeeping" :
+                                                  userRole == "Maintenance" ? "role-badge-maintenance" : "role-badge-guest")">
                                     @userRole
                                 </span>
                             </button>
@@ -471,17 +545,17 @@
                 <div class="row g-3">
                     <div class="col-md-3">
                         <h5 class="footer-heading">Quick Links</h5>
-                        <a href="#" class="footer-link">Room Booking</a>
-                        <a href="/Rooms" class="footer-link">Rooms</a>
-                        <a href="/Contact" class="footer-link">Contact</a>
-                        <a href="/Explore" class="footer-link">Explore</a>
+                        <a href="@Url.Action("Index", "Rooms")" class="footer-link">Room Booking</a>
+                        <a href="@Url.Action("Index", "Rooms")" class="footer-link">Rooms</a>
+                        <a href="@Url.Action("Contact", "Home")" class="footer-link">Contact</a>
+                        <a href="@Url.Action("Services", "Guest")" class="footer-link">Services</a>
                     </div>
                     <div class="col-md-3">
                         <h5 class="footer-heading">Company</h5>
-                        <a href="#" class="footer-link">Privacy Policy</a>
-                        <a href="#" class="footer-link">Refund Policy</a>
-                        <a href="#" class="footer-link">F.A.Q</a>
-                        <a href="/About" class="footer-link">About</a>
+                        <a href="@Url.Action("PrivacyPolicy", "Home")" class="footer-link">Privacy Policy</a>
+                        <a href="@Url.Action("RefundPolicy", "Home")" class="footer-link">Refund Policy</a>
+                        <a href="@Url.Action("FAQ", "Home")" class="footer-link">F.A.Q</a>
+                        <a href="@Url.Action("About", "Home")" class="footer-link">About</a>
                     </div>
                     <div class="col-md-3">
                         <h5 class="footer-heading">Social Media</h5>
@@ -500,7 +574,7 @@
                     </div>
                 </div>
                 <div class="copyright mt-3">
-                    &copy; 2023 The Matrix Hotel. All rights reserved.
+                    &copy; @DateTime.Now.Year The Matrix Hotel. All rights reserved.
                 </div>
             </div>
         </footer>
@@ -532,8 +606,8 @@
                     </form>
 
                     <div class="mt-3 text-center">
-                        <p>Don't have an account? <a href="/Account/Register" class="text-success">Create Account</a></p>
-                        <p><a href="/Account/ForgotPassword" class="text-muted">Forgot Password?</a></p>
+                        <p>Don't have an account? <a href="@Url.Action("SignUp", "Account")" class="text-success">Create Account</a></p>
+                        <p><a href="@Url.Action("ForgotPassword", "Account")" class="text-muted">Forgot Password?</a></p>
                     </div>
                 </div>
             </div>
@@ -579,8 +653,8 @@
         @if (TempData["ShowLoginModal"] != null && (bool)TempData["ShowLoginModal"])
         {
             <text>
-                                const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
-                                loginModal.show();
+                    const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+                    loginModal.show();
             </text>
         }
         });

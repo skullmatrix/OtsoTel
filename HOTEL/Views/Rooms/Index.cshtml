@@ -1,26 +1,81 @@
 ﻿@model IEnumerable<HotelWebsite.Models.Room>
-
 @{
     ViewData["Title"] = "Our Rooms";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="container py-5">
-    <h1 class="text-center mb-4">Our Rooms</h1>
+    <div class="row mb-4 align-items-center">
+        <div class="col-md-6">
+            <h1 class="fw-bold mb-0">Our Rooms</h1>
+            <p class="text-muted">Find the perfect room for your stay</p>
+        </div>
+        <div class="col-md-6">
+            <div class="text-md-end">
+                <div class="btn-group" role="group">
+                    <a href="@Url.Action("Index")" class="btn @(string.IsNullOrEmpty(Context.Request.Query["type"]) ? "btn-primary" : "btn-outline-primary")">All</a>
+                    @foreach (var type in ViewBag.RoomTypes)
+                    {
+                        <a href="@Url.Action("Index", new { type = type })" class="btn @(Context.Request.Query["type"] == type ? "btn-primary" : "btn-outline-primary")">@type</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @ViewBag.ErrorMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (ViewBag.SuccessMessage != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @ViewBag.SuccessMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
 
     <div class="row">
-        @foreach (var item in Model)
+        @foreach (var room in Model)
         {
-            <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    <img src="@item.ImageUrl" class="card-img-top" alt="@item.Type Room">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 border-0 shadow-sm hover-elevation transition-all">
+                    <div class="position-relative">
+                        <img src="@room.ImageUrl" class="card-img-top" alt="@room.Type Room">
+                        <span class="badge bg-primary position-absolute top-0 end-0 m-3">@room.Type</span>
+                    </div>
                     <div class="card-body">
-                        <h5 class="card-title">@item.Type Room - @item.RoomNumber</h5>
-                        <p class="card-text">@item.Description</p>
-                        <ul class="list-group list-group-flush mb-3">
-                            <li class="list-group-item">Capacity: @item.Capacity</li>
-                            <li class="list-group-item">Price: $@item.Price per night</li>
-                        </ul>
-                        <a href="/Bookings/Create?roomId=@item.Id" class="btn btn-success">Book Now</a>
+                        <h5 class="card-title">@room.Type Room - @room.RoomNumber</h5>
+                        <p class="card-text">@room.Description</p>
+
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="fw-bold text-primary fs-4">$@room.Price<small class="text-muted fs-6">/night</small></span>
+                            <span class="badge bg-success">Available</span>
+                        </div>
+
+                        <div class="room-features d-flex flex-wrap gap-3 mb-3">
+                            <div class="feature d-flex align-items-center">
+                                <i class="fas fa-user-friends text-primary me-2"></i>
+                                <span>@room.Capacity guests</span>
+                            </div>
+                            <div class="feature d-flex align-items-center">
+                                <i class="fas fa-wifi text-primary me-2"></i>
+                                <span>Free WiFi</span>
+                            </div>
+                            <div class="feature d-flex align-items-center">
+                                <i class="fas fa-coffee text-primary me-2"></i>
+                                <span>Breakfast</span>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <a href="@Url.Action("Details", new { id = room.Id })" class="btn btn-outline-primary">View Details</a>
+                            <a href="@Url.Action("Create", "Booking", new { roomId = room.Id })" class="btn btn-primary">Book Now</a>
+                        </div>
                     </div>
                 </div>
             </div>

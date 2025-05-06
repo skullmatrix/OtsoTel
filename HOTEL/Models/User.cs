@@ -11,6 +11,20 @@
         public string Address { get; set; } = string.Empty;
         public string Photo { get; set; } = string.Empty;
         public bool IsAdmin { get; set; } = false;
-        public string Role { get; set; } = "Guest"; // New role property with default value
+        public string Role { get; set; } = "Guest"; // Guest, Administrator, FrontDesk, Housekeeping, Maintenance
+        
+        // Additional guest information fields
+        public string? PhoneNumber { get; set; }
+        public DateTime? DateOfBirth { get; set; }
+        public string? Nationality { get; set; }
+        public string? IdType { get; set; } // Passport, National ID, Driver's License
+        public string? IdNumber { get; set; }
+        public string? PreferredLanguage { get; set; }
+        public string? LoyaltyMembershipId { get; set; }
+        public int? LoyaltyPoints { get; set; }
+        public string? Notes { get; set; }
+        
+        // Calculated full name property
+        public string FullName => $"{FirstName} {(string.IsNullOrEmpty(MiddleName) ? "" : MiddleName + " ")}{LastName}";
     }
 }

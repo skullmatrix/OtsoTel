@@ -98,7 +98,29 @@ namespace HotelWebsite.Controllers
                     this.HttpContext.Session.SetString("IsAdmin", user.IsAdmin.ToString());
                     this.HttpContext.Session.SetString("UserRole", user.Role);
 
-                    return Json(new { success = true, isAdmin = user.IsAdmin, role = user.Role });
+                    // Determine redirect URL based on user role
+                    string redirectUrl = "/";
+
+                    if (user.Role == "Administrator")
+                    {
+                        redirectUrl = "/Admin";
+                    }
+                    else if (user.Role == "FrontDesk")
+                    {
+                        redirectUrl = "/FrontDesk";
+                    }
+                    else if (user.Role == "Housekeeping")
+                    {
+                        redirectUrl = "/Housekeeping"; // Housekeeping dashboard
+                    }
+
+                    return Json(new
+                    {
+                        success = true,
+                        isAdmin = user.IsAdmin,
+                        role = user.Role,
+                        redirectUrl = redirectUrl
+                    });
                 }
                 return Json(new { success = false, message = "Invalid email or password." });
             }

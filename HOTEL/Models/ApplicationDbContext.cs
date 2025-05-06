@@ -11,6 +11,11 @@ namespace HotelWebsite.Models
 
         public DbSet<User> Users { get; set; }
         public DbSet<Room> Rooms { get; set; }
+        public DbSet<Booking> Bookings { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<BillItem> BillItems { get; set; }
+        public DbSet<HousekeepingTask> HousekeepingTasks { get; set; }
+        public DbSet<MaintenanceRequest> MaintenanceRequests { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -103,6 +108,54 @@ namespace HotelWebsite.Models
                     ImageUrl = "https://example.com/standard-room.jpg"
                 }
             );
+            // Configure relationships
+            modelBuilder.Entity<Booking>()
+                .HasOne(b => b.Room)
+                .WithMany()
+                .HasForeignKey(b => b.RoomId);
+
+            modelBuilder.Entity<Booking>()
+                .HasOne(b => b.User)
+                .WithMany()
+                .HasForeignKey(b => b.UserId);
+
+            modelBuilder.Entity<Payment>()
+                .HasOne(p => p.Booking)
+                .WithMany(b => b.Payments)
+                .HasForeignKey(p => p.BookingId);
+
+            modelBuilder.Entity<BillItem>()
+                .HasOne(b => b.Booking)
+                .WithMany(b => b.BillItems)
+                .HasForeignKey(b => b.BookingId);
+
+            modelBuilder.Entity<HousekeepingTask>()
+                .HasOne(h => h.Room)
+                .WithMany()
+                .HasForeignKey(h => h.RoomId);
+
+            modelBuilder.Entity<HousekeepingTask>()
+                .HasOne(h => h.AssignedTo)
+                .WithMany()
+                .HasForeignKey(h => h.AssignedToUserId)
+                .IsRequired(false);
+
+            modelBuilder.Entity<MaintenanceRequest>()
+                .HasOne(m => m.Room)
+                .WithMany()
+                .HasForeignKey(m => m.RoomId);
+
+            modelBuilder.Entity<MaintenanceRequest>()
+                .HasOne(m => m.ReportedBy)
+                .WithMany()
+                .HasForeignKey(m => m.ReportedByUserId)
+                .IsRequired(false);
+
+            modelBuilder.Entity<MaintenanceRequest>()
+                .HasOne(m => m.AssignedTo)
+                .WithMany()
+                .HasForeignKey(m => m.AssignedToUserId)
+                .IsRequired(false);
         }
 
         private string HashPassword(string password)
