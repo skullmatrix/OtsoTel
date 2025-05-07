@@ -3,6 +3,7 @@ using System;
 using HotelWebsite.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HOTEL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250506222258_AddFinal1")]
+    partial class AddFinal1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -423,7 +426,7 @@ namespace HOTEL.Migrations
                             FirstName = "Admin",
                             IsAdmin = true,
                             LastName = "Matrix",
-                            Password = "$2a$11$9cR.Lsh.HTzcGi4U4czQzOLZz2/hKpb0F8bdz7EVXisWfG7iA2lmS",
+                            Password = "$2a$11$gvaL4VWtV4THUIuq264kZu2S6J8Jk576B.yXMJ0nDHybi385Zitzu",
                             Photo = "https://cdn-icons-png.flaticon.com/256/2165/2165674.png",
                             Role = "Administrator"
                         },
@@ -435,7 +438,7 @@ namespace HOTEL.Migrations
                             FirstName = "John",
                             IsAdmin = false,
                             LastName = "Doe",
-                            Password = "$2a$11$aAU2HpEcHd5WL6uTj3xWV.RxNZ4zk0m7HkfPxDr8COHjmhdBq8gji",
+                            Password = "$2a$11$7sT.VqKJXoXhWnfTwrmW/evaR8RC/eWEdhUrvuHXwbSH2kBbxPnwS",
                             Photo = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                             Role = "FrontDesk"
                         },
@@ -447,7 +450,7 @@ namespace HOTEL.Migrations
                             FirstName = "Jane",
                             IsAdmin = false,
                             LastName = "Smith",
-                            Password = "$2a$11$Q2yl6elVSvjC/jYaROCbxOTjskky9iSaAs8/b2rqm5L/fMvi/JEci",
+                            Password = "$2a$11$tsMXJLYQNHv/uy6s10LqYuntTpcKR/8CI3JlK1PTJcqaOfEg.eP/G",
                             Photo = "https://cdn-icons-png.flaticon.com/512/4128/4128176.png",
                             Role = "Housekeeping"
                         });

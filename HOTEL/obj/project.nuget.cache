@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "TddF62N0aiE=",
+  "dgSpecHash": "KJ+24KnyvFo=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Lenovo\\Documents\\Planas\\Otsotel\\HOTEL\\HOTEL.csproj",
+  "projectFilePath": "C:\\Users\\Lenovo\\Documents\\Planas\\matrixhotel\\OtsoTel\\hotel\\HOTEL.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Lenovo\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\Lenovo\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

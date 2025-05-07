@@ -5,7 +5,7 @@
 namespace HOTEL.Migrations
 {
     /// <inheritdoc />
-    public partial class AddHotelManagementFeatures3 : Migration
+    public partial class AddFinal : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,26 +15,21 @@ namespace HOTEL.Migrations
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "Password",
-                value: "$2a$11$XsCDWTTriIx8osC7tUIUn.HoVaKVtWkq2aynBH9yo8LM1eW48JpBy");
+                value: "$2a$11$i8xU75fH3TPwYr82CnGEAuJAacVM2ECwImCleWL8J7/RkAZlDia0y");
 
             migrationBuilder.UpdateData(
                 table: "Users",
                 keyColumn: "Id",
                 keyValue: 2,
                 column: "Password",
-                value: "$2a$11$iMbTR0kC0ZanzN0jV3RDi.1gjp2lWmZSvrOWgH6tiI.2pKAwN/wKq");
+                value: "$2a$11$Km8Rl9xgPtb9TOefEgxlIO00HXb49h5QHUcm0.h.S4XVqh2zaQ55a");
 
             migrationBuilder.UpdateData(
                 table: "Users",
                 keyColumn: "Id",
                 keyValue: 3,
                 column: "Password",
-                value: "$2a$11$Ifk7mZCe5NuNDRZoB/NX/OtwRtvyQguMsAFzz.kEMDewJ4Idg/9K2");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "IdVerification",
-                table: "Bookings",
-                nullable: true);
+                value: "$2a$11$rM3nBsczpUufrQqiGdKw3.H97Z1TI9F/ujuVoVsejBIWBerhR/ANe");
         }
 
         /// <inheritdoc />
@@ -45,26 +40,21 @@ namespace HOTEL.Migrations
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "Password",
-                value: "$2a$11$1qbIEpZDGxEC855kzhlXdeEB/HAz8dpQZ.8ZNzvXzCUJlghfEQfX.");
+                value: "$2a$11$qdJwKUP9UYuiIUKkWr3m1eXQ77kSB9DJT.2Ba7dshRIKajtcuDd3.");
 
             migrationBuilder.UpdateData(
                 table: "Users",
                 keyColumn: "Id",
                 keyValue: 2,
                 column: "Password",
-                value: "$2a$11$qCPZDj3w2P8/jakbdU4McebnkcrmTIVjs7wL850oe.BQKR0BBhSnC");
+                value: "$2a$11$74ODUMaFUd9xS.ET11LGQ.YNHb5w5tTSSWztCp86NMC2Yoxz8.NQu");
 
             migrationBuilder.UpdateData(
                 table: "Users",
                 keyColumn: "Id",
                 keyValue: 3,
                 column: "Password",
-                value: "$2a$11$3IrG0O8/QCgFzP2BuMPH0OC7e4S8mnWoMWCsMhkPS2kGJmYx7JuPW");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "IdVerification",
-                table: "Bookings",
-                nullable: false);
+                value: "$2a$11$/VMKHXlu9vvV3734IzSAwuOEcC2D42eLNPABDGgKxVNOagE1Pz24a");
         }
     }
 }

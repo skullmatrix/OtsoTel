@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HOTEL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250506055650_AddHotelManagementFeatures3")]
-    partial class AddHotelManagementFeatures3
+    [Migration("20250506201254_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -77,17 +77,14 @@ namespace HOTEL.Migrations
                     b.Property<DateTime>("CheckOutDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("CheckedInById")
+                    b.Property<int?>("CheckedInById")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CheckedInByUserId")
+                    b.Property<int?>("CheckedOutById")
                         .HasColumnType("int");
 
-                    b.Property<int>("CheckedOutById")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CheckedOutByUserId")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("IdVerification")
                         .IsRequired()
@@ -409,6 +406,9 @@ namespace HOTEL.Migrations
                     b.Property<string>("PreferredLanguage")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("PreferredPaymentMethod")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Role")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -426,7 +426,7 @@ namespace HOTEL.Migrations
                             FirstName = "Admin",
                             IsAdmin = true,
                             LastName = "Matrix",
-                            Password = "$2a$11$XsCDWTTriIx8osC7tUIUn.HoVaKVtWkq2aynBH9yo8LM1eW48JpBy",
+                            Password = "$2a$11$qdJwKUP9UYuiIUKkWr3m1eXQ77kSB9DJT.2Ba7dshRIKajtcuDd3.",
                             Photo = "https://cdn-icons-png.flaticon.com/256/2165/2165674.png",
                             Role = "Administrator"
                         },
@@ -438,7 +438,7 @@ namespace HOTEL.Migrations
                             FirstName = "John",
                             IsAdmin = false,
                             LastName = "Doe",
-                            Password = "$2a$11$iMbTR0kC0ZanzN0jV3RDi.1gjp2lWmZSvrOWgH6tiI.2pKAwN/wKq",
+                            Password = "$2a$11$74ODUMaFUd9xS.ET11LGQ.YNHb5w5tTSSWztCp86NMC2Yoxz8.NQu",
                             Photo = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                             Role = "FrontDesk"
                         },
@@ -450,7 +450,7 @@ namespace HOTEL.Migrations
                             FirstName = "Jane",
                             IsAdmin = false,
                             LastName = "Smith",
-                            Password = "$2a$11$Ifk7mZCe5NuNDRZoB/NX/OtwRtvyQguMsAFzz.kEMDewJ4Idg/9K2",
+                            Password = "$2a$11$/VMKHXlu9vvV3734IzSAwuOEcC2D42eLNPABDGgKxVNOagE1Pz24a",
                             Photo = "https://cdn-icons-png.flaticon.com/512/4128/4128176.png",
                             Role = "Housekeeping"
                         });
@@ -471,15 +471,11 @@ namespace HOTEL.Migrations
                 {
                     b.HasOne("HotelWebsite.Models.User", "CheckedInBy")
                         .WithMany()
-                        .HasForeignKey("CheckedInById")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CheckedInById");
 
                     b.HasOne("HotelWebsite.Models.User", "CheckedOutBy")
                         .WithMany()
-                        .HasForeignKey("CheckedOutById")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CheckedOutById");
 
                     b.HasOne("HotelWebsite.Models.Room", "Room")
                         .WithMany()

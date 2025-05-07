@@ -1,18 +1,21 @@
 ﻿@{
     ViewData["Title"] = "Admin Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
     
-    var occupancyRate = ViewBag.OccupancyRate;
-    var totalRooms = ViewBag.TotalRooms;
-    var occupiedRooms = ViewBag.OccupiedRooms;
-    var vacantRooms = ViewBag.VacantRooms;
-    var maintenanceRooms = ViewBag.MaintenanceRooms;
-    var activeStaff = ViewBag.ActiveStaff;
-    var todayRevenue = ViewBag.TodayRevenue;
-    var yesterdayRevenue = ViewBag.YesterdayRevenue;
-    var recentBookings = ViewBag.RecentBookings as List<HotelWebsite.Models.Booking>;
+    // Set default values if ViewBag properties are null
+    var occupancyRate = ViewBag.OccupancyRate ?? 0.0;
+    var totalRooms = ViewBag.TotalRooms ?? 0;
+    var occupiedRooms = ViewBag.OccupiedRooms ?? 0;
+    var vacantRooms = ViewBag.VacantRooms ?? 0;
+    var maintenanceRooms = ViewBag.MaintenanceRooms ?? 0;
+    var activeStaff = ViewBag.ActiveStaff ?? 0;
+    var todayRevenue = ViewBag.TodayRevenue ?? 0.0;
+    var yesterdayRevenue = ViewBag.YesterdayRevenue ?? 0.0;
 }
 
-<div class="container my-5">
+<div class="container py-4">
+    <h1 class="mb-4">Admin Dashboard</h1>
+
     <div class="row">
         <div class="col-12 mb-4">
             <h2>Welcome to The Matrix Hotel Admin Dashboard</h2>
@@ -62,12 +65,12 @@
         </div>
     </div>
 
-    <div class="row mb-4">
+    <div class="row">
         <div class="col-12">
             <div class="card border-0 shadow-sm">
                 <div class="card-header bg-white d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Recent Bookings</h5>
-                    <a href="#" class="btn btn-sm btn-outline-success">View All</a>
+                    <a href="@Url.Action("Index", "Booking")" class="btn btn-sm btn-outline-success">View All</a>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -84,48 +87,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if (recentBookings != null && recentBookings.Any())
-                                {
-                                    foreach (var booking in recentBookings)
-                                    {
-                                        <tr>
-                                            <td>B-@booking.Id.ToString("D5")</td>
-                                            <td>@booking.User.FirstName @booking.User.LastName</td>
-                                            <td>@booking.Room.Type - @booking.Room.RoomNumber</td>
-                                            <td>@booking.CheckInDate.ToString("MMM dd, yyyy")</td>
-                                            <td>@booking.CheckOutDate.ToString("MMM dd, yyyy")</td>
-                                            <td>
-                                                @if (booking.Status == "Confirmed")
-                                                {
-                                                    <span class="badge bg-success">Confirmed</span>
-                                                }
-                                                else if (booking.Status == "Checked In")
-                                                {
-                                                    <span class="badge bg-info">Checked In</span>
-                                                }
-                                                else if (booking.Status == "Checked Out")
-                                                {
-                                                    <span class="badge bg-secondary">Checked Out</span>
-                                                }
-                                                else if (booking.Status == "Cancelled")
-                                                {
-                                                    <span class="badge bg-danger">Cancelled</span>
-                                                }
-                                                else
-                                                {
-                                                    <span class="badge bg-warning text-dark">@booking.Status</span>
-                                                }
-                                            </td>
-                                            <td><a href="@Url.Action("GuestBill", "Billing", new { id = booking.Id })" class="btn btn-sm btn-outline-primary">Details</a></td>
-                                        </tr>
-                                    }
-                                }
-                                else
-                                {
-                                    <tr>
-                                        <td colspan="7" class="text-center">No recent bookings found.</td>
-                                    </tr>
-                                }
+                                <tr>
+                                    <td colspan="7" class="text-center py-4">
+                                        <i class="fas fa-calendar-times text-muted mb-3" style="font-size: 2rem;"></i>
+                                        <p class="text-muted mb-0">No recent bookings found</p>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -148,7 +115,7 @@
                         </div>
                         <div class="text-center">
                             <h5 class="text-primary">@vacantRooms</h5>
-                            <small class="text-muted">Available</small>
+                            <small class="text-muted">Vacant</small>
                         </div>
                         <div class="text-center">
                             <h5 class="text-warning">@maintenanceRooms</h5>

@@ -29,6 +29,6 @@ namespace HotelWebsite.Models
         public string Status { get; set; } = "Pending"; // Pending, Completed, Failed, Refunded
 
         [Display(Name = "Notes")]
-        public string Notes { get; set; }
+        public string Notes { get; set; } = ""; // Add default value    
     }
 }

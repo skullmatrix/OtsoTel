@@ -5,7 +5,7 @@
 namespace HOTEL.Migrations
 {
     /// <inheritdoc />
-    public partial class AddHotelManagementFeatures1 : Migration
+    public partial class AddFinal3 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,21 +15,21 @@ namespace HOTEL.Migrations
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "Password",
-                value: "$2a$11$NDTwoQOItegQWxKDnjj7x.eQAW74aqZCTp160jm7N4pW4SGSQ3HFe");
+                value: "$2a$11$9cR.Lsh.HTzcGi4U4czQzOLZz2/hKpb0F8bdz7EVXisWfG7iA2lmS");
 
             migrationBuilder.UpdateData(
                 table: "Users",
                 keyColumn: "Id",
                 keyValue: 2,
                 column: "Password",
-                value: "$2a$11$BV8vvE7/a9x4zYk3Qv0vV.J4NUlDOXCH7.ooWU.aehhF51ULHKbW.");
+                value: "$2a$11$aAU2HpEcHd5WL6uTj3xWV.RxNZ4zk0m7HkfPxDr8COHjmhdBq8gji");
 
             migrationBuilder.UpdateData(
                 table: "Users",
                 keyColumn: "Id",
                 keyValue: 3,
                 column: "Password",
-                value: "$2a$11$j9mtC4Ouc2r8MXYl6tT9UO2FJzMvzBgD3aUjj2EF7XYiSbHMOmUxm");
+                value: "$2a$11$Q2yl6elVSvjC/jYaROCbxOTjskky9iSaAs8/b2rqm5L/fMvi/JEci");
         }
 
         /// <inheritdoc />
@@ -40,21 +40,21 @@ namespace HOTEL.Migrations
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "Password",
-                value: "$2a$11$PfZGD.nAv4VIkwa30DOyT.vBvlC.UTeiucjLQ4KQGmKpmmBrqWs1u");
+                value: "$2a$11$HOMIaEHsU7xFsm9po1ruv.a1DtkjjF1LinKep3WVZbB4eByF5ujZK");
 
             migrationBuilder.UpdateData(
                 table: "Users",
                 keyColumn: "Id",
                 keyValue: 2,
                 column: "Password",
-                value: "$2a$11$9tZ/lI1Cm/vqCkSgu1ZdYOu2jCic9WDuLiDeSHZ8cSTPyWv9cWmlm");
+                value: "$2a$11$JBAnwINLSYEBrChdjnyZZeEm5xYUpvHKGD6pjQ95top2bYunpym6O");
 
             migrationBuilder.UpdateData(
                 table: "Users",
                 keyColumn: "Id",
                 keyValue: 3,
                 column: "Password",
-                value: "$2a$11$fPJJU.T/2DB.0W4qbW5QEubNcvdCjhHQissz6RwR9oaSJwKcbzf.q");
+                value: "$2a$11$y2odM6ADZUNZq6DhisNFd.jFOemCAQ6l1KCt/SP4QhSJvM/Oh5MMW");
         }
     }
 }

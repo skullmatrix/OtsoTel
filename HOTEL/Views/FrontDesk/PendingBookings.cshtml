@@ -1,0 +1,89 @@
+@model IEnumerable<HotelWebsite.Models.Booking>
+@{
+    ViewData["Title"] = "Pending Bookings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Pending Bookings</h1>
+        <a href="@Url.Action("Index", "FrontDesk")" class="btn btn-outline-primary">
+            <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
+        </a>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white">
+            <h5 class="mb-0">Cash Payments Requiring Confirmation</h5>
+        </div>
+        <div class="card-body p-0">
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Guest</th>
+                                <th>Room</th>
+                                <th>Check-in Date</th>
+                                <th>Amount</th>
+                                <th>Payment Method</th>
+                                <th>Booking Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var booking in Model)
+                            {
+                                <tr>
+                                    <td>@booking.Id</td>
+                                    <td>@booking.User.FullName</td>
+                                    <td>@booking.Room.RoomNumber (@booking.Room.Type)</td>
+                                    <td>@booking.CheckInDate.ToString("MMM dd, yyyy")</td>
+                                    <td>$@booking.TotalPrice</td>
+                                    <td>
+                                        @foreach (var payment in booking.Payments)
+                                        {
+                                            <span class="badge bg-primary">@payment.PaymentMethod</span>
+                                        }
+                                    </td>
+                                    <td>@booking.BookingDate.ToString("MMM dd, yyyy")</td>
+                                    <td>
+                                        <a href="@Url.Action("ConfirmBooking", "FrontDesk", new { id = booking.Id })" class="btn btn-sm btn-success">
+                                            <i class="fas fa-check-circle me-1"></i> Confirm
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <i class="fas fa-check-circle text-success mb-3" style="font-size: 3rem;"></i>
+                    <h4>No Pending Bookings</h4>
+                    <p class="text-muted">All bookings have been confirmed.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>

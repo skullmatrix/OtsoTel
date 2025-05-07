@@ -1,8 +1,25 @@
 ﻿@{
     ViewData["Title"] = "Admin Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    
+    // Set default values if ViewBag properties are null
+    var occupancyRate = ViewBag.OccupancyRate ?? 0.0;
+    var occupancyChange = ViewBag.OccupancyChange ?? 0.0;
+    var totalRooms = ViewBag.TotalRooms ?? 0;
+    var occupiedRooms = ViewBag.OccupiedRooms ?? 0;
+    var bookedRooms = ViewBag.BookedRooms ?? 0;
+    var vacantRooms = ViewBag.VacantRooms ?? 0;
+    var maintenanceRooms = ViewBag.MaintenanceRooms ?? 0;
+    var cleaningRooms = ViewBag.CleaningRooms ?? 0;
+    var activeStaff = ViewBag.ActiveStaff ?? 0;
+    var todayRevenue = ViewBag.TodayRevenue ?? 0.0;
+    var yesterdayRevenue = ViewBag.YesterdayRevenue ?? 0.0;
+    var revenueChange = ViewBag.RevenueChange ?? 0.0;
 }
 
-<div class="container my-5">
+<div class="container py-4">
+    <h1 class="mb-4">Admin Dashboard</h1>
+
     <div class="row">
         <div class="col-12 mb-4">
             <h2>Welcome to The Matrix Hotel Admin Dashboard</h2>
@@ -16,8 +33,19 @@
                 <div class="card-body">
                     <h5 class="card-title text-success">Occupancy Rate</h5>
                     <p class="text-muted">Current hotel occupancy</p>
-                    <h1 class="display-4 text-success">85%</h1>
-                    <p class="text-muted"><i class="fas fa-arrow-up text-success"></i> +3% from last week</p>
+                    <h1 class="display-4 text-success">@occupancyRate.ToString("0.0")%</h1>
+                    @if (occupancyChange > 0)
+                    {
+                        <p class="text-muted"><i class="fas fa-arrow-up text-success"></i> +@occupancyChange.ToString("0.0")% from last week</p>
+                    }
+                    else if (occupancyChange < 0)
+                    {
+                        <p class="text-muted"><i class="fas fa-arrow-down text-danger"></i> @occupancyChange.ToString("0.0")% from last week</p>
+                    }
+                    else
+                    {
+                        <p class="text-muted"><i class="fas fa-equals text-muted"></i> No change from last week</p>
+                    }
                 </div>
             </div>
         </div>
@@ -26,7 +54,7 @@
                 <div class="card-body">
                     <h5 class="card-title text-primary">Active Staff</h5>
                     <p class="text-muted">Staff currently on duty</p>
-                    <h1 class="display-4 text-primary">12</h1>
+                    <h1 class="display-4 text-primary">@activeStaff</h1>
                     <p class="text-muted">From all departments</p>
                 </div>
             </div>
@@ -36,19 +64,30 @@
                 <div class="card-body">
                     <h5 class="card-title text-warning">Today's Revenue</h5>
                     <p class="text-muted">Total earnings today</p>
-                    <h1 class="display-4 text-warning">$4,250</h1>
-                    <p class="text-muted"><i class="fas fa-arrow-up text-success"></i> +$750 from yesterday</p>
+                    <h1 class="display-4 text-warning">$@todayRevenue.ToString("N0")</h1>
+                    @if (revenueChange > 0)
+                    {
+                        <p class="text-muted"><i class="fas fa-arrow-up text-success"></i> +$@revenueChange.ToString("N0") from yesterday</p>
+                    }
+                    else if (revenueChange < 0)
+                    {
+                        <p class="text-muted"><i class="fas fa-arrow-down text-danger"></i> -$@Math.Abs(revenueChange).ToString("N0") from yesterday</p>
+                    }
+                    else
+                    {
+                        <p class="text-muted"><i class="fas fa-equals text-muted"></i> No change from yesterday</p>
+                    }
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="row mb-4">
+    <div class="row">
         <div class="col-12">
             <div class="card border-0 shadow-sm">
                 <div class="card-header bg-white d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Recent Bookings</h5>
-                    <a href="#" class="btn btn-sm btn-outline-success">View All</a>
+                    <a href="@Url.Action("Index", "Booking")" class="btn btn-sm btn-outline-success">View All</a>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -65,33 +104,43 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>B-1001</td>
-                                    <td>John Doe</td>
-                                    <td>Deluxe Suite - 301</td>
-                                    <td>May 5, 2025</td>
-                                    <td>May 8, 2025</td>
-                                    <td><span class="badge bg-success">Confirmed</span></td>
-                                    <td><a href="#" class="btn btn-sm btn-outline-primary">Details</a></td>
-                                </tr>
-                                <tr>
-                                    <td>B-1002</td>
-                                    <td>Jane Smith</td>
-                                    <td>Standard - 105</td>
-                                    <td>May 6, 2025</td>
-                                    <td>May 7, 2025</td>
-                                    <td><span class="badge bg-warning text-dark">Pending</span></td>
-                                    <td><a href="#" class="btn btn-sm btn-outline-primary">Details</a></td>
-                                </tr>
-                                <tr>
-                                    <td>B-1003</td>
-                                    <td>Robert Johnson</td>
-                                    <td>Executive - 203</td>
-                                    <td>May 6, 2025</td>
-                                    <td>May 10, 2025</td>
-                                    <td><span class="badge bg-success">Confirmed</span></td>
-                                    <td><a href="#" class="btn btn-sm btn-outline-primary">Details</a></td>
-                                </tr>
+                                @if (ViewBag.RecentBookings != null && ViewBag.RecentBookings.Count > 0)
+                                {
+                                    @foreach (var booking in ViewBag.RecentBookings)
+                                    {
+                                        <tr>
+                                            <td>@booking.Id</td>
+                                            <td>@booking.User.FullName</td>
+                                            <td>@booking.Room.RoomNumber (@booking.Room.Type)</td>
+                                            <td>@booking.CheckInDate.ToString("MMM dd, yyyy")</td>
+                                            <td>@booking.CheckOutDate.ToString("MMM dd, yyyy")</td>
+                                            <td>
+                                                @{
+                                                    var statusClass = booking.Status == "Confirmed" ? "bg-success" : 
+                                                                     (booking.Status == "Pending" ? "bg-warning text-dark" : 
+                                                                     (booking.Status == "Checked In" ? "bg-primary" : 
+                                                                     (booking.Status == "Checked Out" ? "bg-secondary" : 
+                                                                     "bg-info")));
+                                                }
+                                                <span class="badge @statusClass">@booking.Status</span>
+                                            </td>
+                                            <td>
+                                                <a href="@Url.Action("Details", "Booking", new { id = booking.Id })" class="btn btn-sm btn-outline-primary">
+                                                    <i class="fas fa-eye me-1"></i> View
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="7" class="text-center py-4">
+                                            <i class="fas fa-calendar-times text-muted mb-3" style="font-size: 2rem;"></i>
+                                            <p class="text-muted mb-0">No recent bookings found</p>
+                                        </td>
+                                    </tr>
+                                }
                             </tbody>
                         </table>
                     </div>
@@ -109,27 +158,39 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between mb-3">
                         <div class="text-center">
-                            <h5 class="text-success">38</h5>
+                            <h5 class="text-success">@occupiedRooms</h5>
                             <small class="text-muted">Occupied</small>
                         </div>
                         <div class="text-center">
-                            <h5 class="text-primary">12</h5>
-                            <small class="text-muted">Available</small>
+                            <h5 class="text-info">@bookedRooms</h5>
+                            <small class="text-muted">Booked</small>
                         </div>
                         <div class="text-center">
-                            <h5 class="text-warning">5</h5>
+                            <h5 class="text-primary">@vacantRooms</h5>
+                            <small class="text-muted">Vacant</small>
+                        </div>
+                        <div class="text-center">
+                            <h5 class="text-warning">@maintenanceRooms</h5>
                             <small class="text-muted">Maintenance</small>
                         </div>
                         <div class="text-center">
-                            <h5 class="text-danger">3</h5>
+                            <h5 class="text-danger">@cleaningRooms</h5>
                             <small class="text-muted">Cleaning</small>
                         </div>
                     </div>
                     <div class="progress" style="height: 25px;">
-                        <div class="progress-bar bg-success" style="width: 65%;" role="progressbar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">65%</div>
-                        <div class="progress-bar bg-primary" style="width: 20%;" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">20%</div>
-                        <div class="progress-bar bg-warning" style="width: 8%;" role="progressbar" aria-valuenow="8" aria-valuemin="0" aria-valuemax="100">8%</div>
-                        <div class="progress-bar bg-danger" style="width: 7%;" role="progressbar" aria-valuenow="7" aria-valuemin="0" aria-valuemax="100">7%</div>
+                        @{ 
+                            var occupiedPercent = totalRooms > 0 ? (double)occupiedRooms / totalRooms * 100 : 0;
+                            var bookedPercent = totalRooms > 0 ? (double)bookedRooms / totalRooms * 100 : 0;
+                            var vacantPercent = totalRooms > 0 ? (double)vacantRooms / totalRooms * 100 : 0;
+                            var maintenancePercent = totalRooms > 0 ? (double)maintenanceRooms / totalRooms * 100 : 0;
+                            var cleaningPercent = totalRooms > 0 ? (double)cleaningRooms / totalRooms * 100 : 0;
+                        }
+                        <div class="progress-bar bg-success" style="width: @occupiedPercent%;" role="progressbar" aria-valuenow="@occupiedPercent" aria-valuemin="0" aria-valuemax="100">@occupiedPercent.ToString("0")%</div>
+                        <div class="progress-bar bg-info" style="width: @bookedPercent%;" role="progressbar" aria-valuenow="@bookedPercent" aria-valuemin="0" aria-valuemax="100">@bookedPercent.ToString("0")%</div>
+                        <div class="progress-bar bg-primary" style="width: @vacantPercent%;" role="progressbar" aria-valuenow="@vacantPercent" aria-valuemin="0" aria-valuemax="100">@vacantPercent.ToString("0")%</div>
+                        <div class="progress-bar bg-warning" style="width: @maintenancePercent%;" role="progressbar" aria-valuenow="@maintenancePercent" aria-valuemin="0" aria-valuemax="100">@maintenancePercent.ToString("0")%</div>
+                        <div class="progress-bar bg-danger" style="width: @cleaningPercent%;" role="progressbar" aria-valuenow="@cleaningPercent" aria-valuemin="0" aria-valuemax="100">@cleaningPercent.ToString("0")%</div>
                     </div>
                 </div>
             </div>
@@ -141,50 +202,30 @@
                     <a href="#" class="btn btn-sm btn-outline-success">View All</a>
                 </div>
                 <div class="card-body">
-                    <div class="activity-item d-flex align-items-start mb-3">
-                        <div class="me-3">
-                            <div class="bg-light rounded-circle p-2">
-                                <i class="fas fa-user-check text-success"></i>
+                    @if (ViewBag.RecentActivities != null && ViewBag.RecentActivities.Count > 0)
+                    {
+                        @foreach (var activity in ViewBag.RecentActivities)
+                        {
+                            <div class="activity-item d-flex align-items-start mb-3">
+                                <div class="me-3">
+                                    <div class="bg-light rounded-circle p-2">
+                                        <i class="@activity.Icon"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="mb-0"><strong>@activity.Title:</strong> @activity.Message</p>
+                                    <small class="text-muted">@activity.TimeAgo</small>
+                                </div>
                             </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="text-center py-4">
+                            <i class="fas fa-history text-muted mb-3" style="font-size: 2rem;"></i>
+                            <p class="text-muted mb-0">No recent activities found</p>
                         </div>
-                        <div>
-                            <p class="mb-0"><strong>New check-in:</strong> Room 301 checked in by FrontDesk</p>
-                            <small class="text-muted">10 minutes ago</small>
-                        </div>
-                    </div>
-                    <div class="activity-item d-flex align-items-start mb-3">
-                        <div class="me-3">
-                            <div class="bg-light rounded-circle p-2">
-                                <i class="fas fa-broom text-primary"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <p class="mb-0"><strong>Room cleaning:</strong> Room 205 marked as cleaned</p>
-                            <small class="text-muted">25 minutes ago</small>
-                        </div>
-                    </div>
-                    <div class="activity-item d-flex align-items-start mb-3">
-                        <div class="me-3">
-                            <div class="bg-light rounded-circle p-2">
-                                <i class="fas fa-credit-card text-warning"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <p class="mb-0"><strong>Payment received:</strong> $850 from B-1001</p>
-                            <small class="text-muted">35 minutes ago</small>
-                        </div>
-                    </div>
-                    <div class="activity-item d-flex align-items-start">
-                        <div class="me-3">
-                            <div class="bg-light rounded-circle p-2">
-                                <i class="fas fa-tools text-danger"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <p class="mb-0"><strong>Maintenance request:</strong> Room 118 - AC not working</p>
-                            <small class="text-muted">45 minutes ago</small>
-                        </div>
-                    </div>
+                    }
                 </div>
             </div>
         </div>

@@ -23,6 +23,7 @@
         public string? LoyaltyMembershipId { get; set; }
         public int? LoyaltyPoints { get; set; }
         public string? Notes { get; set; }
+        public string? PreferredPaymentMethod { get; set; }
         
         // Calculated full name property
         public string FullName => $"{FirstName} {(string.IsNullOrEmpty(MiddleName) ? "" : MiddleName + " ")}{LastName}";

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HOTEL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250506043630_AddHotelManagementFeatures1")]
-    partial class AddHotelManagementFeatures1
+    [Migration("20250506155832_AddPreferredPaymentMethodToUser")]
+    partial class AddPreferredPaymentMethodToUser
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -88,6 +88,9 @@ namespace HOTEL.Migrations
 
                     b.Property<int?>("CheckedOutByUserId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("IdVerification")
                         .IsRequired()
@@ -409,6 +412,9 @@ namespace HOTEL.Migrations
                     b.Property<string>("PreferredLanguage")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("PreferredPaymentMethod")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Role")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -426,7 +432,7 @@ namespace HOTEL.Migrations
                             FirstName = "Admin",
                             IsAdmin = true,
                             LastName = "Matrix",
-                            Password = "$2a$11$NDTwoQOItegQWxKDnjj7x.eQAW74aqZCTp160jm7N4pW4SGSQ3HFe",
+                            Password = "$2a$11$wiOvkzNz92Minh6qAfcp1edvtc/UgDxjajF8qwwhorBGK6aJ0mJGi",
                             Photo = "https://cdn-icons-png.flaticon.com/256/2165/2165674.png",
                             Role = "Administrator"
                         },
@@ -438,7 +444,7 @@ namespace HOTEL.Migrations
                             FirstName = "John",
                             IsAdmin = false,
                             LastName = "Doe",
-                            Password = "$2a$11$BV8vvE7/a9x4zYk3Qv0vV.J4NUlDOXCH7.ooWU.aehhF51ULHKbW.",
+                            Password = "$2a$11$CPVylWNze3Om/sQQeLc1B.rEHYcCrkRH0T5C3Kjh3v3vp6EthcwHW",
                             Photo = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                             Role = "FrontDesk"
                         },
@@ -450,7 +456,7 @@ namespace HOTEL.Migrations
                             FirstName = "Jane",
                             IsAdmin = false,
                             LastName = "Smith",
-                            Password = "$2a$11$j9mtC4Ouc2r8MXYl6tT9UO2FJzMvzBgD3aUjj2EF7XYiSbHMOmUxm",
+                            Password = "$2a$11$ohssdchh7fyb0RfJQMKinO3hqps28dKO42VkVkeH.e7DO8Z7XVLQ2",
                             Photo = "https://cdn-icons-png.flaticon.com/512/4128/4128176.png",
                             Role = "Housekeeping"
                         });
