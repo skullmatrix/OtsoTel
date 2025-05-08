@@ -93,164 +93,169 @@ namespace HotelWebsite.Controllers
         }
 
         // POST: CheckInOut/CheckIn/5
-[HttpPost]
-[ValidateAntiForgeryToken]
-public async Task<IActionResult> CheckIn(int id, string idVerification)
-{
-    // Check if user is front desk or admin
-    var userRole = HttpContext.Session.GetString("UserRole");
-    if (userRole != "Administrator" && userRole != "FrontDesk")
-    {
-        return RedirectToAction("Index", "Home");
-    }
-
-    var userId = HttpContext.Session.GetString("UserId");
-    if (string.IsNullOrEmpty(userId))
-    {
-        return RedirectToAction("Index", "Home");
-    }
-
-    var booking = await _context.Bookings
-        .Include(b => b.Room)
-        .FirstOrDefaultAsync(b => b.Id == id);
-
-    if (booking == null)
-    {
-        return NotFound();
-    }
-
-    // Update booking status
-    booking.Status = "Checked In";
-    booking.ActualCheckInDate = DateTime.Now;
-    booking.CheckedInById = int.Parse(userId);
-    booking.IdVerification = idVerification;
-
-    // Update room status to Occupied (not Confirmed)
-    booking.Room.Status = "Occupied";
-
-    // Create bill item for the room charge
-    var roomCharge = new BillItem
-    {
-        BookingId = booking.Id,
-        Description = $"{booking.Room.Type} Room - {booking.Room.RoomNumber}",
-        Amount = booking.TotalPrice,
-        Category = "Room Charge",
-        DateAdded = DateTime.Now
-    };
-
-    _context.BillItems.Add(roomCharge);
-
-    // Schedule housekeeping task for the checkout date
-    var housekeepingTask = new HousekeepingTask
-    {
-        RoomId = booking.RoomId,
-        TaskType = "Regular Cleaning",
-        Status = "Pending",
-        ScheduledDate = booking.CheckOutDate,
-        Notes = "Scheduled cleaning after guest checkout",
-        Priority = "Normal"
-    };
-
-    _context.HousekeepingTasks.Add(housekeepingTask);
-
-    await _context.SaveChangesAsync();
-
-    TempData["SuccessMessage"] = "Guest has been checked in successfully.";
-    return RedirectToAction("FrontDesk");
-}
-
-// POST: CheckInOut/CheckOut/5
-[HttpPost]
-[ValidateAntiForgeryToken]
-public async Task<IActionResult> CheckOut(int id, string paymentMethod, string transactionReference, decimal paymentAmount)
-{
-    // Check if user is front desk or admin
-    var userRole = HttpContext.Session.GetString("UserRole");
-    if (userRole != "Administrator" && userRole != "FrontDesk")
-    {
-        return RedirectToAction("Index", "Home");
-    }
-
-    var userId = HttpContext.Session.GetString("UserId");
-    if (string.IsNullOrEmpty(userId))
-    {
-        return RedirectToAction("Index", "Home");
-    }
-
-    var booking = await _context.Bookings
-        .Include(b => b.Room)
-        .Include(b => b.BillItems)
-        .Include(b => b.Payments)
-        .FirstOrDefaultAsync(b => b.Id == id);
-
-    if (booking == null)
-    {
-        return NotFound();
-    }
-
-    // Check if there is an outstanding balance
-    var totalBill = booking.BillItems.Sum(b => b.Amount);
-    var totalPaid = booking.Payments.Where(p => p.Status == "Completed").Sum(p => p.Amount);
-    var balance = totalBill - totalPaid;
-
-    // If payment amount is provided, record the payment
-    if (paymentAmount > 0)
-    {
-        var payment = new Payment
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CheckIn(int id, string idVerification)
         {
-            BookingId = booking.Id,
-            Amount = paymentAmount,
-            PaymentDate = DateTime.Now,
-            PaymentMethod = paymentMethod,
-            TransactionReference = transactionReference,
-            Status = "Completed",
-            Notes = "Payment collected at checkout"
-        };
+            // Check if user is front desk or admin
+            var userRole = HttpContext.Session.GetString("UserRole");
+            if (userRole != "Administrator" && userRole != "FrontDesk")
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
-        _context.Payments.Add(payment);
+            var userId = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
-        // Update balance after new payment
-        totalPaid += paymentAmount;
-        balance = totalBill - totalPaid;
-    }
+            var booking = await _context.Bookings
+                .Include(b => b.Room)
+                .Include(b => b.User)
+                .FirstOrDefaultAsync(b => b.Id == id);
 
-    // Update payment status based on balance
-    if (balance <= 0)
-    {
-        booking.PaymentStatus = "Paid";
-    }
-    else if (totalPaid > 0)
-    {
-        booking.PaymentStatus = "Partial";
-    }
+            if (booking == null)
+            {
+                return NotFound();
+            }
 
-    // Update booking status
-    booking.Status = "Checked Out";
-    booking.ActualCheckOutDate = DateTime.Now;
-    booking.CheckedOutById = int.Parse(userId);
+            // Update booking status
+            booking.Status = "Checked In";
+            booking.ActualCheckInDate = DateTime.Now;
+            booking.CheckedInById = int.Parse(userId);
+            booking.IdVerification = idVerification;
 
-    // Update room status to Cleaning first (not Vacant)
-    booking.Room.Status = "Cleaning";
+            // Update room status to Occupied
+            booking.Room.Status = "Occupied";
 
-    // Create immediate housekeeping task
-    var housekeepingTask = new HousekeepingTask
-    {
-        RoomId = booking.RoomId,
-        TaskType = "Regular Cleaning",
-        Status = "Pending",
-        ScheduledDate = DateTime.Now,
-        Notes = "Room requires cleaning after checkout",
-        Priority = "High"
-    };
+            // Create bill item for the room charge if not already done
+            var existingBillItem = await _context.BillItems
+                .FirstOrDefaultAsync(b => b.BookingId == booking.Id && b.Category == "Room Charge");
 
-    _context.HousekeepingTasks.Add(housekeepingTask);
+            if (existingBillItem == null)
+            {
+                var roomCharge = new BillItem
+                {
+                    BookingId = booking.Id,
+                    Description = $"{booking.Room.Type} Room - {booking.Room.RoomNumber}",
+                    Amount = booking.TotalPrice,
+                    Category = "Room Charge",
+                    DateAdded = DateTime.Now
+                };
 
-    await _context.SaveChangesAsync();
+                _context.BillItems.Add(roomCharge);
+            }
 
-    // Redirect to invoice page
-    TempData["SuccessMessage"] = "Guest has been checked out successfully.";
-    return RedirectToAction("Invoice", "Billing", new { id = booking.Id });
-}
+            // Schedule housekeeping task for checkout
+            var housekeepingTask = new HousekeepingTask
+            {
+                RoomId = booking.RoomId,
+                TaskType = "Regular Cleaning",
+                Status = "Pending",
+                ScheduledDate = booking.CheckOutDate,
+                Notes = $"Scheduled cleaning after checkout for room {booking.Room.RoomNumber}",
+                Priority = "Normal"
+            };
+
+            _context.HousekeepingTasks.Add(housekeepingTask);
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = $"Guest {booking.User.FullName} has been checked in to Room {booking.Room.RoomNumber}.";
+            return RedirectToAction("FrontDesk");
+        }
+
+        // POST: CheckInOut/CheckOut/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CheckOut(int id, string paymentMethod, string transactionReference, decimal paymentAmount)
+        {
+            // Check if user is front desk or admin
+            var userRole = HttpContext.Session.GetString("UserRole");
+            if (userRole != "Administrator" && userRole != "FrontDesk")
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var userId = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var booking = await _context.Bookings
+                .Include(b => b.Room)
+                .Include(b => b.User)
+                .Include(b => b.BillItems)
+                .Include(b => b.Payments)
+                .FirstOrDefaultAsync(b => b.Id == id);
+
+            if (booking == null)
+            {
+                return NotFound();
+            }
+
+            // Check if there is an outstanding balance
+            var totalBill = booking.BillItems.Sum(b => b.Amount);
+            var totalPaid = booking.Payments.Where(p => p.Status == "Completed").Sum(p => p.Amount);
+            var balance = totalBill - totalPaid;
+
+            // If payment amount is provided, record the payment
+            if (paymentAmount > 0)
+            {
+                var payment = new Payment
+                {
+                    BookingId = booking.Id,
+                    Amount = paymentAmount,
+                    PaymentDate = DateTime.Now,
+                    PaymentMethod = paymentMethod,
+                    TransactionReference = transactionReference,
+                    Status = "Completed",
+                    Notes = "Payment collected at checkout"
+                };
+
+                _context.Payments.Add(payment);
+
+                // Update balance after new payment
+                totalPaid += paymentAmount;
+                balance = totalBill - totalPaid;
+            }
+
+            // Update payment status based on balance
+            if (balance <= 0)
+            {
+                booking.PaymentStatus = "Paid";
+            }
+            else if (totalPaid > 0)
+            {
+                booking.PaymentStatus = "Partial";
+            }
+
+            // Update booking status
+            booking.Status = "Checked Out";
+            booking.ActualCheckOutDate = DateTime.Now;
+            booking.CheckedOutById = int.Parse(userId);
+
+            // Update room status to Cleaning (not directly to Vacant)
+            booking.Room.Status = "Cleaning";
+
+            // Create immediate housekeeping task
+            var housekeepingTask = new HousekeepingTask
+            {
+                RoomId = booking.RoomId,
+                TaskType = "Regular Cleaning",
+                Status = "Pending",
+                ScheduledDate = DateTime.Now,
+                Notes = $"Room {booking.Room.RoomNumber} requires cleaning after checkout",
+                Priority = "High"
+            };
+
+            _context.HousekeepingTasks.Add(housekeepingTask);
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = $"Guest {booking.User.FullName} has been checked out from Room {booking.Room.RoomNumber}.";
+            return RedirectToAction("Invoice", "Billing", new { id = booking.Id });
+        }
 
         // GET: CheckInOut/CheckOut/5
         public async Task<IActionResult> CheckOut(int id)

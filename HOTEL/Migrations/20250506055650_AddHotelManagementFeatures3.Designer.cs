@@ -3,6 +3,7 @@ using System;
 using HotelWebsite.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HOTEL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250506055650_AddHotelManagementFeatures3")]
+    partial class AddHotelManagementFeatures3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,14 +77,17 @@ namespace HOTEL.Migrations
                     b.Property<DateTime>("CheckOutDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int?>("CheckedInById")
+                    b.Property<int>("CheckedInById")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CheckedOutById")
+                    b.Property<int?>("CheckedInByUserId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
+                    b.Property<int>("CheckedOutById")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CheckedOutByUserId")
+                        .HasColumnType("int");
 
                     b.Property<string>("IdVerification")
                         .IsRequired()
@@ -403,9 +409,6 @@ namespace HOTEL.Migrations
                     b.Property<string>("PreferredLanguage")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("PreferredPaymentMethod")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("Role")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -423,7 +426,7 @@ namespace HOTEL.Migrations
                             FirstName = "Admin",
                             IsAdmin = true,
                             LastName = "Matrix",
-                            Password = "$2a$11$EUazjewgyqRvuEPiBaEJrOQcSTnEIlt4uzSo2FdaQLy9r9RwmzwCm",
+                            Password = "$2a$11$XsCDWTTriIx8osC7tUIUn.HoVaKVtWkq2aynBH9yo8LM1eW48JpBy",
                             Photo = "https://cdn-icons-png.flaticon.com/256/2165/2165674.png",
                             Role = "Administrator"
                         },
@@ -435,7 +438,7 @@ namespace HOTEL.Migrations
                             FirstName = "John",
                             IsAdmin = false,
                             LastName = "Doe",
-                            Password = "$2a$11$VQmRKs.gnKmCjpUvfJDsxuxVbuXIPwCfwdRXFJHcYpnR0KK0WZBfm",
+                            Password = "$2a$11$iMbTR0kC0ZanzN0jV3RDi.1gjp2lWmZSvrOWgH6tiI.2pKAwN/wKq",
                             Photo = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                             Role = "FrontDesk"
                         },
@@ -447,7 +450,7 @@ namespace HOTEL.Migrations
                             FirstName = "Jane",
                             IsAdmin = false,
                             LastName = "Smith",
-                            Password = "$2a$11$jJ5AHmqHuRzwo2rOs2x/xOXTxk.6T.MdCyH2XszoTT3g.Een8Ne4W",
+                            Password = "$2a$11$Ifk7mZCe5NuNDRZoB/NX/OtwRtvyQguMsAFzz.kEMDewJ4Idg/9K2",
                             Photo = "https://cdn-icons-png.flaticon.com/512/4128/4128176.png",
                             Role = "Housekeeping"
                         });
@@ -468,11 +471,15 @@ namespace HOTEL.Migrations
                 {
                     b.HasOne("HotelWebsite.Models.User", "CheckedInBy")
                         .WithMany()
-                        .HasForeignKey("CheckedInById");
+                        .HasForeignKey("CheckedInById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("HotelWebsite.Models.User", "CheckedOutBy")
                         .WithMany()
-                        .HasForeignKey("CheckedOutById");
+                        .HasForeignKey("CheckedOutById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("HotelWebsite.Models.Room", "Room")
                         .WithMany()

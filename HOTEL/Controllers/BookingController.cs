@@ -44,23 +44,44 @@ namespace HotelWebsite.Controllers
 
             // Get user's saved payment methods
             var user = await _context.Users.FindAsync(int.Parse(userId));
+            var savedPaymentMethods = new List<string>();
+            
+            // Add user's preferred payment method if it exists
+            if (user != null && !string.IsNullOrEmpty(user.PreferredPaymentMethod))
+            {
+                savedPaymentMethods.Add(user.PreferredPaymentMethod);
+            }
 
-            // Get existing payments made by this user to use as payment methods
+            // Get any other payment methods the user has used
             var userPayments = await _context.Payments
                 .Where(p => p.Booking.UserId == int.Parse(userId) && !string.IsNullOrEmpty(p.PaymentMethod))
                 .Select(p => p.PaymentMethod)
                 .Distinct()
                 .ToListAsync();
+            
+            // Add payment methods that aren't already in the list
+            foreach (var method in userPayments)
+            {
+                if (!savedPaymentMethods.Contains(method))
+                {
+                    savedPaymentMethods.Add(method);
+                }
+            }
 
             ViewBag.Room = room;
-            ViewBag.SavedPaymentMethods = userPayments;
+            ViewBag.SavedPaymentMethods = savedPaymentMethods;
 
             return View(new Booking
             {
                 RoomId = roomId,
                 CheckInDate = DateTime.Now.Date.AddDays(1),
                 CheckOutDate = DateTime.Now.Date.AddDays(2),
-                NumberOfGuests = 1
+                NumberOfGuests = 1,
+                Status = "Pending",
+                PaymentStatus = "Pending",
+                IdVerification = "Pending Verification",
+                SpecialRequests = "",
+                CreatedAt = DateTime.Now
             });
         }
 
@@ -175,7 +196,7 @@ public async Task<IActionResult> Create(Booking booking, string paymentMethod, b
                 {
                     booking.TotalPrice = roomInfo.Price * days;
                     
-                    // Update room status
+                    // Update room status to "Booked"
                     roomInfo.Status = "Booked";
                     _context.Rooms.Update(roomInfo);
                 }
@@ -184,51 +205,48 @@ public async Task<IActionResult> Create(Booking booking, string paymentMethod, b
                 await _context.Bookings.AddAsync(booking);
                 await _context.SaveChangesAsync();
 
+                // Handle payment method
+                string finalPaymentMethod = paymentMethod;
+                bool isExistingCard = paymentMethod.Contains("ending in");
+
+                if (!isExistingCard && (paymentMethod.Contains("Credit Card") || paymentMethod.Contains("Debit Card")))
+                {
+                    // Only process new card details if it's not a saved card
+                    string cardNumber = Request.Form["cardNumber"].ToString();
+                    if (!string.IsNullOrEmpty(cardNumber) && cardNumber.Length >= 4)
+                    {
+                        string last4 = cardNumber.Substring(cardNumber.Length - 4);
+                        finalPaymentMethod = $"{paymentMethod} ending in {last4}";
+                    }
+                }
+
                 // Save payment method if requested
-                if (savePaymentMethod && !string.IsNullOrEmpty(paymentMethod))
+                if (savePaymentMethod && !isExistingCard)
                 {
                     var user = await _context.Users.FindAsync(int.Parse(userId));
                     if (user != null)
                     {
-                        user.PreferredPaymentMethod = paymentMethod;
+                        user.PreferredPaymentMethod = finalPaymentMethod;
                         _context.Users.Update(user);
                         await _context.SaveChangesAsync();
                     }
                 }
 
                 // Create a payment record
-                if (!string.IsNullOrEmpty(paymentMethod))
+                var payment = new Payment
                 {
-                    // Extract card details if provided
-                    string notes = "";
-                    if (paymentMethod.Contains("Card") && Request.Form.ContainsKey("cardNumber"))
-                    {
-                        string cardNumber = Request.Form["cardNumber"].ToString();
-                        if (!string.IsNullOrEmpty(cardNumber) && cardNumber.Length >= 4)
-                        {
-                            string last4 = cardNumber.Substring(cardNumber.Length - 4);
-                            notes = $"Card ending in {last4}";
-                        }
-                    }
-                    
-                    var payment = new Payment
-                    {
-                        BookingId = booking.Id,
-                        Amount = booking.TotalPrice,
-                        PaymentMethod = paymentMethod,
-                        PaymentDate = DateTime.Now,
-                        // Set payment status based on method
-                        Status = paymentMethod.Contains("Credit Card") || 
-                                paymentMethod.Contains("Debit Card") || 
-                                paymentMethod.Contains("PayPal")
-                                ? "Completed" : "Pending",
-                        TransactionReference = $"REF-{DateTime.Now:yyyyMMddHHmmss}",
-                        Notes = string.IsNullOrEmpty(notes) ? $"Payment via {paymentMethod}" : notes
-                    };
-                    
-                    await _context.Payments.AddAsync(payment);
-                    await _context.SaveChangesAsync();
-                }
+                    BookingId = booking.Id,
+                    Amount = booking.TotalPrice,
+                    PaymentMethod = finalPaymentMethod,
+                    PaymentDate = DateTime.Now,
+                    Status = finalPaymentMethod.Contains("Card") || finalPaymentMethod.Contains("PayPal") 
+                            ? "Completed" : "Pending",
+                    TransactionReference = $"REF-{DateTime.Now:yyyyMMddHHmmss}",
+                    Notes = $"Payment via {finalPaymentMethod}"
+                };
+                
+                await _context.Payments.AddAsync(payment);
+                await _context.SaveChangesAsync();
 
                 // Create bill item for room charge
                 var billItem = new BillItem

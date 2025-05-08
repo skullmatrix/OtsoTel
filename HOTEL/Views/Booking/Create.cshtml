@@ -7,211 +7,343 @@
 }
 
 <div class="container py-5">
-    <!-- Page Title -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <h2 class="fw-bold text-primary">Book Your Perfect Stay</h2>
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/">Home</a></li>
-                    <li class="breadcrumb-item"><a href="/Rooms">Rooms</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Book a Room</li>
-                </ol>
-            </nav>
-        </div>
-    </div>
-
-    <div class="row g-4">
-        <!-- Main Booking Form Section -->
-        <div class="col-lg-8">
-            <!-- Room Details Card -->
-            <div class="card border-0 shadow-sm mb-4 rounded-custom">
-                <div class="card-body p-0">
-                    <div class="row g-0">
-                        <div class="col-md-5">
-                            <img src="@room.ImageUrl" class="img-fluid h-100 rounded-start" style="object-fit: cover;" alt="@room.Type Room">
+    <!-- Booking Process Steps -->
+    <div class="booking-steps mb-4">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="d-flex justify-content-between position-relative">
+                    <div class="step-connector"></div>
+                    <div class="step active">
+                        <div class="step-icon">
+                            <i class="fas fa-check"></i>
                         </div>
-                        <div class="col-md-7 p-4">
-                            <span class="badge bg-primary mb-2">@room.Type Room</span>
-                            <h3 class="mb-2">Room @room.RoomNumber</h3>
-                            <p class="mb-3">@room.Description</p>
-                            <div class="d-flex flex-wrap gap-3 mb-3">
-                                <div class="feature d-flex align-items-center">
-                                    <i class="fas fa-user-friends text-primary me-2"></i>
-                                    <span>@room.Capacity guests</span>
-                                </div>
-                                <div class="feature d-flex align-items-center">
-                                    <i class="fas fa-wifi text-primary me-2"></i>
-                                    <span>Free WiFi</span>
-                                </div>
-                                <div class="feature d-flex align-items-center">
-                                    <i class="fas fa-coffee text-primary me-2"></i>
-                                    <span>Breakfast</span>
-                                </div>
-                            </div>
-                            <div class="mt-auto">
-                                <h4 class="text-primary mb-0">$@room.Price <span class="text-muted fs-6">/ night</span></h4>
-                            </div>
+                        <div class="step-label">Select Room</div>
+                    </div>
+                    <div class="step active">
+                        <div class="step-icon">
+                            <i class="fas fa-calendar-alt"></i>
                         </div>
+                        <div class="step-label">Book Now</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon">
+                            <i class="fas fa-credit-card"></i>
+                        </div>
+                        <div class="step-label">Payment</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="step-label">Confirmation</div>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <!-- Main Booking Form -->
-            <div class="card border-0 shadow-sm rounded-custom">
-                <div class="card-header bg-white p-4 border-0">
-                    <h4 class="mb-0"><i class="fas fa-calendar-check text-primary me-2"></i> Reservation Details</h4>
+    <div class="row">
+        <!-- Main Booking Form Column -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm mb-4 rounded-lg overflow-hidden">
+                <div class="card-header bg-primary text-white py-3">
+                    <h4 class="mb-0"><i class="fas fa-calendar-check me-2"></i>Book Your Stay</h4>
                 </div>
+                
+                <!-- Room Details Section -->
                 <div class="card-body p-4">
-                    <form asp-action="Create" method="post" id="bookingForm">
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <h5 class="border-bottom pb-2 mb-3 d-flex align-items-center">
+                                <i class="fas fa-bed text-primary me-2"></i>Room Details
+                            </h5>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="room-image-container rounded overflow-hidden shadow-sm mb-3">
+                                <img src="@room.ImageUrl" class="img-fluid rounded hover-zoom" alt="@room.Type Room">
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="room-details-card p-3 bg-light rounded-lg">
+                                <h4 class="text-primary">@room.Type Room - @room.RoomNumber</h4>
+                                <p class="text-muted">@room.Description</p>
+                                <div class="room-features d-flex flex-wrap gap-3 mb-3">
+                                    <div class="feature d-flex align-items-center">
+                                        <div class="feature-icon bg-primary-light rounded-circle p-2 me-2">
+                                            <i class="fas fa-user-friends text-white"></i>
+                                        </div>
+                                        <span>@room.Capacity guests</span>
+                                    </div>
+                                    <div class="feature d-flex align-items-center">
+                                        <div class="feature-icon bg-primary-light rounded-circle p-2 me-2">
+                                            <i class="fas fa-wifi text-white"></i>
+                                        </div>
+                                        <span>Free WiFi</span>
+                                    </div>
+                                    <div class="feature d-flex align-items-center">
+                                        <div class="feature-icon bg-primary-light rounded-circle p-2 me-2">
+                                            <i class="fas fa-coffee text-white"></i>
+                                        </div>
+                                        <span>Breakfast</span>
+                                    </div>
+                                </div>
+                                <div class="price-tag bg-primary text-white py-2 px-3 rounded-pill d-inline-block">
+                                    <h5 class="mb-0">$@room.Price <small>/night</small></h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Booking Form -->
+                    <form asp-action="Create" method="post" id="bookingForm" class="booking-form needs-validation" novalidate>
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
                         <input type="hidden" asp-for="RoomId" />
 
-                        <!-- Dates Section -->
-                        <div class="mb-4">
-                            <h5 class="border-bottom pb-2 mb-3">1. Select Your Dates</h5>
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label asp-for="CheckInDate" class="form-label">Check-in Date <span class="text-danger">*</span></label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
-                                        <input asp-for="CheckInDate" class="form-control" type="date" min="@DateTime.Now.ToString("yyyy-MM-dd")" required />
-                                    </div>
-                                    <small class="text-muted">Check-in time: 2:00 PM - 10:00 PM</small>
-                                    <span asp-validation-for="CheckInDate" class="text-danger"></span>
+                        <div class="section-header d-flex align-items-center mb-3">
+                            <i class="fas fa-calendar-alt text-primary me-2"></i>
+                            <h5 class="mb-0">Stay Details</h5>
+                        </div>
+
+                        <!-- Date Selection with Calendar Icons -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label asp-for="CheckInDate" class="form-label">
+                                    <i class="fas fa-calendar-plus text-primary me-1"></i> Check-in Date <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="fas fa-calendar-day text-primary"></i>
+                                    </span>
+                                    <input asp-for="CheckInDate" class="form-control date-picker" type="date" min="@DateTime.Now.ToString("yyyy-MM-dd")" required />
+                                    <div class="invalid-feedback">Please select a valid check-in date.</div>
                                 </div>
-                                <div class="col-md-6">
-                                    <label asp-for="CheckOutDate" class="form-label">Check-out Date <span class="text-danger">*</span></label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
-                                        <input asp-for="CheckOutDate" class="form-control" type="date" min="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" required />
-                                    </div>
-                                    <small class="text-muted">Check-out time: 7:00 AM - 12:00 PM</small>
-                                    <span asp-validation-for="CheckOutDate" class="text-danger"></span>
+                                <span asp-validation-for="CheckInDate" class="text-danger"></span>
+                                <small class="text-muted">Check-in time: 2:00 PM - 10:00 PM</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="CheckOutDate" class="form-label">
+                                    <i class="fas fa-calendar-minus text-primary me-1"></i> Check-out Date <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="fas fa-calendar-day text-primary"></i>
+                                    </span>
+                                    <input asp-for="CheckOutDate" class="form-control date-picker" type="date" min="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" required />
+                                    <div class="invalid-feedback">Please select a valid check-out date.</div>
                                 </div>
+                                <span asp-validation-for="CheckOutDate" class="text-danger"></span>
+                                <small class="text-muted">Check-out time: 7:00 AM - 12:00 PM</small>
                             </div>
                         </div>
 
-                        <!-- Guest Details Section -->
+                        <!-- Guest Selection -->
                         <div class="mb-4">
-                            <h5 class="border-bottom pb-2 mb-3">2. Guest Information</h5>
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label asp-for="NumberOfGuests" class="form-label">Number of Guests <span class="text-danger">*</span></label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="fas fa-users"></i></span>
-                                        <select asp-for="NumberOfGuests" class="form-select" required>
-                                            @for (int i = 1; i <= room.Capacity; i++)
-                                            {
-                                                <option value="@i">@i @(i == 1 ? "Guest" : "Guests")</option>
-                                            }
-                                        </select>
-                                    </div>
-                                    <small class="text-muted">Maximum capacity: @room.Capacity guests</small>
-                                    <span asp-validation-for="NumberOfGuests" class="text-danger"></span>
-                                </div>
-                                <div class="col-md-6">
-                                    <label asp-for="SpecialRequests" class="form-label">Special Requests</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="fas fa-concierge-bell"></i></span>
-                                        <textarea asp-for="SpecialRequests" class="form-control" rows="1" placeholder="Any special requests or requirements?"></textarea>
-                                    </div>
-                                    <small class="text-muted">We'll do our best to accommodate your requests</small>
-                                    <span asp-validation-for="SpecialRequests" class="text-danger"></span>
-                                </div>
+                            <label asp-for="NumberOfGuests" class="form-label">
+                                <i class="fas fa-users text-primary me-1"></i> Number of Guests <span class="text-danger">*</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">
+                                    <i class="fas fa-user-friends text-primary"></i>
+                                </span>
+                                <select asp-for="NumberOfGuests" class="form-select" required>
+                                    @for (int i = 1; i <= room.Capacity; i++)
+                                    {
+                                        <option value="@i">@i @(i == 1 ? "Guest" : "Guests")</option>
+                                    }
+                                </select>
+                                <div class="invalid-feedback">Please select the number of guests.</div>
                             </div>
+                            <span asp-validation-for="NumberOfGuests" class="text-danger"></span>
+                        </div>
+
+                        <!-- Special Requests -->
+                        <div class="mb-4">
+                            <label asp-for="SpecialRequests" class="form-label">
+                                <i class="fas fa-concierge-bell text-primary me-1"></i> Special Requests
+                            </label>
+                            <textarea asp-for="SpecialRequests" class="form-control" rows="3" placeholder="Do you have any special requests or requirements? Let us know how we can make your stay more comfortable."></textarea>
+                            <span asp-validation-for="SpecialRequests" class="text-danger"></span>
+                            <small class="text-muted">We'll do our best to accommodate your requests, subject to availability.</small>
                         </div>
 
                         <!-- Payment Section -->
-                        <div class="mb-4">
-                            <h5 class="border-bottom pb-2 mb-3">3. Payment Information</h5>
-                            
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label for="paymentMethod" class="form-label">Payment Method <span class="text-danger">*</span></label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="fas fa-credit-card"></i></span>
-                                        <select id="paymentMethod" name="paymentMethod" class="form-select" required>
-                                            <option value="">Select payment method</option>
-                                            @foreach (var method in savedPaymentMethods)
-                                            {
-                                                <option value="@method">@method</option>
-                                            }
-                                            <option value="new">Add new payment method</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-md-6" id="newPaymentMethodDiv" style="display: none;">
-                                    <label for="newPaymentMethod" class="form-label">New Payment Method <span class="text-danger">*</span></label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="fas fa-wallet"></i></span>
-                                        <select id="newPaymentMethod" class="form-select">
-                                            <option value="">Select payment type</option>
-                                            <option value="Credit Card">Credit Card</option>
-                                            <option value="Debit Card">Debit Card</option>
-                                            <option value="PayPal">PayPal</option>
-                                            <option value="Bank Transfer">Bank Transfer</option>
-                                            <option value="Cash">Cash</option>
-                                        </select>
-                                    </div>
-                                </div>
+                        <div class="mb-4 payment-section">
+                            <div class="section-header d-flex align-items-center mb-3">
+                                <i class="fas fa-credit-card text-primary me-2"></i>
+                                <h5 class="mb-0">Payment Information</h5>
                             </div>
 
-                            <div id="paymentDetails" style="display: none;">
-                                <div class="row g-3 mb-3">
-                                    <div class="col-md-6">
-                                        <label for="cardNumber" class="form-label">Card Number <span class="text-danger">*</span></label>
+                            <div class="card border-0 bg-light mb-3 payment-method-card">
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label for="paymentMethod" class="form-label">Payment Method <span class="text-danger">*</span></label>
                                         <div class="input-group">
-                                            <span class="input-group-text"><i class="far fa-credit-card"></i></span>
-                                            <input type="text" id="cardNumber" class="form-control" placeholder="XXXX XXXX XXXX XXXX">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label for="expiration" class="form-label">Expiration <span class="text-danger">*</span></label>
-                                        <input type="text" id="expiration" class="form-control" placeholder="MM/YY">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label for="cvv" class="form-label">CVV <span class="text-danger">*</span></label>
-                                        <div class="input-group">
-                                            <input type="text" id="cvv" class="form-control" placeholder="XXX">
-                                            <span class="input-group-text" data-bs-toggle="tooltip" title="3-digit security code on the back of your card">
-                                                <i class="fas fa-question-circle"></i>
+                                            <span class="input-group-text bg-white">
+                                                <i class="fas fa-wallet text-primary"></i>
                                             </span>
+                                            <select id="paymentMethod" name="paymentMethod" class="form-select" required>
+                                                <option value="">Select payment method</option>
+                                                @foreach (var method in savedPaymentMethods)
+                                                {
+                                                    <option value="@method">@method</option>
+                                                }
+                                                <option value="new">Add new payment method</option>
+                                            </select>
+                                            <div class="invalid-feedback">Please select a payment method.</div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" id="savePaymentMethod" name="savePaymentMethod" value="true">
-                                    <label class="form-check-label" for="savePaymentMethod">
-                                        Save this payment method for future bookings
-                                    </label>
+
+                                    <!-- New Payment Method Selection - Hidden Initially -->
+                                    <div id="newPaymentMethodDiv" class="mb-3 d-none payment-type-container">
+                                        <label for="newPaymentMethod" class="form-label">Payment Type <span class="text-danger">*</span></label>
+                                        <div class="payment-options">
+                                            <div class="row g-2">
+                                                <div class="col-4">
+                                                    <div class="payment-option" data-value="Credit Card">
+                                                        <i class="fas fa-credit-card text-primary payment-icon"></i>
+                                                        <span>Credit Card</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="payment-option" data-value="Debit Card">
+                                                        <i class="fas fa-credit-card text-primary payment-icon"></i>
+                                                        <span>Debit Card</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="payment-option" data-value="PayPal">
+                                                        <i class="fab fa-paypal text-primary payment-icon"></i>
+                                                        <span>PayPal</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="payment-option" data-value="Bank Transfer">
+                                                        <i class="fas fa-money-check text-primary payment-icon"></i>
+                                                        <span>Bank Transfer</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="payment-option" data-value="Cash">
+                                                        <i class="fas fa-money-bill-wave text-primary payment-icon"></i>
+                                                        <span>Cash</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <select id="newPaymentMethod" class="d-none">
+                                                <option value="">Select payment type</option>
+                                                <option value="Credit Card">Credit Card</option>
+                                                <option value="Debit Card">Debit Card</option>
+                                                <option value="PayPal">PayPal</option>
+                                                <option value="Bank Transfer">Bank Transfer</option>
+                                                <option value="Cash">Cash</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Card Details - Hidden Initially -->
+                                    <div id="paymentDetails" class="d-none payment-details-container">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="card-type-indicator mb-3">
+                                                    <div class="card-icons">
+                                                        <i class="fab fa-cc-visa me-2"></i>
+                                                        <i class="fab fa-cc-mastercard me-2"></i>
+                                                        <i class="fab fa-cc-amex me-2"></i>
+                                                        <i class="fab fa-cc-discover"></i>
+                                                    </div>
+                                                    <span class="detected-card-type"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row g-3 mb-3">
+                                            <div class="col-md-6">
+                                                <label for="cardNumber" class="form-label">Card Number <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-white">
+                                                        <i class="fas fa-credit-card text-primary"></i>
+                                                    </span>
+                                                    <input type="text" id="cardNumber" class="form-control" placeholder="XXXX XXXX XXXX XXXX">
+                                                </div>
+                                                <div class="invalid-feedback">Please enter a valid card number.</div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="expiration" class="form-label">Expiration <span class="text-danger">*</span></label>
+                                                <input type="text" id="expiration" class="form-control" placeholder="MM/YY">
+                                                <div class="invalid-feedback">Please enter a valid expiration date.</div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="cvv" class="form-label">CVV <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <input type="text" id="cvv" class="form-control" placeholder="XXX">
+                                                    <span class="input-group-text bg-white" data-bs-toggle="tooltip" data-bs-placement="top" title="3-digit security code on the back of your card">
+                                                        <i class="fas fa-question-circle text-muted"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="invalid-feedback">Please enter a valid CVV.</div>
+                                            </div>
+                                        </div>
+                                        <div class="form-check mb-3">
+                                            <input class="form-check-input" type="checkbox" id="savePaymentMethod" name="savePaymentMethod" value="true">
+                                            <label class="form-check-label" for="savePaymentMethod">
+                                                Save this payment method for future bookings
+                                            </label>
+                                            <div class="form-text text-muted">
+                                                <i class="fas fa-shield-alt me-1"></i> Your payment information is securely encrypted
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            
-                            <div class="alert alert-info d-flex align-items-center mt-3" role="alert">
-                                <i class="fas fa-info-circle me-2"></i>
-                                <div>Your payment information is encrypted and secure. We will not charge your card until check-in.</div>
+                        </div>
+
+                        <!-- Booking Summary Card -->
+                        <div class="card booking-summary mb-4 border-0 shadow-sm">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="card-title mb-0">
+                                    <i class="fas fa-receipt me-2"></i>Booking Summary
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="summary-item d-flex justify-content-between align-items-center mb-2">
+                                    <span><i class="fas fa-bed me-2 text-primary"></i>Room:</span>
+                                    <span class="fw-bold">@room.Type Room (@room.RoomNumber)</span>
+                                </div>
+                                <div class="summary-item d-flex justify-content-between align-items-center mb-2">
+                                    <span><i class="fas fa-tag me-2 text-primary"></i>Price per night:</span>
+                                    <span class="fw-bold">$@room.Price</span>
+                                </div>
+                                <div class="summary-item d-flex justify-content-between align-items-center mb-2">
+                                    <span><i class="fas fa-moon me-2 text-primary"></i>Number of nights:</span>
+                                    <span class="fw-bold" id="numNights">1</span>
+                                </div>
+                                <hr>
+                                <div class="summary-item d-flex justify-content-between align-items-center total-row">
+                                    <span class="fs-5 fw-bold"><i class="fas fa-money-bill-wave me-2 text-primary"></i>Total:</span>
+                                    <span class="fs-5 fw-bold text-primary" id="totalPrice">$@room.Price</span>
+                                </div>
                             </div>
                         </div>
 
                         <!-- Terms & Conditions -->
-                        <div class="mb-4">
+                        <div class="mb-4 terms-container p-3 bg-light rounded">
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" id="termsCheck" required>
                                 <label class="form-check-label" for="termsCheck">
-                                    I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">terms and conditions</a>
+                                    I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">terms and conditions</a> <span class="text-danger">*</span>
                                 </label>
+                                <div class="invalid-feedback">
+                                    You must agree to the terms and conditions to proceed.
+                                </div>
                             </div>
                         </div>
 
                         <!-- Action Buttons -->
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <div class="d-flex gap-2 justify-content-between">
                             <a asp-controller="Rooms" asp-action="Index" class="btn btn-outline-secondary">
-                                <i class="fas fa-arrow-left me-1"></i> Back to Rooms
+                                <i class="fas fa-arrow-left me-2"></i>Back to Rooms
                             </a>
-                            <button type="submit" class="btn btn-primary" id="confirmBookingBtn">
-                                <i class="fas fa-check-circle me-1"></i> Confirm Booking
+                            <button type="submit" class="btn btn-primary btn-lg" id="confirmBookingBtn">
+                                <i class="fas fa-check me-2"></i>Confirm Booking
                             </button>
                         </div>
                     </form>
@@ -219,107 +351,81 @@
             </div>
         </div>
 
-        <!-- Sidebar -->
+        <!-- Right Sidebar Column -->
         <div class="col-lg-4">
-            <!-- Booking Summary -->
-            <div class="card border-0 shadow-sm rounded-custom mb-4 sticky-top" style="top: 20px; z-index: 100;">
-                <div class="card-header bg-primary text-white p-3">
-                    <h5 class="mb-0"><i class="fas fa-receipt me-2"></i> Booking Summary</h5>
+            <!-- Booking Policy Card -->
+            <div class="card border-0 shadow-sm mb-4 sticky-top" style="top: 20px; z-index: 100;">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Booking Policy</h5>
                 </div>
-                <div class="card-body p-4">
-                    <div class="d-flex justify-content-between align-items-center pb-3 mb-3 border-bottom">
-                        <span class="fw-bold">@room.Type Room</span>
-                        <span class="badge bg-primary">Room @room.RoomNumber</span>
-                    </div>
-                    
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Check-in:</span>
-                        <span id="summaryCheckIn">Select date</span>
-                    </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Check-out:</span>
-                        <span id="summaryCheckOut">Select date</span>
-                    </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Guests:</span>
-                        <span id="summaryGuests">1</span>
-                    </div>
-                    <div class="d-flex justify-content-between mb-3 pb-3 border-bottom">
-                        <span>Nights:</span>
-                        <span id="numNights">0</span>
-                    </div>
-                    
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Room rate:</span>
-                        <span>$@room.Price / night</span>
-                    </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Taxes & fees:</span>
-                        <span id="taxesFees">$0.00</span>
-                    </div>
-                    
-                    <div class="d-flex justify-content-between mt-3 pt-3 border-top">
-                        <strong class="fs-5">Total:</strong>
-                        <strong class="fs-5 text-primary" id="totalPrice">$0.00</strong>
-                    </div>
-                    
-                    <div class="alert alert-success mt-3 mb-0 d-flex align-items-center" role="alert">
-                        <i class="fas fa-shield-alt me-2"></i>
-                        <div>Free cancellation up to 24 hours before check-in</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Policy Information -->
-            <div class="card border-0 shadow-sm rounded-custom mb-4">
-                <div class="card-header bg-primary text-white p-3">
-                    <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i> Booking Policy</h5>
-                </div>
-                <div class="card-body p-4">
-                    <div class="mb-3">
-                        <h6 class="d-flex align-items-center mb-2">
-                            <i class="fas fa-calendar-check text-primary me-2"></i> Check-in/Check-out
+                <div class="card-body">
+                    <div class="policy-item mb-3">
+                        <h6 class="policy-title mb-2">
+                            <i class="fas fa-calendar-check text-primary me-2"></i>Check-in/Check-out
                         </h6>
-                        <p class="small mb-0">Check-in: 2:00 PM - 10:00 PM</p>
-                        <p class="small mb-0">Check-out: 7:00 AM - 12:00 PM</p>
+                        <ul class="policy-details ps-4 mb-0">
+                            <li>Check-in: 2:00 PM - 10:00 PM</li>
+                            <li>Check-out: 7:00 AM - 12:00 PM</li>
+                            <li>Early check-in subject to availability</li>
+                        </ul>
                     </div>
-                    <div class="mb-3">
-                        <h6 class="d-flex align-items-center mb-2">
-                            <i class="fas fa-credit-card text-primary me-2"></i> Payment
+                    <div class="policy-item mb-3">
+                        <h6 class="policy-title mb-2">
+                            <i class="fas fa-credit-card text-primary me-2"></i>Payment
                         </h6>
-                        <p class="small mb-0">Full payment is required at the time of booking.</p>
-                        <p class="small mb-0">We accept Credit Cards, PayPal, and Bank Transfers.</p>
+                        <ul class="policy-details ps-4 mb-0">
+                            <li>Full payment required at booking</li>
+                            <li>We accept Credit Cards, PayPal, and Bank Transfers</li>
+                            <li>All rates include taxes and fees</li>
+                        </ul>
                     </div>
-                    <div class="mb-3">
-                        <h6 class="d-flex align-items-center mb-2">
-                            <i class="fas fa-ban text-primary me-2"></i> Cancellation
+                    <div class="policy-item mb-3">
+                        <h6 class="policy-title mb-2">
+                            <i class="fas fa-ban text-primary me-2"></i>Cancellation
                         </h6>
-                        <p class="small mb-0">Free cancellation up to 24 hours before check-in.</p>
-                        <p class="small mb-0">Cancellations within 24 hours of check-in may be charged a one-night fee.</p>
+                        <ul class="policy-details ps-4 mb-0">
+                            <li>Free cancellation up to 24 hours before check-in</li>
+                            <li>Cancellations within 24 hours may incur a one-night fee</li>
+                            <li>No-shows will be charged in full</li>
+                        </ul>
                     </div>
-                    <div>
-                        <h6 class="d-flex align-items-center mb-2">
-                            <i class="fas fa-info-circle text-primary me-2"></i> Additional Information
+                    <div class="policy-item">
+                        <h6 class="policy-title mb-2">
+                            <i class="fas fa-info-circle text-primary me-2"></i>Additional Information
                         </h6>
-                        <p class="small mb-0">Pets are not allowed.</p>
-                        <p class="small mb-0">Smoking is not permitted in the rooms.</p>
-                        <p class="small mb-0">ID verification required at check-in.</p>
+                        <ul class="policy-details ps-4 mb-0">
+                            <li>Pets are not allowed</li>
+                            <li>Smoking is not permitted in the rooms</li>
+                            <li>ID verification required at check-in</li>
+                        </ul>
                     </div>
                 </div>
             </div>
 
             <!-- Need Help Card -->
-            <div class="card border-0 shadow-sm rounded-custom">
-                <div class="card-body p-4">
-                    <h5 class="mb-3 text-primary"><i class="fas fa-headset me-2"></i> Need Help?</h5>
+            <div class="card border-0 shadow-sm help-card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-headset me-2"></i>Need Help?</h5>
+                </div>
+                <div class="card-body">
                     <p class="card-text">Have questions about your booking? Contact our support team:</p>
-                    <div class="d-flex align-items-center mb-2">
-                        <i class="fas fa-phone text-primary me-3"></i>
-                        <span>+63 32 123 4567</span>
+                    <div class="contact-item d-flex align-items-center mb-3">
+                        <div class="contact-icon me-3 bg-primary-light p-2 rounded-circle">
+                            <i class="fas fa-phone text-white"></i>
+                        </div>
+                        <a href="tel:+6332123456" class="contact-text">+63 32 123 4567</a>
                     </div>
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-envelope text-primary me-3"></i>
-                        <a href="mailto:support@matrixhotel.com">support@matrixhotel.com</a>
+                    <div class="contact-item d-flex align-items-center mb-3">
+                        <div class="contact-icon me-3 bg-primary-light p-2 rounded-circle">
+                            <i class="fas fa-envelope text-white"></i>
+                        </div>
+                        <a href="mailto:support@matrixhotel.com" class="contact-text">support@matrixhotel.com</a>
+                    </div>
+                    <div class="contact-item d-flex align-items-center">
+                        <div class="contact-icon me-3 bg-primary-light p-2 rounded-circle">
+                            <i class="fas fa-comment-dots text-white"></i>
+                        </div>
+                        <a href="#" class="contact-text" data-bs-toggle="modal" data-bs-target="#chatModal">Live Chat Support</a>
                     </div>
                 </div>
             </div>
@@ -329,206 +435,820 @@
 
 <!-- Terms and Conditions Modal -->
 <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content border-0">
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title" id="termsModalLabel">Terms and Conditions</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <h6>1. Reservation and Payment Policy</h6>
-                <p>Full payment is required at the time of booking to secure your reservation. Your card will be authorized but not charged until check-in.</p>
+                <h5>Booking Agreement</h5>
+                <p>By making a reservation at The Matrix Hotel, you agree to these terms and conditions. Please read them carefully.</p>
                 
-                <h6>2. Cancellation Policy</h6>
-                <p>Free cancellation is available up to 24 hours before your scheduled check-in time. Cancellations made within 24 hours of check-in may be subject to a fee equivalent to one night's stay.</p>
+                <h5>Reservation and Payment</h5>
+                <p>Full payment is required at the time of booking. We accept various payment methods including credit cards, PayPal, and bank transfers.</p>
                 
-                <h6>3. Check-in and Check-out Times</h6>
-                <p>Check-in is available from 2:00 PM to 10:00 PM. Check-out time is between 7:00 AM and 12:00 PM. Late check-out may result in additional charges.</p>
+                <h5>Cancellation Policy</h5>
+                <p>Reservations may be cancelled free of charge up to 24 hours before the check-in date. Cancellations within 24 hours of check-in may result in a charge equivalent to one night's stay.</p>
                 
-                <h6>4. Damage and Incidentals</h6>
-                <p>You are responsible for any damage to the room or hotel property during your stay. Additional charges may apply for any damage or excessive cleaning required.</p>
+                <h5>Check-in and Check-out</h5>
+                <p>Check-in time is between 2:00 PM and 10:00 PM. Check-out time is between 7:00 AM and 12:00 PM. Late check-out may result in additional charges.</p>
                 
-                <h6>5. Age Requirement</h6>
-                <p>Guests must be at least 18 years of age to check in without an accompanying adult.</p>
+                <h5>Hotel Rules</h5>
+                <p>Smoking is not permitted in any of our rooms or indoor areas. Pets are not allowed except for service animals. Guests are expected to respect the comfort of other hotel guests.</p>
+                
+                <h5>Liability</h5>
+                <p>The hotel is not responsible for any loss, damage, or theft of personal belongings during your stay. Valuables should be stored in the in-room safe provided.</p>
+                
+                <h5>Privacy Policy</h5>
+                <p>Your personal information will be handled in accordance with our privacy policy. We respect your privacy and will not share your information with third parties except as required for booking purposes.</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">I Understand</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="agreeTermsBtn">I Agree</button>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Live Chat Modal -->
+<div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="chatModalLabel"><i class="fas fa-comments me-2"></i>Live Chat Support</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="chat-container p-3">
+                    <div class="chat-messages mb-3">
+                        <div class="message support-message">
+                            <div class="message-content">
+                                <p>Hello! Welcome to The Matrix Hotel support. How can I help you today?</p>
+                                <span class="message-time">Just now</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-input">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Type your message here...">
+                            <button class="btn btn-primary">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Styles for the Improved Booking Page -->
+<style>
+    /* Booking Steps */
+    .booking-steps {
+        margin-bottom: 2rem;
+    }
+    
+    .step {
+        text-align: center;
+        z-index: 2;
+        position: relative;
+    }
+    
+    .step-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: #f8f9fa;
+        border: 2px solid #e9ecef;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 10px;
+        transition: all 0.3s ease;
+        color: #adb5bd;
+    }
+    
+    .step.active .step-icon {
+        background-color: var(--primary);
+        border-color: var(--primary);
+        color: white;
+        box-shadow: 0 0 0 5px rgba(var(--primary-rgb), 0.2);
+    }
+    
+    .step-label {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #6c757d;
+        transition: all 0.3s ease;
+    }
+    
+    .step.active .step-label {
+        color: var(--primary);
+        font-weight: 600;
+    }
+    
+    .step-connector {
+        position: absolute;
+        top: 25px;
+        left: 10%;
+        right: 10%;
+        height: 2px;
+        background-color: #e9ecef;
+        z-index: 1;
+    }
+
+    /* Enhanced Room Details */
+    .room-image-container {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .room-image-container:hover {
+        transform: scale(1.02);
+    }
+    
+    .hover-zoom {
+        transition: transform 0.5s ease;
+    }
+    
+    .room-image-container:hover .hover-zoom {
+        transform: scale(1.1);
+    }
+    
+    .room-details-card {
+        height: 100%;
+        transition: all 0.3s ease;
+        border-left: 4px solid var(--primary);
+    }
+    
+    .feature-icon {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+    
+    .room-features .feature:hover .feature-icon {
+        transform: scale(1.1);
+    }
+    
+    .price-tag {
+        box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .price-tag:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(var(--primary-rgb), 0.3);
+    }
+
+    /* Form Styling */
+    .section-header {
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid #e9ecef;
+        padding-bottom: 0.5rem;
+    }
+    
+    .booking-form .form-control,
+    .booking-form .form-select,
+    .booking-form .input-group-text {
+        border-radius: 0.375rem;
+        padding: 0.6rem 0.75rem;
+        transition: all 0.3s ease;
+    }
+    
+    .booking-form .form-control:focus,
+    .booking-form .form-select:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 0.25rem rgba(var(--primary-rgb), 0.25);
+    }
+    
+    .form-label {
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: var(--dark);
+    }
+    
+    /* Payment Method Styling */
+    .payment-options {
+        margin-top: 0.5rem;
+    }
+    
+    .payment-option {
+        border: 1px solid #dee2e6;
+        border-radius: 0.375rem;
+        padding: 1rem 0.5rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .payment-option:hover {
+        border-color: var(--primary-light);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+    
+    .payment-option.selected {
+        border-color: var(--primary);
+        background-color: rgba(var(--primary-rgb), 0.05);
+    }
+    
+    .payment-icon {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+        transition: all 0.3s ease;
+    }
+    
+    .payment-option:hover .payment-icon {
+        transform: scale(1.1);
+    }
+    
+    .payment-option span {
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+    
+    .card-type-indicator {
+        text-align: right;
+    }
+    
+    .card-icons {
+        font-size: 1.5rem;
+        color: #6c757d;
+    }
+    
+    .detected-card-type {
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin-left: 0.5rem;
+        color: var(--primary);
+    }
+
+    /* Booking Summary */
+    .booking-summary {
+        transition: all 0.3s ease;
+    }
+    
+    .booking-summary:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .summary-item {
+        padding: 0.5rem 0;
+        transition: all 0.3s ease;
+    }
+    
+    .summary-item:hover {
+        background-color: rgba(var(--primary-rgb), 0.05);
+        border-radius: 0.375rem;
+    }
+    
+    .total-row {
+        padding: 0.75rem 0;
+        background-color: rgba(var(--primary-rgb), 0.05);
+        border-radius: 0.375rem;
+        margin-top: 0.5rem;
+    }
+
+    /* Terms Container */
+    .terms-container {
+        transition: all 0.3s ease;
+    }
+    
+    .terms-container:hover {
+        background-color: #e9ecef;
+    }
+
+    /* Policy Card Styling */
+    .policy-item {
+        transition: all 0.3s ease;
+    }
+    
+    .policy-item:hover {
+        transform: translateY(-2px);
+    }
+    
+    .policy-title {
+        font-weight: 600;
+        color: var(--dark);
+        display: flex;
+        align-items: center;
+    }
+    
+    .policy-details {
+        font-size: 0.875rem;
+        color: #6c757d;
+    }
+    
+    .policy-details li {
+        margin-bottom: 0.25rem;
+    }
+
+    /* Help Card Styling */
+    .help-card {
+        transition: all 0.3s ease;
+    }
+    
+    .help-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .contact-item {
+        transition: all 0.3s ease;
+    }
+    
+    .contact-item:hover {
+        transform: translateX(5px);
+    }
+    
+    .contact-icon {
+        transition: all 0.3s ease;
+    }
+    
+    .contact-item:hover .contact-icon {
+        transform: scale(1.1);
+    }
+    
+    .contact-text {
+        text-decoration: none;
+        color: var(--dark);
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .contact-text:hover {
+        color: var(--primary);
+    }
+
+    /* Modal Styling */
+    .modal-content {
+        border-radius: 0.5rem;
+        overflow: hidden;
+    }
+    
+    /* Chat Styling */
+    .chat-container {
+        height: 300px;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .chat-messages {
+        overflow-y: auto;
+        flex-grow: 1;
+    }
+    
+    .message {
+        margin-bottom: 1rem;
+    }
+    
+    .support-message .message-content {
+        background-color: var(--primary-light);
+        color: white;
+        border-radius: 1rem 1rem 1rem 0;
+        padding: 0.75rem 1rem;
+        display: inline-block;
+        max-width: 80%;
+    }
+    
+    .user-message {
+        text-align: right;
+    }
+    
+    .user-message .message-content {
+        background-color: #e9ecef;
+        border-radius: 1rem 1rem 0 1rem;
+        padding: 0.75rem 1rem;
+        display: inline-block;
+        max-width: 80%;
+    }
+    
+    .message-time {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.8);
+        margin-top: 0.25rem;
+        display: block;
+    }
+    
+    .user-message .message-time {
+        color: #6c757d;
+    }
+    
+    /* Responsive Adjustments */
+    @@media (max-width: 991.98px) {
+        .booking-steps {
+            overflow-x: auto;
+            padding-bottom: 1rem;
+        }
+        
+        .step-icon {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .step-label {
+            font-size: 0.75rem;
+        }
+    }
+    
+    @@media (max-width: 767.98px) {
+        .payment-option {
+            padding: 0.75rem 0.25rem;
+        }
+        
+        .payment-icon {
+            font-size: 1.25rem;
+        }
+        
+        .payment-option span {
+            font-size: 0.75rem;
+        }
+    }
+    
+    /* Animation Classes */
+    .fadeIn {
+        animation: fadeIn 0.5s ease-in-out;
+    }
+    
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .pulse {
+        animation: pulse 0.5s cubic-bezier(0.66, 0, 0, 1);
+    }
+    
+    @@keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.05);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+</style>
+
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize tooltips
-            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            tooltipTriggerList.map(function (tooltipTriggerEl) {
+            console.log('DOM loaded, initializing enhanced form');
+            
+            // Bootstrap 5 tooltips initialization
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
                 return new bootstrap.Tooltip(tooltipTriggerEl);
             });
             
-            // Form elements
+            // Function to calculate total price with animation
+            function calculateTotal() {
+                const checkInDate = new Date(document.getElementById('CheckInDate').value);
+                const checkOutDate = new Date(document.getElementById('CheckOutDate').value);
+                const pricePerNight = @room.Price;
+
+                // Calculate days (MS to days conversion)
+                const timeDiff = checkOutDate.getTime() - checkInDate.getTime();
+                const days = Math.max(1, Math.ceil(timeDiff / (1000 * 3600 * 24)));
+
+                // Update number of nights with animation
+                const numNightsElement = document.getElementById('numNights');
+                numNightsElement.classList.add('pulse');
+                numNightsElement.textContent = days;
+                
+                setTimeout(function() {
+                    numNightsElement.classList.remove('pulse');
+                }, 500);
+
+                // Update total price with animation
+                const totalPrice = days * pricePerNight;
+                const totalPriceElement = document.getElementById('totalPrice');
+                totalPriceElement.classList.add('pulse');
+                totalPriceElement.textContent = '$' + totalPrice.toFixed(2);
+                
+                setTimeout(function() {
+                    totalPriceElement.classList.remove('pulse');
+                }, 500);
+                
+                console.log('Calculated total:', totalPrice, 'for', days, 'days');
+            }
+
+            // Add event listeners to date inputs with enhanced validation
             const checkInDateInput = document.getElementById('CheckInDate');
             const checkOutDateInput = document.getElementById('CheckOutDate');
-            const guestsSelect = document.getElementById('NumberOfGuests');
+            
+            if (checkInDateInput && checkOutDateInput) {
+                checkInDateInput.addEventListener('change', function() {
+                    // Update minimum date for checkout to be after checkin
+                    const checkInDate = new Date(this.value);
+                    if (checkInDate) {
+                        const nextDay = new Date(checkInDate);
+                        nextDay.setDate(nextDay.getDate() + 1);
+                        
+                        const year = nextDay.getFullYear();
+                        const month = String(nextDay.getMonth() + 1).padStart(2, '0');
+                        const day = String(nextDay.getDate()).padStart(2, '0');
+                        
+                        checkOutDateInput.min = `${year}-${month}-${day}`;
+                        
+                        // If checkout date is before new checkin date, update it
+                        const checkOutDate = new Date(checkOutDateInput.value);
+                        if (checkOutDate <= checkInDate) {
+                            checkOutDateInput.value = `${year}-${month}-${day}`;
+                        }
+                    }
+                    
+                    calculateTotal();
+                });
+                
+                checkOutDateInput.addEventListener('change', calculateTotal);
+                
+                // Calculate initial total
+                calculateTotal();
+            } else {
+                console.error('Date inputs not found');
+            }
+
+            // Enhanced Payment Method Handling
             const paymentMethodSelect = document.getElementById('paymentMethod');
             const newPaymentMethodDiv = document.getElementById('newPaymentMethodDiv');
             const newPaymentMethodSelect = document.getElementById('newPaymentMethod');
             const paymentDetails = document.getElementById('paymentDetails');
-            const termsCheck = document.getElementById('termsCheck');
-            const form = document.getElementById('bookingForm');
-            const confirmButton = document.getElementById('confirmBookingBtn');
-            
-            // Summary elements
-            const summaryCheckIn = document.getElementById('summaryCheckIn');
-            const summaryCheckOut = document.getElementById('summaryCheckOut');
-            const summaryGuests = document.getElementById('summaryGuests');
-            const numNightsElement = document.getElementById('numNights');
-            const taxesFeesElement = document.getElementById('taxesFees');
-            const totalPriceElement = document.getElementById('totalPrice');
-            
-            // Constants
-            const pricePerNight = @room.Price;
-            const taxRate = 0.12; // 12% tax rate
-            
-            // Function to format dates nicely
-            function formatDate(dateString) {
-                if (!dateString) return 'Select date';
-                const date = new Date(dateString);
-                return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
-            }
-            
-            // Function to calculate total price
-            function calculateTotal() {
-                // Get dates
-                const checkInDate = checkInDateInput.value ? new Date(checkInDateInput.value) : null;
-                const checkOutDate = checkOutDateInput.value ? new Date(checkOutDateInput.value) : null;
-                
-                // Update summary displays
-                summaryCheckIn.textContent = formatDate(checkInDateInput.value);
-                summaryCheckOut.textContent = formatDate(checkOutDateInput.value);
-                summaryGuests.textContent = guestsSelect.value;
-                
-                // Calculate nights and costs
-                if (checkInDate && checkOutDate && checkOutDate > checkInDate) {
-                    // Calculate days
-                    const timeDiff = checkOutDate.getTime() - checkInDate.getTime();
-                    const days = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            const paymentOptions = document.querySelectorAll('.payment-option');
+
+            if (paymentMethodSelect) {
+                paymentMethodSelect.addEventListener('change', function() {
+                    console.log('Payment method changed to:', this.value);
                     
-                    // Update number of nights
-                    numNightsElement.textContent = days;
-                    
-                    // Calculate costs
-                    const roomCost = days * pricePerNight;
-                    const taxes = roomCost * taxRate;
-                    const totalCost = roomCost + taxes;
-                    
-                    // Update displayed costs
-                    taxesFeesElement.textContent = '$' + taxes.toFixed(2);
-                    totalPriceElement.textContent = '$' + totalCost.toFixed(2);
-                } else {
-                    // Reset if dates aren't valid
-                    numNightsElement.textContent = '0';
-                    taxesFeesElement.textContent = '$0.00';
-                    totalPriceElement.textContent = '$0.00';
-                }
-            }
-            
-            // Add event listeners to update summary
-            checkInDateInput.addEventListener('change', calculateTotal);
-            checkOutDateInput.addEventListener('change', calculateTotal);
-            guestsSelect.addEventListener('change', function() {
-                summaryGuests.textContent = this.value;
-            });
-            
-            // Payment method handling
-            paymentMethodSelect.addEventListener('change', function() {
-                if (this.value === 'new') {
-                    newPaymentMethodDiv.style.display = 'block';
-                    paymentDetails.style.display = 'none';
-                } else {
-                    newPaymentMethodDiv.style.display = 'none';
-                    
-                    // Show payment details for credit/debit cards
-                    if (this.value.includes('Credit Card') || this.value.includes('Debit Card')) {
-                        paymentDetails.style.display = 'block';
+                    if (this.value === 'new') {
+                        newPaymentMethodDiv.classList.remove('d-none');
+                        newPaymentMethodDiv.classList.add('fadeIn');
+                        paymentDetails.classList.add('d-none');
+                        
+                        // Reset payment option selection
+                        paymentOptions.forEach(option => {
+                            option.classList.remove('selected');
+                        });
                     } else {
-                        paymentDetails.style.display = 'none';
+                        newPaymentMethodDiv.classList.add('d-none');
+                        
+                        // Show payment details for credit/debit cards
+                        if (this.value.includes('Credit Card') || this.value.includes('Debit Card')) {
+                            paymentDetails.classList.remove('d-none');
+                            paymentDetails.classList.add('fadeIn');
+                        } else {
+                            paymentDetails.classList.add('d-none');
+                        }
                     }
-                }
-            });
-            
+                });
+            } else {
+                console.error('Payment method select element not found');
+            }
+
+            // Payment Option Click Handlers
+            if (paymentOptions.length > 0) {
+                paymentOptions.forEach(option => {
+                    option.addEventListener('click', function() {
+                        // Remove selected class from all options
+                        paymentOptions.forEach(opt => {
+                            opt.classList.remove('selected');
+                        });
+                        
+                        // Add selected class to clicked option
+                        this.classList.add('selected');
+                        
+                        // Update hidden select value
+                        const selectedValue = this.getAttribute('data-value');
+                        if (newPaymentMethodSelect) {
+                            newPaymentMethodSelect.value = selectedValue;
+                            
+                            // Trigger change event
+                            const event = new Event('change');
+                            newPaymentMethodSelect.dispatchEvent(event);
+                            
+                            // Show payment details for credit/debit cards
+                            if (selectedValue === 'Credit Card' || selectedValue === 'Debit Card') {
+                                paymentDetails.classList.remove('d-none');
+                                paymentDetails.classList.add('fadeIn');
+                            } else {
+                                paymentDetails.classList.add('d-none');
+                            }
+                        }
+                    });
+                });
+            }
+
             if (newPaymentMethodSelect) {
                 newPaymentMethodSelect.addEventListener('change', function() {
-                    // Show payment details for credit/debit cards
-                    if (this.value === 'Credit Card' || this.value === 'Debit Card') {
-                        paymentDetails.style.display = 'block';
+                    console.log('New payment method changed to:', this.value);
+                });
+            }
+
+            // Credit Card Formatting and Validation
+            const cardNumberInput = document.getElementById('cardNumber');
+            const expirationInput = document.getElementById('expiration');
+            const cvvInput = document.getElementById('cvv');
+            const detectedCardType = document.querySelector('.detected-card-type');
+            
+            if (cardNumberInput) {
+                cardNumberInput.addEventListener('input', function(e) {
+                    // Format card number with spaces
+                    let value = this.value.replace(/\D/g, '');
+                    let formattedValue = '';
+                    
+                    for (let i = 0; i < value.length; i++) {
+                        if (i > 0 && i % 4 === 0) {
+                            formattedValue += ' ';
+                        }
+                        formattedValue += value[i];
+                    }
+                    
+                    this.value = formattedValue;
+                    
+                    // Detect card type based on number pattern
+                    if (value.startsWith('4')) {
+                        detectedCardType.textContent = 'Visa';
+                        document.querySelector('.fa-cc-visa').style.color = '#1A1F71';
+                    } else if (value.startsWith('5')) {
+                        detectedCardType.textContent = 'MasterCard';
+                        document.querySelector('.fa-cc-mastercard').style.color = '#EB001B';
+                    } else if (value.startsWith('3')) {
+                        detectedCardType.textContent = 'American Express';
+                        document.querySelector('.fa-cc-amex').style.color = '#006FCF';
+                    } else if (value.startsWith('6')) {
+                        detectedCardType.textContent = 'Discover';
+                        document.querySelector('.fa-cc-discover').style.color = '#FF6600';
                     } else {
-                        paymentDetails.style.display = 'none';
+                        detectedCardType.textContent = '';
+                        document.querySelectorAll('.card-icons i').forEach(icon => {
+                            icon.style.color = '#6c757d';
+                        });
                     }
                 });
             }
             
-            // Form validation and submission
-            if (form) {
-                form.addEventListener('submit', function(e) {
-                    e.preventDefault();
+            if (expirationInput) {
+                expirationInput.addEventListener('input', function(e) {
+                    // Format expiration date as MM/YY
+                    let value = this.value.replace(/\D/g, '');
                     
-                    // Form validation
+                    if (value.length > 2) {
+                        this.value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                    } else {
+                        this.value = value;
+                    }
+                });
+            }
+            
+            if (cvvInput) {
+                cvvInput.addEventListener('input', function(e) {
+                    // Allow only digits and limit to 4 characters
+                    this.value = this.value.replace(/\D/g, '').substring(0, 4);
+                });
+            }
+
+            // Terms and Conditions Agreement
+            const termsModal = document.getElementById('termsModal');
+            const agreeTermsBtn = document.getElementById('agreeTermsBtn');
+            const termsCheck = document.getElementById('termsCheck');
+            
+            if (agreeTermsBtn && termsCheck) {
+                agreeTermsBtn.addEventListener('click', function() {
+                    termsCheck.checked = true;
+                });
+            }
+
+            // Enhanced Form Validation
+            const form = document.getElementById('bookingForm');
+            
+            if (form) {
+                // Add custom validation styles
+                form.addEventListener('submit', function(e) {
+                    if (!form.checkValidity()) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
+                    
+                    form.classList.add('was-validated');
+                    
+                    // Custom validation for dates
                     const checkInDate = new Date(checkInDateInput.value);
                     const checkOutDate = new Date(checkOutDateInput.value);
-                    
-                    // Reset validation styling
-                    checkInDateInput.classList.remove('is-invalid');
-                    checkOutDateInput.classList.remove('is-invalid');
-                    termsCheck.classList.remove('is-invalid');
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
                     
                     let isValid = true;
                     
-                    // Validate dates
-                    if (!checkInDateInput.value) {
-                        checkInDateInput.classList.add('is-invalid');
+                    if (checkInDate < today) {
+                        checkInDateInput.setCustomValidity('Check-in date cannot be in the past.');
                         isValid = false;
-                    } else if (checkInDate < new Date().setHours(0, 0, 0, 0)) {
-                        checkInDateInput.classList.add('is-invalid');
-                        alert('Check-in date cannot be in the past.');
-                        isValid = false;
+                    } else {
+                        checkInDateInput.setCustomValidity('');
                     }
                     
-                    if (!checkOutDateInput.value) {
-                        checkOutDateInput.classList.add('is-invalid');
+                    if (checkOutDate <= checkInDate) {
+                        checkOutDateInput.setCustomValidity('Check-out date must be after check-in date.');
                         isValid = false;
-                    } else if (checkOutDate <= checkInDate) {
-                        checkOutDateInput.classList.add('is-invalid');
-                        alert('Check-out date must be after check-in date.');
-                        isValid = false;
+                    } else {
+                        checkOutDateInput.setCustomValidity('');
                     }
                     
-                    // Validate terms
-                    if (!termsCheck.checked) {
-                        termsCheck.classList.add('is-invalid');
-                        alert('You must agree to the terms and conditions.');
-                        isValid = false;
-                    }
-                    
-                    // Process payment method
+                    // Validate payment method
                     let finalPaymentMethod = paymentMethodSelect.value;
+                    
                     if (finalPaymentMethod === 'new') {
                         finalPaymentMethod = newPaymentMethodSelect.value;
+                        
                         if (!finalPaymentMethod) {
-                            alert('Please select a payment method.');
                             isValid = false;
+                            paymentMethodSelect.setCustomValidity('Please select a payment method.');
+                        } else {
+                            paymentMethodSelect.setCustomValidity('');
                         }
                     } else if (!finalPaymentMethod) {
-                        alert('Please select a payment method.');
                         isValid = false;
+                        paymentMethodSelect.setCustomValidity('Please select a payment method.');
+                    } else {
+                        paymentMethodSelect.setCustomValidity('');
+                    }
+                    
+                    // Card validation if credit/debit selected
+                    if ((finalPaymentMethod === 'Credit Card' || finalPaymentMethod === 'Debit Card') && 
+                        cardNumberInput && expirationInput && cvvInput) {
+                        
+                        // Card number validation (simplified)
+                        if (cardNumberInput.value.replace(/\s/g, '').length < 13) {
+                            cardNumberInput.setCustomValidity('Please enter a valid card number.');
+                            isValid = false;
+                        } else {
+                            cardNumberInput.setCustomValidity('');
+                        }
+                        
+                        // Expiration validation
+                        const expValue = expirationInput.value;
+                        if (!expValue.match(/^\d{2}\/\d{2}$/)) {
+                            expirationInput.setCustomValidity('Please enter a valid expiration date (MM/YY).');
+                            isValid = false;
+                        } else {
+                            const [month, year] = expValue.split('/');
+                            const expDate = new Date(2000 + parseInt(year), parseInt(month) - 1);
+                            const currentDate = new Date();
+                            
+                            if (expDate < currentDate) {
+                                expirationInput.setCustomValidity('Card is expired.');
+                                isValid = false;
+                            } else {
+                                expirationInput.setCustomValidity('');
+                            }
+                        }
+                        
+                        // CVV validation
+                        if (cvvInput.value.length < 3) {
+                            cvvInput.setCustomValidity('Please enter a valid CVV code.');
+                            isValid = false;
+                        } else {
+                            cvvInput.setCustomValidity('');
+                        }
                     }
                     
                     if (!isValid) {
+                        e.preventDefault();
+                        console.log('Form validation failed');
+                        
+                        // Scroll to first invalid element
+                        const firstInvalid = form.querySelector(':invalid');
+                        if (firstInvalid) {
+                            firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                        
                         return false;
                     }
                     
-                    // Update hidden payment method field or create one if it doesn't exist
+                    console.log('Form validation passed');
+                    
+                    // Update hidden payment method field or create one
                     let paymentMethodInput = document.querySelector('input[name="paymentMethod"][type="hidden"]');
                     if (!paymentMethodInput) {
                         paymentMethodInput = document.createElement('input');
@@ -538,17 +1258,41 @@
                     }
                     paymentMethodInput.value = finalPaymentMethod;
                     
-                    // Disable submit button to prevent double submission
-                    confirmButton.disabled = true;
-                    confirmButton.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Processing...';
+                    console.log('Final payment method:', finalPaymentMethod);
                     
-                    // Submit the form
-                    form.submit();
+                    // Show loading state on submit button
+                    const confirmButton = document.getElementById('confirmBookingBtn');
+                    if (confirmButton) {
+                        confirmButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
+                        confirmButton.disabled = true;
+                    }
+                    
                 });
+            } else {
+                console.error('Booking form not found');
             }
             
-            // Run initial calculation
-            calculateTotal();
+            // Initialize date inputs if empty
+            if (checkInDateInput && !checkInDateInput.value) {
+                const today = new Date();
+                const tomorrow = new Date(today);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                
+                const formatDate = (date) => {
+                    const year = date.getFullYear();
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const day = String(date.getDate()).padStart(2, '0');
+                    return `${year}-${month}-${day}`;
+                };
+                
+                checkInDateInput.value = formatDate(today);
+                
+                if (checkOutDateInput && !checkOutDateInput.value) {
+                    checkOutDateInput.value = formatDate(tomorrow);
+                }
+                
+                calculateTotal();
+            }
         });
     </script>
 }

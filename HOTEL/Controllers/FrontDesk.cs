@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HotelWebsite.Models;
+using HotelWebsite.Models.ViewModels;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Linq;
@@ -18,75 +19,107 @@ namespace HotelWebsite.Controllers
         }
 
         // GET: FrontDesk
-            public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index()
+        {
+            // Check if user is front desk or admin
+            var userRole = HttpContext.Session.GetString("UserRole");
+            if (userRole != "Administrator" && userRole != "FrontDesk")
             {
-                // Check if user is front desk or admin
-                var userRole = HttpContext.Session.GetString("UserRole");
-                if (userRole != "Administrator" && userRole != "FrontDesk")
-                {
-                    return RedirectToAction("Index", "Home");
-                }
-
-                var currentUser = HttpContext.Session.GetString("UserName");
-                ViewBag.CurrentUser = currentUser;
-
-                var today = DateTime.Today;
-
-                // Get check-ins for today
-                var checkIns = await _context.Bookings
-                    .Include(b => b.Room)
-                    .Include(b => b.User)
-                    .Where(b => b.CheckInDate.Date == today && 
-                        (b.Status == "Confirmed" || b.Status == "Pending"))
-                    .ToListAsync();
-
-                // Get already checked in count
-                var alreadyCheckedIn = await _context.Bookings
-                    .CountAsync(b => b.CheckInDate.Date == today && b.Status == "Checked In");
-
-                // Get check-outs for today
-                var checkOuts = await _context.Bookings
-                    .Include(b => b.Room)
-                    .Include(b => b.User)
-                    .Where(b => b.CheckOutDate.Date == today && b.Status == "Checked In")
-                    .ToListAsync();
-
-                // Get already checked out count
-                var alreadyCheckedOut = await _context.Bookings
-                    .CountAsync(b => b.CheckOutDate.Date == today && b.Status == "Checked Out" && 
-                            b.ActualCheckOutDate.HasValue && b.ActualCheckOutDate.Value.Date == today);
-
-                // Get all room statuses for the chart
-                var vacantRooms = await _context.Rooms.CountAsync(r => r.Status == "Vacant");
-                var occupiedRooms = await _context.Rooms.CountAsync(r => r.Status == "Occupied" || r.Status == "Booked");
-                var maintenanceRooms = await _context.Rooms.CountAsync(r => r.Status == "Under Maintenance");
-
-                // Pass all data to view
-                ViewBag.CheckIns = checkIns;
-                ViewBag.CheckInsCount = checkIns.Count;
-                ViewBag.AlreadyCheckedIn = alreadyCheckedIn;
-
-                ViewBag.CheckOuts = checkOuts;
-                ViewBag.CheckOutsCount = checkOuts.Count;
-                ViewBag.AlreadyCheckedOut = alreadyCheckedOut;
-
-                // For the room chart
-                ViewBag.VacantRooms = vacantRooms;
-                ViewBag.OccupiedRooms = occupiedRooms;
-                ViewBag.MaintenanceRooms = maintenanceRooms;
-
-                // Get recent bookings (last 10)
-                var recentBookings = await _context.Bookings
-                    .Include(b => b.Room)
-                    .Include(b => b.User)
-                    .OrderByDescending(b => b.BookingDate)
-                    .Take(10)
-                    .ToListAsync();
-                
-                ViewBag.RecentBookings = recentBookings;
-
-                return View();
+                return RedirectToAction("Index", "Home");
             }
+
+            var currentUser = HttpContext.Session.GetString("UserName");
+            ViewBag.CurrentUser = currentUser;
+
+            var today = DateTime.Today;
+
+            // Get today's check-outs
+            var todayCheckOuts = await _context.Bookings
+                .Include(b => b.Room)
+                .Include(b => b.User)
+                .Where(b => b.CheckOutDate.Date == today && b.Status == "Checked In")
+                .OrderBy(b => b.CheckOutDate)
+                .ToListAsync();
+
+            // Set ViewBag properties
+            ViewBag.CheckOuts = todayCheckOuts;
+            ViewBag.CheckOutsCount = todayCheckOuts.Count;
+            ViewBag.AlreadyCheckedOut = await _context.Bookings
+                .CountAsync(b => b.CheckOutDate.Date == today && b.Status == "Checked Out");
+
+            // Get today's check-ins (both expected and already checked in)
+            var todayCheckIns = await _context.Bookings
+                .Include(b => b.Room)
+                .Include(b => b.User)
+                .Where(b => b.CheckInDate.Date == today)
+                .OrderBy(b => b.CheckInDate)
+                .ToListAsync();
+
+            var expectedCheckIns = todayCheckIns.Where(b => b.Status == "Confirmed").ToList();
+            var alreadyCheckedIn = todayCheckIns.Where(b => b.Status == "Checked In").ToList();
+
+            // Get all guests currently staying at the hotel
+            var currentGuests = await _context.Bookings
+                .Include(b => b.Room)
+                .Include(b => b.User)
+                .Where(b => b.Status == "Checked In" && 
+                        b.CheckInDate.Date <= today && 
+                        b.CheckOutDate.Date >= today)
+                .OrderBy(b => b.CheckOutDate)
+                .ToListAsync();
+
+            // Get pending bookings that need confirmation (cash payments)
+            var pendingBookings = await _context.Bookings
+                .Include(b => b.Room)
+                .Include(b => b.User)
+                .Include(b => b.Payments)
+                .Where(b => b.Status == "Pending")
+                .OrderBy(b => b.CheckInDate)
+                .ToListAsync();
+
+            // Get room availability summary
+            var roomsByStatus = await _context.Rooms
+                .GroupBy(r => r.Status)
+                .Select(g => new { Status = g.Key, Count = g.Count() })
+                .ToListAsync();
+
+            var vacantRooms = roomsByStatus.FirstOrDefault(r => r.Status == "Vacant")?.Count ?? 0;
+            var occupiedRooms = roomsByStatus.FirstOrDefault(r => r.Status == "Occupied")?.Count ?? 0;
+            var bookedRooms = roomsByStatus.FirstOrDefault(r => r.Status == "Booked")?.Count ?? 0;
+            var maintenanceRooms = roomsByStatus.FirstOrDefault(r => r.Status == "Under Maintenance")?.Count ?? 0;
+            var cleaningRooms = roomsByStatus.FirstOrDefault(r => r.Status == "Cleaning")?.Count ?? 0;
+
+            // Get all available rooms
+            var availableRooms = await _context.Rooms
+                .Where(r => r.Status == "Vacant")
+                .OrderBy(r => r.RoomNumber)
+                .ToListAsync();
+
+            // Set ViewBag properties
+            ViewBag.ExpectedCheckIns = expectedCheckIns;
+            ViewBag.AlreadyCheckedIn = alreadyCheckedIn;
+            ViewBag.CheckInsCount = expectedCheckIns.Count;
+            ViewBag.CheckedInCount = alreadyCheckedIn.Count;
+
+            ViewBag.CurrentGuests = currentGuests;
+            ViewBag.CurrentGuestsCount = currentGuests.Count;
+
+            ViewBag.PendingBookings = pendingBookings;
+            ViewBag.PendingBookingsCount = pendingBookings.Count;
+
+            ViewBag.VacantRooms = vacantRooms;
+            ViewBag.OccupiedRooms = occupiedRooms;
+            ViewBag.BookedRooms = bookedRooms;
+            ViewBag.MaintenanceRooms = maintenanceRooms;
+            ViewBag.CleaningRooms = cleaningRooms;
+            ViewBag.AvailableRooms = availableRooms;
+            ViewBag.AvailableRoomsCount = availableRooms.Count;
+
+            // Add this line to set ViewBag.CheckIns
+            ViewBag.CheckIns = expectedCheckIns;
+
+            return View();
+        }
 
         // GET: FrontDesk/CheckInOut
         public IActionResult CheckInOut()
@@ -104,11 +137,40 @@ namespace HotelWebsite.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            var guests = await _context.Users
-                .Where(u => u.Role == "Guest")
+            // Get all guests with current or upcoming bookings
+            var today = DateTime.Today;
+            var guestsWithBookings = await _context.Bookings
+                .Include(b => b.User)
+                .Include(b => b.Room)
+                .Where(b => b.CheckOutDate.Date >= today && 
+                        (b.Status == "Confirmed" || b.Status == "Checked In"))
+                .OrderBy(b => b.User.LastName)
+                .ThenBy(b => b.User.FirstName)
                 .ToListAsync();
 
-            return View(guests);
+            // Group by user to avoid duplicates
+            var groupedGuests = guestsWithBookings
+            .GroupBy(b => b.UserId)
+            .Select(g => new GuestViewModel
+            {
+                User = g.First().User,
+                CurrentBooking = g.Where(b => b.Status == "Checked In" && 
+                                            b.CheckInDate.Date <= today && 
+                                            b.CheckOutDate.Date >= today)
+                                .FirstOrDefault(),
+                UpcomingBooking = g.Where(b => b.Status == "Confirmed" && b.CheckInDate.Date > today)
+                                .OrderBy(b => b.CheckInDate)
+                                .FirstOrDefault(),
+                CheckedInDate = g.Where(b => b.Status == "Checked In")
+                                .Select(b => b.ActualCheckInDate)
+                                .FirstOrDefault(),
+                RoomNumber = g.Where(b => b.Status == "Checked In" && b.Room != null)
+                            .Select(b => b.Room.RoomNumber)
+                            .FirstOrDefault() ?? string.Empty
+            })
+            .ToList();
+
+            return View(groupedGuests);
         }
 
         // GET: FrontDesk/RoomStatus
@@ -121,56 +183,47 @@ namespace HotelWebsite.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            var rooms = await _context.Rooms.ToListAsync();
-            return View(rooms);
-        }
+            // Get all rooms with their current status and occupant info
+            var rooms = await _context.Rooms
+                .OrderBy(r => r.RoomNumber)
+                .ToListAsync();
 
-        // GET: FrontDesk/ConfirmPayment/5
-        public async Task<IActionResult> ConfirmPayment(int id)
-        {
-            var booking = await _context.Bookings
-                .Include(b => b.Payments)
-                .FirstOrDefaultAsync(b => b.Id == id);
-                
-            if (booking == null)
-            {
-                return NotFound();
-            }
-            
-            return View(booking);
-        }
+            // Get current occupied rooms with guest info
+            var occupiedRoomsWithGuests = await _context.Bookings
+                .Include(b => b.User)
+                .Where(b => b.Status == "Checked In")
+                .ToDictionaryAsync(b => b.RoomId, b => new { 
+                    GuestName = b.User.FullName,
+                    CheckInDate = b.ActualCheckInDate,
+                    CheckOutDate = b.CheckOutDate
+                });
 
-        // POST: FrontDesk/ConfirmPayment/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ConfirmPayment(int id, string receiptNumber)
-        {
-            var booking = await _context.Bookings
-                .Include(b => b.Payments)
-                .FirstOrDefaultAsync(b => b.Id == id);
-                
-            if (booking == null)
+            // Get upcoming bookings for rooms
+            var upcomingBookings = await _context.Bookings
+                .Include(b => b.User)
+                .Where(b => b.Status == "Confirmed" && b.CheckInDate.Date >= DateTime.Today)
+                .OrderBy(b => b.CheckInDate)
+                .GroupBy(b => b.RoomId)
+                .ToDictionaryAsync(g => g.Key, g => g.First());
+
+            var roomStatusList = rooms.Select(r => new RoomStatusViewModel
             {
-                return NotFound();
-            }
-            
-            // Update booking status
-            booking.Status = "Confirmed";
-            
-            // Update payment status
-            var cashPayment = booking.Payments
-                .FirstOrDefault(p => p.PaymentMethod.Contains("Cash") && p.Status == "Pending");
-                
-            if (cashPayment != null)
-            {
-                cashPayment.Status = "Completed";
-                cashPayment.TransactionReference = receiptNumber;
-                cashPayment.Notes += $" | Confirmed by {HttpContext.Session.GetString("UserName")} on {DateTime.Now}";
-            }
-            
-            await _context.SaveChangesAsync();
-            
-            return RedirectToAction(nameof(Index));
+                Room = r,
+                CurrentGuest = occupiedRoomsWithGuests.ContainsKey(r.Id) 
+                    ? occupiedRoomsWithGuests[r.Id].GuestName 
+                    : null,
+                CheckInDate = occupiedRoomsWithGuests.ContainsKey(r.Id) 
+                    ? occupiedRoomsWithGuests[r.Id].CheckInDate 
+                    : null,
+                CheckOutDate = occupiedRoomsWithGuests.ContainsKey(r.Id) 
+                    ? occupiedRoomsWithGuests[r.Id].CheckOutDate 
+                    : null,
+                NextBooking = upcomingBookings.ContainsKey(r.Id) 
+                    ? upcomingBookings[r.Id] 
+                    : null
+            }).ToList();
+
+            return View(roomStatusList);
         }
 
         // GET: FrontDesk/PendingBookings

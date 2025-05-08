@@ -13,6 +13,9 @@
     var availableRoomsCount = ViewBag.AvailableRoomsCount;
     var premiumCount = ViewBag.PremiumCount;
     var standardCount = ViewBag.StandardCount;
+
+    var checkIns = ViewBag.CheckIns as List<HotelWebsite.Models.Booking> ?? new List<HotelWebsite.Models.Booking>();
+    var checkOuts = ViewBag.CheckOuts as List<HotelWebsite.Models.Booking> ?? new List<HotelWebsite.Models.Booking>();
 }
 
 <div class="container-fluid py-4">
@@ -172,35 +175,47 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (var booking in ViewBag.CheckIns)
+                                        @if (checkIns.Any())
+                                        {
+                                            @foreach (var booking in checkIns)
+                                            {
+                                                <tr>
+                                                    <td>@booking.User?.FullName</td>
+                                                    <td>@booking.Room?.RoomNumber (@booking.Room?.Type)</td>
+                                                    <td>@booking.CheckInDate.ToString("MMM dd, yyyy")</td>
+                                                    <td>@booking.CheckOutDate.ToString("MMM dd, yyyy")</td>
+                                                    <td><span class="badge bg-primary">@booking.Status</span></td>
+                                                    <td>
+                                                        <a href="@Url.Action("CheckIn", "CheckInOut", new { id = booking.Id })" class="btn btn-sm btn-primary">
+                                                            <i class="fas fa-check-circle me-1"></i> Check In
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                        else
                                         {
                                             <tr>
-                                                <td>@booking.User.FullName</td>
-                                                <td>@booking.Room.RoomNumber (@booking.Room.Type)</td>
-                                                <td>@booking.CheckInDate.ToString("MMM dd, yyyy")</td>
-                                                <td>@booking.CheckOutDate.ToString("MMM dd, yyyy")</td>
-                                                <td><span class="badge bg-primary">@booking.Status</span></td>
-                                                <td>
-                                                    <a href="@Url.Action("CheckIn", "CheckInOut", new { id = booking.Id })" class="btn btn-sm btn-primary">
-                                                        <i class="fas fa-check-circle me-1"></i> Check In
-                                                    </a>
-                                                </td>
+                                                <td colspan="6" class="text-center">No check-ins scheduled for today</td>
                                             </tr>
                                         }
-                                        @foreach (var booking in ViewBag.CheckOuts)
+                                        @if (checkOuts.Any())
                                         {
-                                            <tr>
-                                                <td>@booking.User.FullName</td>
-                                                <td>@booking.Room.RoomNumber (@booking.Room.Type)</td>
-                                                <td>@booking.CheckInDate.ToString("MMM dd, yyyy")</td>
-                                                <td>@booking.CheckOutDate.ToString("MMM dd, yyyy")</td>
-                                                <td><span class="badge bg-success">@booking.Status</span></td>
-                                                <td>
-                                                    <a href="@Url.Action("CheckOut", "CheckInOut", new { id = booking.Id })" class="btn btn-sm btn-warning text-dark">
-                                                        <i class="fas fa-sign-out-alt me-1"></i> Check Out
-                                                    </a>
-                                                </td>
-                                            </tr>
+                                            @foreach (var booking in checkOuts)
+                                            {
+                                                <tr>
+                                                    <td>@booking.User?.FullName</td>
+                                                    <td>@booking.Room?.RoomNumber (@booking.Room?.Type)</td>
+                                                    <td>@booking.CheckInDate.ToString("MMM dd, yyyy")</td>
+                                                    <td>@booking.CheckOutDate.ToString("MMM dd, yyyy")</td>
+                                                    <td><span class="badge bg-success">@booking.Status</span></td>
+                                                    <td>
+                                                        <a href="@Url.Action("CheckOut", "CheckInOut", new { id = booking.Id })" class="btn btn-sm btn-warning text-dark">
+                                                            <i class="fas fa-sign-out-alt me-1"></i> Check Out
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            }
                                         }
                                     </tbody>
                                 </table>
