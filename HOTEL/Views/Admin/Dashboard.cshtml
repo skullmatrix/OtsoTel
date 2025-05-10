@@ -231,3 +231,77 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Search functionality for user management
+    const searchInput = document.getElementById('searchInput');
+    const userTable = document.getElementById('userTable');
+    
+    if (searchInput && userTable) {
+        searchInput.addEventListener('keyup', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = userTable.querySelectorAll('tbody tr');
+            
+            rows.forEach(row => {
+                const userName = row.querySelector('td:first-child').textContent.toLowerCase();
+                const userEmail = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                
+                if (userName.includes(searchTerm) || userEmail.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    }
+    
+    // Delete user confirmation
+    const deleteUserBtns = document.querySelectorAll('.delete-user');
+    const deleteUserForm = document.getElementById('deleteUserForm');
+    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+    
+    if (deleteUserBtns.length && deleteUserForm && confirmDeleteBtn) {
+        deleteUserBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const userId = this.getAttribute('data-user-id');
+                const userName = this.getAttribute('data-user-name');
+                
+                // Set form values
+                document.getElementById('deleteUserId').value = userId;
+                document.getElementById('deleteUserName').textContent = userName;
+                
+                // Show modal
+                const modal = new bootstrap.Modal(document.getElementById('deleteUserModal'));
+                modal.show();
+            });
+        });
+        
+        confirmDeleteBtn.addEventListener('click', function() {
+            deleteUserForm.submit();
+        });
+    }
+    
+    // Add animation to dashboard cards
+    const dashboardCards = document.querySelectorAll('.card.hover-lift');
+    if (dashboardCards.length) {
+        dashboardCards.forEach((card, index) => {
+            card.classList.add('fade-in-element');
+            // Add staggered delay
+            setTimeout(() => {
+                card.classList.add('show');
+            }, 100 + (index * 100)); // Stagger by 100ms
+        });
+    }
+    
+    // Initialize any charts or data visualizations
+    initCharts();
+});
+
+// Function to initialize charts if needed
+function initCharts() {
+    // This would contain any chart initialization code
+    // For example, using Chart.js or other visualization libraries
+    console.log('Charts initialized');
+}
+</script>

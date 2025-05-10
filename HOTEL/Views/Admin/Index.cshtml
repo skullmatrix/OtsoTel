@@ -1,200 +1,205 @@
 ﻿@{
     ViewData["Title"] = "Admin Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    
-    // Set default values if ViewBag properties are null
-    var occupancyRate = ViewBag.OccupancyRate ?? 0.0;
-    var totalRooms = ViewBag.TotalRooms ?? 0;
-    var occupiedRooms = ViewBag.OccupiedRooms ?? 0;
-    var vacantRooms = ViewBag.VacantRooms ?? 0;
-    var maintenanceRooms = ViewBag.MaintenanceRooms ?? 0;
-    var activeStaff = ViewBag.ActiveStaff ?? 0;
-    var todayRevenue = ViewBag.TodayRevenue ?? 0.0;
-    var yesterdayRevenue = ViewBag.YesterdayRevenue ?? 0.0;
 }
 
-<div class="container py-4">
-    <h1 class="mb-4">Admin Dashboard</h1>
-
-    <div class="row">
-        <div class="col-12 mb-4">
-            <h2>Welcome to The Matrix Hotel Admin Dashboard</h2>
-            <p class="text-muted">Manage your hotel operations from this central dashboard.</p>
-        </div>
-    </div>
-
+<div class="container-fluid py-4">
     <div class="row mb-4">
-        <div class="col-md-4 mb-3">
-            <div class="card h-100 border-0 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title text-success">Occupancy Rate</h5>
-                    <p class="text-muted">Current hotel occupancy</p>
-                    <h1 class="display-4 text-success">@occupancyRate.ToString("0.0")%</h1>
-                    <p class="text-muted"><i class="fas fa-info-circle text-muted"></i> @occupiedRooms of @totalRooms rooms occupied</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-3">
-            <div class="card h-100 border-0 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title text-primary">Active Staff</h5>
-                    <p class="text-muted">Staff currently on duty</p>
-                    <h1 class="display-4 text-primary">@activeStaff</h1>
-                    <p class="text-muted">From all departments</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-3">
-            <div class="card h-100 border-0 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title text-warning">Today's Revenue</h5>
-                    <p class="text-muted">Total earnings today</p>
-                    <h1 class="display-4 text-warning">$@todayRevenue.ToString("N0")</h1>
-                    @{
-                        var difference = todayRevenue - yesterdayRevenue;
-                        var differenceText = difference >= 0 ? 
-                            $"+${difference:N0} from yesterday" : 
-                            $"-${Math.Abs(difference):N0} from yesterday";
-                        var differenceIcon = difference >= 0 ? 
-                            "fas fa-arrow-up text-success" : 
-                            "fas fa-arrow-down text-danger";
-                    }
-                    <p class="text-muted"><i class="@differenceIcon"></i> @differenceText</p>
+        <div class="col-12">
+            <div class="card shadow-sm border-0 rounded-lg">
+                <div class="card-body p-4">
+                    <h2 class="text-primary fw-bold mb-4">Admin Dashboard</h2>
+                    <p class="lead">Welcome to The Matrix Hotel administration panel.</p>
+                    <p>Use the sidebar menu to navigate through different management options.</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-12">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Recent Bookings</h5>
-                    <a href="@Url.Action("Index", "Booking")" class="btn btn-sm btn-outline-success">View All</a>
+    <div class="row g-4">
+        <!-- User Management Card -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm rounded-lg hover-lift transition-all">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-primary bg-opacity-10 p-3 rounded-circle me-3">
+                            <i class="fas fa-users text-primary fs-4"></i>
+                        </div>
+                        <h3 class="h5 mb-0">User Management</h3>
+                    </div>
+                    <p class="text-muted">Manage user accounts, roles, and permissions.</p>
+                    <a href="/Admin/UserManagement" class="btn btn-sm btn-outline-primary mt-2">
+                        <i class="fas fa-arrow-right me-1"></i> Manage Users
+                    </a>
                 </div>
-                <div class="card-body">
+            </div>
+        </div>
+
+        <!-- Room Management Card -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm rounded-lg hover-lift transition-all">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-primary bg-opacity-10 p-3 rounded-circle me-3">
+                            <i class="fas fa-bed text-primary fs-4"></i>
+                        </div>
+                        <h3 class="h5 mb-0">Room Management</h3>
+                    </div>
+                    <p class="text-muted">Manage room types, availability, and pricing.</p>
+                    <a href="#" class="btn btn-sm btn-outline-primary mt-2">
+                        <i class="fas fa-arrow-right me-1"></i> Manage Rooms
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Booking Management Card -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm rounded-lg hover-lift transition-all">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-primary bg-opacity-10 p-3 rounded-circle me-3">
+                            <i class="fas fa-calendar-check text-primary fs-4"></i>
+                        </div>
+                        <h3 class="h5 mb-0">Bookings</h3>
+                    </div>
+                    <p class="text-muted">View and manage current and upcoming bookings.</p>
+                    <a href="#" class="btn btn-sm btn-outline-primary mt-2">
+                        <i class="fas fa-arrow-right me-1"></i> Manage Bookings
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Card -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm rounded-lg hover-lift transition-all">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-primary bg-opacity-10 p-3 rounded-circle me-3">
+                            <i class="fas fa-chart-pie text-primary fs-4"></i>
+                        </div>
+                        <h3 class="h5 mb-0">Analytics</h3>
+                    </div>
+                    <p class="text-muted">View booking statistics and revenue reports.</p>
+                    <a href="#" class="btn btn-sm btn-outline-primary mt-2">
+                        <i class="fas fa-arrow-right me-1"></i> View Reports
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Registrations -->
+    <div class="row mt-4">
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm rounded-lg">
+                <div class="card-header bg-white p-4 border-0">
+                    <h3 class="h5 mb-0">Recent User Registrations</h3>
+                </div>
+                <div class="card-body p-0">
                     <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
                                 <tr>
-                                    <th>Booking ID</th>
-                                    <th>Guest Name</th>
-                                    <th>Room</th>
-                                    <th>Check-in</th>
-                                    <th>Check-out</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
+                                    <th>User</th>
+                                    <th>Email</th>
+                                    <th>Registered On</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td colspan="7" class="text-center py-4">
-                                        <i class="fas fa-calendar-times text-muted mb-3" style="font-size: 2rem;"></i>
-                                        <p class="text-muted mb-0">No recent bookings found</p>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://randomuser.me/api/portraits/men/32.jpg" width="40" height="40" class="rounded-circle me-3" alt="User">
+                                            <span>John Smith</span>
+                                        </div>
                                     </td>
+                                    <td>john.smith@example.com</td>
+                                    <td>Today</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://randomuser.me/api/portraits/women/44.jpg" width="40" height="40" class="rounded-circle me-3" alt="User">
+                                            <span>Sarah Johnson</span>
+                                        </div>
+                                    </td>
+                                    <td>sarah.j@example.com</td>
+                                    <td>Yesterday</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://randomuser.me/api/portraits/men/67.jpg" width="40" height="40" class="rounded-circle me-3" alt="User">
+                                            <span>Michael Brown</span>
+                                        </div>
+                                    </td>
+                                    <td>m.brown@example.com</td>
+                                    <td>2 days ago</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
+                <div class="card-footer bg-white border-0 p-3">
+                    <a href="/Admin/UserManagement" class="btn btn-sm btn-link text-primary">View all users <i class="fas fa-arrow-right ms-1"></i></a>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-6 mb-3">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white">
-                    <h5 class="mb-0">Room Status</h5>
+        <!-- Recent Bookings -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm rounded-lg">
+                <div class="card-header bg-white p-4 border-0">
+                    <h3 class="h5 mb-0">Recent Bookings</h3>
                 </div>
-                <div class="card-body">
-                    <div class="d-flex justify-content-between mb-3">
-                        <div class="text-center">
-                            <h5 class="text-success">@occupiedRooms</h5>
-                            <small class="text-muted">Occupied</small>
-                        </div>
-                        <div class="text-center">
-                            <h5 class="text-primary">@vacantRooms</h5>
-                            <small class="text-muted">Vacant</small>
-                        </div>
-                        <div class="text-center">
-                            <h5 class="text-warning">@maintenanceRooms</h5>
-                            <small class="text-muted">Maintenance</small>
-                        </div>
-                        <div class="text-center">
-                            <h5 class="text-danger">@(totalRooms - occupiedRooms - vacantRooms - maintenanceRooms)</h5>
-                            <small class="text-muted">Other</small>
-                        </div>
-                    </div>
-                    <div class="progress" style="height: 25px;">
-                        @{ 
-                            var occupiedPercent = totalRooms > 0 ? (double)occupiedRooms / totalRooms * 100 : 0;
-                            var vacantPercent = totalRooms > 0 ? (double)vacantRooms / totalRooms * 100 : 0;
-                            var maintenancePercent = totalRooms > 0 ? (double)maintenanceRooms / totalRooms * 100 : 0;
-                            var otherPercent = totalRooms > 0 ? (double)(totalRooms - occupiedRooms - vacantRooms - maintenanceRooms) / totalRooms * 100 : 0;
-                        }
-                        <div class="progress-bar bg-success" style="width: @occupiedPercent%;" role="progressbar" aria-valuenow="@occupiedPercent" aria-valuemin="0" aria-valuemax="100">@occupiedPercent.ToString("0")%</div>
-                        <div class="progress-bar bg-primary" style="width: @vacantPercent%;" role="progressbar" aria-valuenow="@vacantPercent" aria-valuemin="0" aria-valuemax="100">@vacantPercent.ToString("0")%</div>
-                        <div class="progress-bar bg-warning" style="width: @maintenancePercent%;" role="progressbar" aria-valuenow="@maintenancePercent" aria-valuemin="0" aria-valuemax="100">@maintenancePercent.ToString("0")%</div>
-                        <div class="progress-bar bg-danger" style="width: @otherPercent%;" role="progressbar" aria-valuenow="@otherPercent" aria-valuemin="0" aria-valuemax="100">@otherPercent.ToString("0")%</div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Guest</th>
+                                    <th>Room</th>
+                                    <th>Check-in</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Alexander Pierce</td>
+                                    <td>Premium Suite</td>
+                                    <td>May 15, 2025</td>
+                                    <td><span class="badge bg-warning">Pending</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Jennifer Wilson</td>
+                                    <td>Deluxe Room</td>
+                                    <td>May 12, 2025</td>
+                                    <td><span class="badge bg-success">Confirmed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Robert Johnson</td>
+                                    <td>Standard Room</td>
+                                    <td>May 10, 2025</td>
+                                    <td><span class="badge bg-primary">Checked In</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-md-6 mb-3">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Recent Activities</h5>
-                    <a href="#" class="btn btn-sm btn-outline-success">View All</a>
-                </div>
-                <div class="card-body">
-                    <!-- In a real implementation, these would come from a database -->
-                    <div class="activity-item d-flex align-items-start mb-3">
-                        <div class="me-3">
-                            <div class="bg-light rounded-circle p-2">
-                                <i class="fas fa-user-check text-success"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <p class="mb-0"><strong>New check-in:</strong> Room 301 checked in by FrontDesk</p>
-                            <small class="text-muted">@DateTime.Now.AddMinutes(-10).ToString("hh:mm tt")</small>
-                        </div>
-                    </div>
-                    <div class="activity-item d-flex align-items-start mb-3">
-                        <div class="me-3">
-                            <div class="bg-light rounded-circle p-2">
-                                <i class="fas fa-broom text-primary"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <p class="mb-0"><strong>Room cleaning:</strong> Room 205 marked as cleaned</p>
-                            <small class="text-muted">@DateTime.Now.AddMinutes(-25).ToString("hh:mm tt")</small>
-                        </div>
-                    </div>
-                    <div class="activity-item d-flex align-items-start mb-3">
-                        <div class="me-3">
-                            <div class="bg-light rounded-circle p-2">
-                                <i class="fas fa-credit-card text-warning"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <p class="mb-0"><strong>Payment received:</strong> $@todayRevenue.ToString("0.00") for today</p>
-                            <small class="text-muted">@DateTime.Now.AddMinutes(-35).ToString("hh:mm tt")</small>
-                        </div>
-                    </div>
-                    <div class="activity-item d-flex align-items-start">
-                        <div class="me-3">
-                            <div class="bg-light rounded-circle p-2">
-                                <i class="fas fa-tools text-danger"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <p class="mb-0"><strong>Maintenance request:</strong> Room 118 - AC not working</p>
-                            <small class="text-muted">@DateTime.Now.AddMinutes(-45).ToString("hh:mm tt")</small>
-                        </div>
-                    </div>
+                <div class="card-footer bg-white border-0 p-3">
+                    <a href="#" class="btn btn-sm btn-link text-primary">View all bookings <i class="fas fa-arrow-right ms-1"></i></a>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    .hover-lift:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08) !important;
+        transition: all 0.3s ease;
+    }
+</style>

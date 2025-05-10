@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "sbsbaN85RHg7d5oHPg5MTdBR5KIItwkBb20v2hTncSQ=",
+  "Hash": "XHB9u8pxo/YEAosEDqiEl9nP3TKXJKfYCVor5kN1EuU=",
   "Source": "HOTEL",
   "BasePath": "_content/HOTEL",
   "Mode": "Default",
@@ -73,8 +73,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "q973bdmgvw",
-      "Integrity": "chlbbWHUeuuAmG517N7XkB0Cg8mMzqtWNzy0fvWXXi8=",
+      "Fingerprint": "l60e4ehvr3",
+      "Integrity": "bUSWIuezZ944IimjWpRLwChMkAzL+LmqPPG0Zt1PHxQ=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\site.css"
@@ -99,6 +99,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "C:\\Users\\Lenovo\\Documents\\Planas\\matrixhotel\\OtsoTel\\hotel\\wwwroot\\js\\animation-helper.js",
+      "SourceId": "HOTEL",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Lenovo\\Documents\\Planas\\matrixhotel\\OtsoTel\\hotel\\wwwroot\\",
+      "BasePath": "_content/HOTEL",
+      "RelativePath": "js/animation-helper#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "km63bvfga4",
+      "Integrity": "tAS6R/qm/J7l2xaGXxuouKq/pTLFv+gJUXLVjTFwDQE=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\animation-helper.js"
     },
     {
       "Identity": "C:\\Users\\Lenovo\\Documents\\Planas\\matrixhotel\\OtsoTel\\hotel\\wwwroot\\js\\site.js",
@@ -1352,7 +1373,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "14937"
+          "Value": "14499"
         },
         {
           "Name": "Content-Type",
@@ -1360,11 +1381,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"chlbbWHUeuuAmG517N7XkB0Cg8mMzqtWNzy0fvWXXi8=\""
+          "Value": "\"bUSWIuezZ944IimjWpRLwChMkAzL+LmqPPG0Zt1PHxQ=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 06 May 2025 13:23:46 GMT"
+          "Value": "Sat, 10 May 2025 16:10:27 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1374,12 +1395,12 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-chlbbWHUeuuAmG517N7XkB0Cg8mMzqtWNzy0fvWXXi8="
+          "Value": "sha256-bUSWIuezZ944IimjWpRLwChMkAzL+LmqPPG0Zt1PHxQ="
         }
       ]
     },
     {
-      "Route": "css/site.q973bdmgvw.css",
+      "Route": "css/site.l60e4ehvr3.css",
       "AssetFile": "C:\\Users\\Lenovo\\Documents\\Planas\\matrixhotel\\OtsoTel\\hotel\\wwwroot\\css\\site.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -1389,7 +1410,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "14937"
+          "Value": "14499"
         },
         {
           "Name": "Content-Type",
@@ -1397,11 +1418,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"chlbbWHUeuuAmG517N7XkB0Cg8mMzqtWNzy0fvWXXi8=\""
+          "Value": "\"bUSWIuezZ944IimjWpRLwChMkAzL+LmqPPG0Zt1PHxQ=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 06 May 2025 13:23:46 GMT"
+          "Value": "Sat, 10 May 2025 16:10:27 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1411,7 +1432,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "q973bdmgvw"
+          "Value": "l60e4ehvr3"
         },
         {
           "Name": "label",
@@ -1419,7 +1440,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-chlbbWHUeuuAmG517N7XkB0Cg8mMzqtWNzy0fvWXXi8="
+          "Value": "sha256-bUSWIuezZ944IimjWpRLwChMkAzL+LmqPPG0Zt1PHxQ="
         }
       ]
     },
@@ -1666,6 +1687,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-jDwBvd+5NIr1AGuNRAgg8M8UuMRty8R6Ex/klnJNaWY="
+        }
+      ]
+    },
+    {
+      "Route": "js/animation-helper.js",
+      "AssetFile": "C:\\Users\\Lenovo\\Documents\\Planas\\matrixhotel\\OtsoTel\\hotel\\wwwroot\\js\\animation-helper.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2520"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"tAS6R/qm/J7l2xaGXxuouKq/pTLFv+gJUXLVjTFwDQE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 10 May 2025 16:21:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-tAS6R/qm/J7l2xaGXxuouKq/pTLFv+gJUXLVjTFwDQE="
+        }
+      ]
+    },
+    {
+      "Route": "js/animation-helper.km63bvfga4.js",
+      "AssetFile": "C:\\Users\\Lenovo\\Documents\\Planas\\matrixhotel\\OtsoTel\\hotel\\wwwroot\\js\\animation-helper.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2520"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"tAS6R/qm/J7l2xaGXxuouKq/pTLFv+gJUXLVjTFwDQE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 10 May 2025 16:21:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "km63bvfga4"
+        },
+        {
+          "Name": "label",
+          "Value": "js/animation-helper.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-tAS6R/qm/J7l2xaGXxuouKq/pTLFv+gJUXLVjTFwDQE="
         }
       ]
     },

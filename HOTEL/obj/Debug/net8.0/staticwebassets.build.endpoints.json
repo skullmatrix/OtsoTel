@@ -99,7 +99,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "14937"
+          "Value": "14499"
         },
         {
           "Name": "Content-Type",
@@ -107,22 +107,22 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"chlbbWHUeuuAmG517N7XkB0Cg8mMzqtWNzy0fvWXXi8=\""
+          "Value": "\"bUSWIuezZ944IimjWpRLwChMkAzL+LmqPPG0Zt1PHxQ=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 06 May 2025 13:23:46 GMT"
+          "Value": "Sat, 10 May 2025 16:10:27 GMT"
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-chlbbWHUeuuAmG517N7XkB0Cg8mMzqtWNzy0fvWXXi8="
+          "Value": "sha256-bUSWIuezZ944IimjWpRLwChMkAzL+LmqPPG0Zt1PHxQ="
         }
       ]
     },
     {
-      "Route": "css/site.q973bdmgvw.css",
+      "Route": "css/site.l60e4ehvr3.css",
       "AssetFile": "css/site.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -136,7 +136,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "14937"
+          "Value": "14499"
         },
         {
           "Name": "Content-Type",
@@ -144,21 +144,21 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"chlbbWHUeuuAmG517N7XkB0Cg8mMzqtWNzy0fvWXXi8=\""
+          "Value": "\"bUSWIuezZ944IimjWpRLwChMkAzL+LmqPPG0Zt1PHxQ=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 06 May 2025 13:23:46 GMT"
+          "Value": "Sat, 10 May 2025 16:10:27 GMT"
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "q973bdmgvw"
+          "Value": "l60e4ehvr3"
         },
         {
           "Name": "integrity",
-          "Value": "sha256-chlbbWHUeuuAmG517N7XkB0Cg8mMzqtWNzy0fvWXXi8="
+          "Value": "sha256-bUSWIuezZ944IimjWpRLwChMkAzL+LmqPPG0Zt1PHxQ="
         },
         {
           "Name": "label",
@@ -245,6 +245,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-Jtxf9L+5ITKRc1gIRl4VbUpGkRNfOBXjYTdhJD4facM="
+        }
+      ]
+    },
+    {
+      "Route": "js/animation-helper.js",
+      "AssetFile": "js/animation-helper.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2520"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"tAS6R/qm/J7l2xaGXxuouKq/pTLFv+gJUXLVjTFwDQE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 10 May 2025 16:21:50 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-tAS6R/qm/J7l2xaGXxuouKq/pTLFv+gJUXLVjTFwDQE="
+        }
+      ]
+    },
+    {
+      "Route": "js/animation-helper.km63bvfga4.js",
+      "AssetFile": "js/animation-helper.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2520"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"tAS6R/qm/J7l2xaGXxuouKq/pTLFv+gJUXLVjTFwDQE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 10 May 2025 16:21:50 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "km63bvfga4"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-tAS6R/qm/J7l2xaGXxuouKq/pTLFv+gJUXLVjTFwDQE="
+        },
+        {
+          "Name": "label",
+          "Value": "js/animation-helper.js"
         }
       ]
     },

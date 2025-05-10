@@ -12,7 +12,7 @@
                     <div class="row g-0">
                         <!-- Left side image -->
                         <div class="col-md-5 d-none d-md-block">
-                            <img src="https://i.pinimg.com/736x/2a/11/2f/2a112f695462f797da807fa7a03b6f39.jpg"
+                            <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
                                  class="img-fluid h-100 object-fit-cover" alt="The Matrix Hotel">
                             <div class="position-absolute bottom-0 start-0 p-4 text-white">
                                 <h3 class="fw-bold">THE MATRIX</h3>
@@ -29,7 +29,21 @@
                                 </div>
 
                                 <!-- Error message container -->
-                                <div id="signupErrorMessage" class="alert alert-danger d-none mb-4" role="alert"></div>
+                                @if (!ViewData.ModelState.IsValid)
+                                {
+                                    <div class="alert alert-danger mb-4" role="alert">
+                                        <h5 class="alert-heading">Please fix the following errors:</h5>
+                                        <div asp-validation-summary="All" class="text-danger"></div>
+                                    </div>
+                                }
+
+                                <!-- Success message container -->
+                                @if (TempData["SuccessMessage"] != null)
+                                {
+                                    <div class="alert alert-success mb-4" role="alert">
+                                        @TempData["SuccessMessage"]
+                                    </div>
+                                }
 
                                 <form asp-action="SignUp" method="post" id="signupForm" novalidate>
                                     <!-- Add a hidden field for redirect -->
@@ -148,197 +162,273 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Password visibility toggle
-        const togglePassword = document.getElementById('togglePassword');
-        const password = document.getElementById('Password');
+    // Password visibility toggle
+    const togglePassword = document.getElementById('togglePassword');
+    const password = document.getElementById('Password');
 
-        togglePassword.addEventListener('click', function() {
-            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-            password.setAttribute('type', type);
-            this.querySelector('i').classList.toggle('fa-eye');
-            this.querySelector('i').classList.toggle('fa-eye-slash');
-        });
+    togglePassword.addEventListener('click', function() {
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        this.querySelector('i').classList.toggle('fa-eye');
+        this.querySelector('i').classList.toggle('fa-eye-slash');
+    });
 
-        // Confirm Password visibility toggle
-        const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
-        const confirmPassword = document.getElementById('ConfirmPassword');
+    // Confirm Password visibility toggle
+    const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+    const confirmPassword = document.getElementById('ConfirmPassword');
 
-        toggleConfirmPassword.addEventListener('click', function() {
-            const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
-            confirmPassword.setAttribute('type', type);
-            this.querySelector('i').classList.toggle('fa-eye');
-            this.querySelector('i').classList.toggle('fa-eye-slash');
-        });
+    toggleConfirmPassword.addEventListener('click', function() {
+        const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+        confirmPassword.setAttribute('type', type);
+        this.querySelector('i').classList.toggle('fa-eye');
+        this.querySelector('i').classList.toggle('fa-eye-slash');
+    });
 
-        // Form validation
-        const form = document.getElementById('signupForm');
-        const errorElement = document.getElementById('confirmPasswordError');
-        const errorMessageContainer = document.getElementById('signupErrorMessage');
-        const passwordStrengthBar = document.getElementById('passwordStrengthBar');
-        const passwordStrengthText = document.getElementById('passwordStrengthText');
+    // Form validation
+    const form = document.getElementById('signupForm');
+    const errorElement = document.getElementById('confirmPasswordError');
+    const passwordStrengthBar = document.getElementById('passwordStrengthBar');
+    const passwordStrengthText = document.getElementById('passwordStrengthText');
+    const submitBtn = document.getElementById('submitBtn');
 
-        // Password requirements elements
-        const reqLength = document.getElementById('req-length');
-        const reqUppercase = document.getElementById('req-uppercase');
-        const reqLowercase = document.getElementById('req-lowercase');
-        const reqNumber = document.getElementById('req-number');
+    // Password requirements elements
+    const reqLength = document.getElementById('req-length');
+    const reqUppercase = document.getElementById('req-uppercase');
+    const reqLowercase = document.getElementById('req-lowercase');
+    const reqNumber = document.getElementById('req-number');
 
-        // Password strength checker
-        function checkPasswordStrength(password) {
-            let strength = 0;
+    // Password strength checker
+    function checkPasswordStrength(password) {
+        let strength = 0;
 
-            // Check length
-            if (password.length >= 8) {
-                strength += 25;
-                reqLength.innerHTML = '<i class="fas fa-check-circle text-success"></i> 8+ characters';
-            } else {
-                reqLength.innerHTML = '<i class="fas fa-times-circle text-danger"></i> 8+ characters';
-            }
-
-            // Check for uppercase letters
-            if (/[A-Z]/.test(password)) {
-                strength += 25;
-                reqUppercase.innerHTML = '<i class="fas fa-check-circle text-success"></i> Uppercase';
-            } else {
-                reqUppercase.innerHTML = '<i class="fas fa-times-circle text-danger"></i> Uppercase';
-            }
-
-            // Check for lowercase letters
-            if (/[a-z]/.test(password)) {
-                strength += 25;
-                reqLowercase.innerHTML = '<i class="fas fa-check-circle text-success"></i> Lowercase';
-            } else {
-                reqLowercase.innerHTML = '<i class="fas fa-times-circle text-danger"></i> Lowercase';
-            }
-
-            // Check for numbers
-            if (/[0-9]/.test(password)) {
-                strength += 25;
-                reqNumber.innerHTML = '<i class="fas fa-check-circle text-success"></i> Number';
-            } else {
-                reqNumber.innerHTML = '<i class="fas fa-times-circle text-danger"></i> Number';
-            }
-
-            // Update strength meter
-            passwordStrengthBar.style.width = strength + '%';
-            passwordStrengthBar.setAttribute('aria-valuenow', strength);
-
-            // Set color based on strength
-            if (strength < 50) {
-                passwordStrengthBar.className = 'progress-bar bg-danger';
-                passwordStrengthText.innerHTML = 'Password strength: Weak';
-                return false;
-            } else if (strength < 100) {
-                passwordStrengthBar.className = 'progress-bar bg-warning';
-                passwordStrengthText.innerHTML = 'Password strength: Medium';
-                return true;
-            } else {
-                passwordStrengthBar.className = 'progress-bar bg-success';
-                passwordStrengthText.innerHTML = 'Password strength: Strong';
-                return true;
-            }
+        // Check length
+        if (password.length >= 8) {
+            strength += 25;
+            reqLength.innerHTML = '<i class="fas fa-check-circle text-success"></i> 8+ characters';
+        } else {
+            reqLength.innerHTML = '<i class="fas fa-times-circle text-danger"></i> 8+ characters';
         }
 
-        // Check password strength on input
-        password.addEventListener('input', function() {
-            checkPasswordStrength(this.value);
+        // Check for uppercase letters
+        if (/[A-Z]/.test(password)) {
+            strength += 25;
+            reqUppercase.innerHTML = '<i class="fas fa-check-circle text-success"></i> Uppercase';
+        } else {
+            reqUppercase.innerHTML = '<i class="fas fa-times-circle text-danger"></i> Uppercase';
+        }
 
-            // Check if passwords match
-            if (confirmPassword.value && this.value !== confirmPassword.value) {
-                errorElement.textContent = "Passwords do not match";
-                confirmPassword.classList.add('is-invalid');
-            } else if (confirmPassword.value) {
-                errorElement.textContent = "";
-                confirmPassword.classList.remove('is-invalid');
-            }
-        });
+        // Check for lowercase letters
+        if (/[a-z]/.test(password)) {
+            strength += 25;
+            reqLowercase.innerHTML = '<i class="fas fa-check-circle text-success"></i> Lowercase';
+        } else {
+            reqLowercase.innerHTML = '<i class="fas fa-times-circle text-danger"></i> Lowercase';
+        }
 
-        // Form submit handler
-        form.addEventListener('submit', function(event) {
-            // Reset error message container
-            errorMessageContainer.classList.add('d-none');
-            errorMessageContainer.textContent = '';
+        // Check for numbers
+        if (/[0-9]/.test(password)) {
+            strength += 25;
+            reqNumber.innerHTML = '<i class="fas fa-check-circle text-success"></i> Number';
+        } else {
+            reqNumber.innerHTML = '<i class="fas fa-times-circle text-danger"></i> Number';
+        }
 
-            let hasErrors = false;
-            let errorMessages = [];
+        // Update strength meter
+        passwordStrengthBar.style.width = strength + '%';
+        passwordStrengthBar.setAttribute('aria-valuenow', strength);
 
-            // Prevent submission if password is not strong enough
-            if (!checkPasswordStrength(password.value)) {
+        // Set color based on strength
+        if (strength < 50) {
+            passwordStrengthBar.className = 'progress-bar bg-danger';
+            passwordStrengthText.innerHTML = 'Password strength: Weak';
+            return false;
+        } else if (strength < 100) {
+            passwordStrengthBar.className = 'progress-bar bg-warning';
+            passwordStrengthText.innerHTML = 'Password strength: Medium';
+            return true;
+        } else {
+            passwordStrengthBar.className = 'progress-bar bg-success';
+            passwordStrengthText.innerHTML = 'Password strength: Strong';
+            return true;
+        }
+    }
+
+    // Check password strength on input
+    password.addEventListener('input', function() {
+        checkPasswordStrength(this.value);
+
+        // Check if passwords match
+        if (confirmPassword.value && this.value !== confirmPassword.value) {
+            errorElement.textContent = "Passwords do not match";
+            confirmPassword.classList.add('is-invalid');
+        } else if (confirmPassword.value) {
+            errorElement.textContent = "";
+            confirmPassword.classList.remove('is-invalid');
+        }
+    });
+
+    // Form submit handler
+    form.addEventListener('submit', function(event) {
+        let hasErrors = false;
+        let errorMessages = [];
+
+        // Prevent submission if password is not strong enough
+        if (!checkPasswordStrength(password.value)) {
+            event.preventDefault();
+            password.classList.add('is-invalid');
+            errorMessages.push("Password does not meet requirements");
+            hasErrors = true;
+        }
+
+        // Check if passwords match
+        if (password.value !== confirmPassword.value) {
+            event.preventDefault();
+            errorElement.textContent = "Passwords do not match";
+            confirmPassword.classList.add('is-invalid');
+            errorMessages.push("Passwords do not match");
+            hasErrors = true;
+        } else {
+            errorElement.textContent = "";
+            confirmPassword.classList.remove('is-invalid');
+        }
+
+        // Check required fields
+        const inputs = form.querySelectorAll('input[required]');
+        inputs.forEach(input => {
+            if (!input.value) {
+                input.classList.add('is-invalid');
                 event.preventDefault();
-                password.classList.add('is-invalid');
-                errorMessages.push("Password does not meet requirements");
-                hasErrors = true;
-            }
-
-            // Check if passwords match
-            if (password.value !== confirmPassword.value) {
-                event.preventDefault();
-                errorElement.textContent = "Passwords do not match";
-                confirmPassword.classList.add('is-invalid');
-                errorMessages.push("Passwords do not match");
+                const label = input.previousElementSibling ? input.previousElementSibling.textContent : 'Field';
+                errorMessages.push(`${label} is required`);
                 hasErrors = true;
             } else {
-                errorElement.textContent = "";
-                confirmPassword.classList.remove('is-invalid');
+                input.classList.remove('is-invalid');
             }
-
-            // Check required fields
-            const inputs = form.querySelectorAll('input[required]');
-            inputs.forEach(input => {
-                if (!input.value) {
-                    input.classList.add('is-invalid');
-                    event.preventDefault();
-                    const label = input.previousElementSibling ? input.previousElementSibling.textContent : 'Field';
-                    errorMessages.push(`${label} is required`);
-                    hasErrors = true;
-                } else {
-                    input.classList.remove('is-invalid');
-                }
-            });
-
-            // Display error messages if any
-            if (hasErrors) {
-                errorMessageContainer.classList.remove('d-none');
-                errorMessageContainer.innerHTML = errorMessages.map(msg => `<div>${msg}</div>`).join('');
-                return false;
-            }
-
-            // Let form submit normally with the redirect parameter
-            // The server-side code will handle the redirect
         });
 
-        // Real-time validation feedback
-        const inputs = form.querySelectorAll('input');
-        inputs.forEach(input => {
-            input.addEventListener('blur', function() {
-                if (this.hasAttribute('required') && !this.value) {
-                    this.classList.add('is-invalid');
-                } else {
-                    this.classList.remove('is-invalid');
-                }
-            });
+        // Show loading state on button if no errors
+        if (!hasErrors) {
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Creating Account...';
+            submitBtn.disabled = true;
+        }
+    });
 
-            input.addEventListener('input', function() {
-                if (this.classList.contains('is-invalid') && this.value) {
-                    this.classList.remove('is-invalid');
-                }
-            });
-        });
-
-        // Real-time password matching
-        confirmPassword.addEventListener('input', function() {
-            if (this.value && this.value !== password.value) {
-                errorElement.textContent = "Passwords do not match";
+    // Real-time validation feedback
+    const inputs = form.querySelectorAll('input');
+    inputs.forEach(input => {
+        input.addEventListener('blur', function() {
+            if (this.hasAttribute('required') && !this.value) {
                 this.classList.add('is-invalid');
             } else {
-                errorElement.textContent = "";
                 this.classList.remove('is-invalid');
             }
         });
 
-        // Ensure Sign In link redirects to index with login modal
-        document.getElementById('signInLink').addEventListener('click', function(e) {
-            // No need to prevent default - the href is correct
+        input.addEventListener('input', function() {
+            if (this.classList.contains('is-invalid') && this.value) {
+                this.classList.remove('is-invalid');
+            }
         });
     });
+
+    // Real-time password matching
+    confirmPassword.addEventListener('input', function() {
+        if (this.value && this.value !== password.value) {
+            errorElement.textContent = "Passwords do not match";
+            this.classList.add('is-invalid');
+        } else {
+            errorElement.textContent = "";
+            this.classList.remove('is-invalid');
+        }
+    });
+
+    // Email validation
+    const emailInput = document.getElementById('Email');
+    if (emailInput) {
+        emailInput.addEventListener('blur', function() {
+            if (this.value && !isValidEmail(this.value)) {
+                this.classList.add('is-invalid');
+                const errorSpan = this.parentElement.nextElementSibling;
+                if (errorSpan && errorSpan.classList.contains('text-danger')) {
+                    errorSpan.textContent = "Please enter a valid email address";
+                }
+            }
+        });
+    }
+
+    // Simple email validation function
+    function isValidEmail(email) {
+        // Check for @@ and . with text before, between, and after
+        if (!email) return false;
+        
+        const atIndex = email.indexOf('@@');
+        if (atIndex < 1) return false; // @@ must not be first character
+        
+        const dotIndex = email.indexOf('.', atIndex);
+        if (dotIndex < atIndex + 2) return false; // Need at least one char between @@ and .
+        if (dotIndex === email.length - 1) return false; // . cannot be last character
+        
+        return true;
+    }
+
+    // Ensure Sign In link redirects to index with login modal
+    document.getElementById('signInLink').addEventListener('click', function(e) {
+        // No need to prevent default - the href is correct
+    });
+    
+    // Add fade-in effect to the signup card
+    const signupCard = document.querySelector('.card');
+    if (signupCard) {
+        signupCard.classList.add('fade-in-element');
+        setTimeout(() => {
+            signupCard.classList.add('show');
+        }, 100);
+    }
+});
 </script>
+
+<style>
+    /* Improved form styling */
+    .form-control:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 0.25rem rgba(var(--primary-rgb), 0.25);
+    }
+    
+    .input-group:focus-within .input-group-text {
+        border-color: var(--primary);
+    }
+    
+    /* Password strength indicator */
+    #passwordStrengthBar {
+        transition: width 0.3s ease, background-color 0.3s ease;
+    }
+    
+    #passwordRequirements span {
+        transition: color 0.3s ease;
+    }
+    
+    /* Button animation */
+    .btn-primary {
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(var(--primary-rgb), 0.4);
+    }
+    
+    /* Image styling */
+    .object-fit-cover {
+        object-fit: cover;
+    }
+    
+    /* Fade-in effect using opacity transition */
+    .fade-in-element {
+        opacity: 0;
+        transition: opacity 1s ease;
+    }
+    
+    .fade-in-element.show {
+        opacity: 1;
+    }
+</style>

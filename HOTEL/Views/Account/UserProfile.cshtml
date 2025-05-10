@@ -479,235 +479,224 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Form elements
-        const profileForm = document.getElementById('profileForm');
-        const photoUpload = document.getElementById('photoUpload');
-        const photoPreview = document.getElementById('photoPreview');
-        const mobilePhotoPreview = document.getElementById('mobilePhotoPreview');
-        const photoField = document.getElementById('photoField');
-        const errorMessageContainer = document.getElementById('profileErrorMessage');
-        const successMessageContainer = document.getElementById('profileSuccessMessage');
-        const saveChangesBtn = document.getElementById('saveChangesBtn');
+    // Form elements
+    const profileForm = document.getElementById('profileForm');
+    const photoUpload = document.getElementById('photoUpload');
+    const photoPreview = document.getElementById('photoPreview');
+    const mobilePhotoPreview = document.getElementById('mobilePhotoPreview');
+    const photoField = document.getElementById('photoField');
+    const errorMessageContainer = document.getElementById('profileErrorMessage');
+    const successMessageContainer = document.getElementById('profileSuccessMessage');
+    const saveChangesBtn = document.getElementById('saveChangesBtn');
 
-        // Get all required fields
-        const requiredInputs = profileForm.querySelectorAll('input[required]');
+    // Get all required fields
+    const requiredInputs = profileForm ? profileForm.querySelectorAll('input[required]') : [];
 
-        // Fix for footer visibility - Remove overflow:hidden from body/html
-        document.documentElement.style.overflow = '';
-        document.body.style.overflow = '';
+    // Photo upload handling
+    if (photoUpload && photoPreview) {
+        // Add drag and drop support for desktop
+        const photoContainers = document.querySelectorAll('.profile-photo-container');
 
-        // Add a small margin at the bottom to ensure footer visibility
-        document.querySelector('.profile-section').style.marginBottom = '2rem';
-
-        // Function to check orientation and adjust layout
-        function checkOrientation() {
-            const isLandscape = window.innerWidth > window.innerHeight;
-            const profileSection = document.querySelector('.profile-section');
-
-            if (profileSection) {
-                if (isLandscape) {
-                    profileSection.classList.add('landscape-mode');
-                    document.body.classList.add('landscape');
-
-                    // Adjust height to allow scrolling to footer
-                    profileSection.style.minHeight = '100vh';
-                    profileSection.style.height = 'auto';
-                } else {
-                    profileSection.classList.remove('landscape-mode');
-                    document.body.classList.remove('landscape');
-                    profileSection.style.minHeight = '100vh';
-                    profileSection.style.height = 'auto';
+        photoContainers.forEach(container => {
+            // Visual feedback on hover
+            container.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.05)';
+                this.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.3)';
+                const overlay = this.querySelector('.photo-edit-overlay');
+                if (overlay) {
+                    overlay.style.opacity = '1';
                 }
-            }
-
-            // Adjust card height to allow scrolling to footer
-            const card = document.querySelector('.card');
-            if (card) {
-                card.style.height = 'auto';
-                card.style.minHeight = '100%';
-            }
-        }
-
-        // Run orientation check on load and resize
-        checkOrientation();
-        window.addEventListener('resize', checkOrientation);
-        window.addEventListener('orientationchange', checkOrientation);
-
-        // Improved photo upload experience
-        if (photoUpload) {
-            // Add drag and drop support for desktop
-            const photoContainers = document.querySelectorAll('.profile-photo-container');
-
-            photoContainers.forEach(container => {
-                // Visual feedback on hover
-                container.addEventListener('mouseenter', function() {
-                    this.style.transform = 'scale(1.05)';
-                    this.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.3)';
-                    const overlay = this.querySelector('.photo-edit-overlay');
-                    if (overlay) {
-                        overlay.style.opacity = '1';
-                    }
-                });
-
-                container.addEventListener('mouseleave', function() {
-                    this.style.transform = '';
-                    this.style.boxShadow = '';
-                    const overlay = this.querySelector('.photo-edit-overlay');
-                    if (overlay) {
-                        overlay.style.opacity = '0.9';
-                    }
-                });
-
-                // Drag and drop support
-                container.addEventListener('dragover', function(e) {
-                    e.preventDefault();
-                    this.style.transform = 'scale(1.05)';
-                    this.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.3)';
-                    this.style.borderColor = 'var(--primary)';
-                });
-
-                container.addEventListener('dragleave', function() {
-                    this.style.transform = '';
-                    this.style.boxShadow = '';
-                    this.style.borderColor = '';
-                });
-
-                container.addEventListener('drop', function(e) {
-                    e.preventDefault();
-                    this.style.transform = '';
-                    this.style.boxShadow = '';
-                    this.style.borderColor = '';
-
-                    if (e.dataTransfer.files.length) {
-                        photoUpload.files = e.dataTransfer.files;
-                        const event = new Event('change');
-                        photoUpload.dispatchEvent(event);
-                    }
-                });
-
-                // Click to upload
-                container.addEventListener('click', function(e) {
-                    if (!e.target.closest('.photo-edit-overlay')) {
-                        photoUpload.click();
-                    }
-                });
             });
-        }
 
-        // Enhanced image preview with compression and loading indicator
-        photoUpload.addEventListener('change', function(e) {
-            if (this.files && this.files[0]) {
-                const file = this.files[0];
+            container.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+                this.style.boxShadow = '';
+                const overlay = this.querySelector('.photo-edit-overlay');
+                if (overlay) {
+                    overlay.style.opacity = '0.9';
+                }
+            });
 
-                // Add loading indicators
-                photoPreview.style.opacity = '0.5';
-                if (mobilePhotoPreview) mobilePhotoPreview.style.opacity = '0.5';
+            // Drag and drop support
+            container.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.style.transform = 'scale(1.05)';
+                this.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.3)';
+                this.style.borderColor = 'var(--primary)';
+            });
 
-                // Add spinner to photo container
-                const containers = document.querySelectorAll('.profile-photo-container');
-                containers.forEach(container => {
-                    const spinner = document.createElement('div');
-                    spinner.className = 'photo-loading-spinner';
-                    spinner.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-                    spinner.style.position = 'absolute';
-                    spinner.style.top = '50%';
-                    spinner.style.left = '50%';
-                    spinner.style.transform = 'translate(-50%, -50%)';
-                    spinner.style.color = '#fff';
-                    spinner.style.fontSize = '1.5rem';
-                    spinner.style.zIndex = '10';
-                    container.appendChild(spinner);
-                });
+            container.addEventListener('dragleave', function() {
+                this.style.transform = '';
+                this.style.boxShadow = '';
+                this.style.borderColor = '';
+            });
 
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    // Create an image element to get dimensions
-                    const img = new Image();
-                    img.onload = function() {
-                        // Compress the image
-                        const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
+            container.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.style.transform = '';
+                this.style.boxShadow = '';
+                this.style.borderColor = '';
 
-                        // Calculate new dimensions (max width/height 500px)
-                        let width = img.width;
-                        let height = img.height;
-                        const maxSize = 500;
+                if (e.dataTransfer.files.length) {
+                    photoUpload.files = e.dataTransfer.files;
+                    const event = new Event('change');
+                    photoUpload.dispatchEvent(event);
+                }
+            });
 
-                        if (width > height && width > maxSize) {
-                            height = Math.round((height * maxSize) / width);
-                            width = maxSize;
-                        } else if (height > maxSize) {
-                            width = Math.round((width * maxSize) / height);
-                            height = maxSize;
-                        }
+            // Click to upload
+            container.addEventListener('click', function(e) {
+                if (!e.target.closest('.photo-edit-overlay')) {
+                    photoUpload.click();
+                }
+            });
+        });
+        
+        // File upload handling
+        photoUpload.addEventListener('change', handlePhotoUpload);
+    }
 
-                        // Set canvas dimensions
-                        canvas.width = width;
-                        canvas.height = height;
+    // Function to handle photo upload
+    function handlePhotoUpload(e) {
+        const file = this.files[0];
+        if (!file) return;
 
-                        // Draw the image on canvas
-                        ctx.drawImage(img, 0, 0, width, height);
+        // Add loading indicators
+        if (photoPreview) photoPreview.style.opacity = '0.5';
+        if (mobilePhotoPreview) mobilePhotoPreview.style.opacity = '0.5';
 
-                        // Get compressed image as Data URL
-                        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7); // 0.7 quality (70%)
-
-                        // Remove loading spinners
-                        document.querySelectorAll('.photo-loading-spinner').forEach(spinner => {
-                            spinner.remove();
-                        });
-
-                        // Set the preview images with transition
-                        photoPreview.style.transition = 'opacity 0.3s ease';
-                        photoPreview.src = compressedDataUrl;
-                        photoPreview.style.opacity = '1';
-
-                        if (mobilePhotoPreview) {
-                            mobilePhotoPreview.style.transition = 'opacity 0.3s ease';
-                            mobilePhotoPreview.src = compressedDataUrl;
-                            mobilePhotoPreview.style.opacity = '1';
-                        }
-
-                        photoField.value = compressedDataUrl;
-
-                        // Show success toast
-                        const toast = document.createElement('div');
-                        toast.className = 'photo-toast';
-                        toast.innerHTML = '<i class="fas fa-check-circle me-2"></i>Photo selected';
-                        toast.style.position = 'fixed';
-                        toast.style.bottom = '20px';
-                        toast.style.right = '20px';
-                        toast.style.backgroundColor = 'rgba(25, 135, 84, 0.9)';
-                        toast.style.color = 'white';
-                        toast.style.padding = '10px 15px';
-                        toast.style.borderRadius = '5px';
-                        toast.style.boxShadow = '0 3px 10px rgba(0,0,0,0.2)';
-                        toast.style.zIndex = '9999';
-                        toast.style.opacity = '0';
-                        toast.style.transform = 'translateY(20px)';
-                        toast.style.transition = 'all 0.3s ease';
-
-                        document.body.appendChild(toast);
-
-                        // Animate toast in
-                        setTimeout(() => {
-                            toast.style.opacity = '1';
-                            toast.style.transform = 'translateY(0)';
-                        }, 10);
-
-                        // Remove toast after 3 seconds
-                        setTimeout(() => {
-                            toast.style.opacity = '0';
-                            toast.style.transform = 'translateY(20px)';
-                            setTimeout(() => toast.remove(), 300);
-                        }, 3000);
-                    };
-                    img.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
+        // Add spinner
+        const containers = document.querySelectorAll('.profile-photo-container');
+        containers.forEach(container => {
+            const spinner = document.createElement('div');
+            spinner.className = 'photo-loading-spinner';
+            spinner.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            spinner.style.position = 'absolute';
+            spinner.style.top = '50%';
+            spinner.style.left = '50%';
+            spinner.style.transform = 'translate(-50%, -50%)';
+            spinner.style.color = '#fff';
+            spinner.style.fontSize = '1.5rem';
+            spinner.style.zIndex = '10';
+            container.appendChild(spinner);
         });
 
-        // Improved form validation with better feedback
+        // Read file
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            // Process image with canvas for resizing
+            const img = new Image();
+            img.onload = function() {
+                // Compress the image
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+
+                // Calculate new dimensions (max width/height 500px)
+                let width = img.width;
+                let height = img.height;
+                const maxSize = 500;
+
+                if (width > height && width > maxSize) {
+                    height = Math.round((height * maxSize) / width);
+                    width = maxSize;
+                } else if (height > maxSize) {
+                    width = Math.round((width * maxSize) / height);
+                    height = maxSize;
+                }
+
+                // Set canvas dimensions
+                canvas.width = width;
+                canvas.height = height;
+
+                // Draw the image on canvas
+                ctx.drawImage(img, 0, 0, width, height);
+
+                // Get compressed image as Data URL
+                const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7); // 0.7 quality (70%)
+
+                // Remove loading spinners
+                document.querySelectorAll('.photo-loading-spinner').forEach(spinner => {
+                    spinner.remove();
+                });
+
+                // Set the preview images
+                if (photoPreview) {
+                    photoPreview.style.transition = 'opacity 0.3s ease';
+                    photoPreview.src = compressedDataUrl;
+                    photoPreview.style.opacity = '1';
+                }
+
+                if (mobilePhotoPreview) {
+                    mobilePhotoPreview.style.transition = 'opacity 0.3s ease';
+                    mobilePhotoPreview.src = compressedDataUrl;
+                    mobilePhotoPreview.style.opacity = '1';
+                }
+
+                if (photoField) {
+                    photoField.value = compressedDataUrl;
+                }
+
+                // Show success toast
+                const toast = document.createElement('div');
+                toast.className = 'photo-toast';
+                toast.innerHTML = '<i class="fas fa-check-circle me-2"></i>Photo selected';
+                toast.style.position = 'fixed';
+                toast.style.bottom = '20px';
+                toast.style.right = '20px';
+                toast.style.backgroundColor = 'rgba(25, 135, 84, 0.9)';
+                toast.style.color = 'white';
+                toast.style.padding = '10px 15px';
+                toast.style.borderRadius = '5px';
+                toast.style.boxShadow = '0 3px 10px rgba(0,0,0,0.2)';
+                toast.style.zIndex = '9999';
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(20px)';
+                toast.style.transition = 'all 0.3s ease';
+
+                document.body.appendChild(toast);
+
+                // Animate toast in
+                setTimeout(() => {
+                    toast.style.opacity = '1';
+                    toast.style.transform = 'translateY(0)';
+                }, 10);
+
+                // Remove toast after 3 seconds
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateY(20px)';
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // Form validation functions
+    function validateInput(input) {
+        if (!input) return false;
+        
+        const inputGroup = input.closest('.input-group');
+        const icon = inputGroup?.querySelector('.input-group-text i');
+
+        if (!input.value.trim()) {
+            input.classList.add('is-invalid');
+            if (icon) {
+                icon.className = icon.className.replace(/text-\w+/, 'text-danger');
+            }
+            return false;
+        } else {
+            input.classList.remove('is-invalid');
+            if (icon) {
+                icon.className = icon.className.replace(/text-\w+/, 'text-success');
+            }
+            return true;
+        }
+    }
+
+    // Add validation to required inputs
+    if (requiredInputs.length) {
         requiredInputs.forEach(input => {
             // Validate on blur
             input.addEventListener('blur', function() {
@@ -727,161 +716,164 @@
                 }
             });
         });
+    }
 
-        function validateInput(input) {
-            const inputGroup = input.closest('.input-group');
-            const icon = inputGroup?.querySelector('.input-group-text i');
+    // Handle form submission
+    if (profileForm) {
+        profileForm.addEventListener('submit', function(event) {
+            event.preventDefault();
 
-            if (!input.value.trim()) {
-                input.classList.add('is-invalid');
-                if (icon) {
-                    icon.className = icon.className.replace(/text-\w+/, 'text-danger');
+            // Reset messages
+            if (errorMessageContainer) errorMessageContainer.classList.add('d-none');
+            if (successMessageContainer) successMessageContainer.classList.add('d-none');
+
+            // Validate all required fields
+            let isValid = true;
+            let firstInvalidInput = null;
+
+            requiredInputs.forEach(input => {
+                if (!validateInput(input)) {
+                    isValid = false;
+                    if (!firstInvalidInput) firstInvalidInput = input;
                 }
-                return false;
-            } else {
-                input.classList.remove('is-invalid');
-                if (icon) {
-                    icon.className = icon.className.replace(/text-\w+/, 'text-success');
+            });
+
+            if (!isValid) {
+                if (errorMessageContainer) {
+                    errorMessageContainer.textContent = 'Please fill in all required fields.';
+                    errorMessageContainer.classList.remove('d-none');
                 }
-                return true;
-            }
-        }
 
-            // Handle form submission with better feedback
-    profileForm.addEventListener('submit', function(event) {
-        event.preventDefault();
+                if (firstInvalidInput) {
+                    firstInvalidInput.focus();
+                    const scrollToElement = firstInvalidInput.closest('.mb-2') || firstInvalidInput;
+                    const headerOffset = 80;
+                    const elementPosition = scrollToElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
-        // Reset messages
-        errorMessageContainer.classList.add('d-none');
-        successMessageContainer.classList.add('d-none');
-
-        // Validate all required fields
-        let isValid = true;
-        let firstInvalidInput = null;
-
-        requiredInputs.forEach(input => {
-            if (!validateInput(input)) {
-                isValid = false;
-                if (!firstInvalidInput) firstInvalidInput = input;
-            }
-        });
-
-        if (!isValid) {
-            errorMessageContainer.textContent = 'Please fill in all required fields.';
-            errorMessageContainer.classList.remove('d-none');
-
-            if (firstInvalidInput) {
-                firstInvalidInput.focus();
-                const scrollToElement = firstInvalidInput.closest('.mb-2') || firstInvalidInput;
-                const headerOffset = 80;
-                const elementPosition = scrollToElement.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
-                });
-            }
-
-            saveChangesBtn.classList.add('btn-shake');
-            setTimeout(() => {
-                saveChangesBtn.classList.remove('btn-shake');
-            }, 500);
-            return;
-        }
-
-        // Show loading state
-        saveChangesBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Saving...';
-        saveChangesBtn.disabled = true;
-
-        // Create FormData object
-        const formData = new FormData(profileForm);
-
-        // Convert to JSON object
-        const jsonData = {};
-        formData.forEach((value, key) => {
-            jsonData[key] = value;
-        });
-
-        // AJAX call to update profile
-        fetch('/Account/UpdateProfile', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(jsonData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Show success message
-                successMessageContainer.classList.remove('d-none');
-                successMessageContainer.style.transform = 'translateY(-10px)';
-                successMessageContainer.style.opacity = '0';
-
-                setTimeout(() => {
-                    successMessageContainer.style.transition = 'all 0.3s ease';
-                    successMessageContainer.style.transform = 'translateY(0)';
-                    successMessageContainer.style.opacity = '1';
-                }, 10);
-
-                // Update button
-                saveChangesBtn.innerHTML = '<i class="fas fa-check me-2"></i> Saved';
-
-                // Update profile photo in session if changed
-                if (jsonData.Photo) {
-                    const profilePhotos = document.querySelectorAll('.profile-photo');
-                    profilePhotos.forEach(photo => {
-                        photo.src = jsonData.Photo;
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
                     });
                 }
 
-                // Call the global function to handle navigation and UI updates
-                if (window.handleProfileUpdateSuccess) {
-                    // Delay slightly to show success message
+                if (saveChangesBtn) {
+                    saveChangesBtn.classList.add('btn-shake');
                     setTimeout(() => {
-                        window.handleProfileUpdateSuccess();
-                    }, 1500);
-                } else {
-                    // Fallback if global function isn't available
-                    setTimeout(() => {
-                        window.location.href = '/';
-                    }, 1500);
+                        saveChangesBtn.classList.remove('btn-shake');
+                    }, 500);
                 }
-            } else {
-                // Show error message
-                errorMessageContainer.textContent = data.message || 'Failed to update profile.';
-                errorMessageContainer.classList.remove('d-none');
-                saveChangesBtn.innerHTML = '<i class="fas fa-save me-2"></i> Save Changes';
-                saveChangesBtn.disabled = false;
+                return;
             }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            errorMessageContainer.textContent = 'An error occurred while updating the profile.';
-            errorMessageContainer.classList.remove('d-none');
-            saveChangesBtn.innerHTML = '<i class="fas fa-save me-2"></i> Save Changes';
-            saveChangesBtn.disabled = false;
+
+            // Show loading state
+            if (saveChangesBtn) {
+                saveChangesBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Saving...';
+                saveChangesBtn.disabled = true;
+            }
+
+            // Create FormData object
+            const formData = new FormData(profileForm);
+
+            // Convert to JSON object
+            const jsonData = {};
+            formData.forEach((value, key) => {
+                jsonData[key] = value;
+            });
+
+            // AJAX call to update profile
+            fetch('/Account/UpdateProfile', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(jsonData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Show success message
+                    if (successMessageContainer) {
+                        successMessageContainer.classList.remove('d-none');
+                        successMessageContainer.style.transform = 'translateY(-10px)';
+                        successMessageContainer.style.opacity = '0';
+
+                        setTimeout(() => {
+                            successMessageContainer.style.transition = 'all 0.3s ease';
+                            successMessageContainer.style.transform = 'translateY(0)';
+                            successMessageContainer.style.opacity = '1';
+                        }, 10);
+                    }
+
+                    // Update button
+                    if (saveChangesBtn) {
+                        saveChangesBtn.innerHTML = '<i class="fas fa-check me-2"></i> Saved';
+                    }
+
+                    // Update profile photo in session if changed
+                    if (jsonData.Photo) {
+                        const profilePhotos = document.querySelectorAll('.profile-photo');
+                        profilePhotos.forEach(photo => {
+                            photo.src = jsonData.Photo;
+                        });
+                    }
+
+                    // Call the global function to handle navigation and UI updates
+                    if (window.handleProfileUpdateSuccess) {
+                        // Delay slightly to show success message
+                        setTimeout(() => {
+                            window.handleProfileUpdateSuccess();
+                        }, 1500);
+                    } else {
+                        // Fallback if global function isn't available
+                        setTimeout(() => {
+                            window.location.href = '/';
+                        }, 1500);
+                    }
+                } else {
+                    // Show error message
+                    if (errorMessageContainer) {
+                        errorMessageContainer.textContent = data.message || 'Failed to update profile.';
+                        errorMessageContainer.classList.remove('d-none');
+                    }
+                    if (saveChangesBtn) {
+                        saveChangesBtn.innerHTML = '<i class="fas fa-save me-2"></i> Save Changes';
+                        saveChangesBtn.disabled = false;
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                if (errorMessageContainer) {
+                    errorMessageContainer.textContent = 'An error occurred while updating the profile.';
+                    errorMessageContainer.classList.remove('d-none');
+                }
+                if (saveChangesBtn) {
+                    saveChangesBtn.innerHTML = '<i class="fas fa-save me-2"></i> Save Changes';
+                    saveChangesBtn.disabled = false;
+                }
+            });
         });
-    });
+    }
 
-        // Enhanced Password functionality
-        const togglePasswordButtons = document.querySelectorAll('.toggle-password');
-        const newPassword = document.getElementById('NewPassword');
-        const confirmNewPassword = document.getElementById('ConfirmNewPassword');
-        const passwordStrengthBar = document.getElementById('passwordStrengthBar');
-        const passwordStrengthText = document.getElementById('passwordStrengthText');
-        const confirmPasswordError = document.getElementById('confirmPasswordError');
-        const passwordErrorMessage = document.getElementById('passwordErrorMessage');
-        const passwordSuccessMessage = document.getElementById('passwordSuccessMessage');
+    // Password Change Functionality
+    const togglePasswordButtons = document.querySelectorAll('.toggle-password');
+    const newPassword = document.getElementById('NewPassword');
+    const confirmNewPassword = document.getElementById('ConfirmNewPassword');
+    const passwordStrengthBar = document.getElementById('passwordStrengthBar');
+    const passwordStrengthText = document.getElementById('passwordStrengthText');
+    const confirmPasswordError = document.getElementById('confirmPasswordError');
+    const passwordErrorMessage = document.getElementById('passwordErrorMessage');
+    const passwordSuccessMessage = document.getElementById('passwordSuccessMessage');
 
-        // Password requirements elements
-        const reqLength = document.getElementById('req-length');
-        const reqUppercase = document.getElementById('req-uppercase');
-        const reqLowercase = document.getElementById('req-lowercase');
-        const reqNumber = document.getElementById('req-number');
+    // Password requirements elements
+    const reqLength = document.getElementById('req-length');
+    const reqUppercase = document.getElementById('req-uppercase');
+    const reqLowercase = document.getElementById('req-lowercase');
+    const reqNumber = document.getElementById('req-number');
 
-        // Improved password visibility toggle
+    // Password visibility toggles
+    if (togglePasswordButtons.length) {
         togglePasswordButtons.forEach(button => {
             button.addEventListener('click', function() {
                 const targetId = this.getAttribute('data-target');
@@ -913,47 +905,55 @@
                 }
             });
         });
+    }
 
-        // Improved password strength checker
-        function checkPasswordStrength(password) {
-            let strength = 0;
+    // Password strength checker
+    function checkPasswordStrength(password) {
+        if (!password) return false;
+        
+        let strength = 0;
 
-            // Update requirements UI
-            function updateRequirement(element, isMet) {
-                if (isMet) {
-                    element.innerHTML = `<i class="fas fa-check-circle text-success"></i> ${element.textContent.replace(/✓|✗|\s*[a-zA-Z0-9]+$/, '')} ✓`;
-                    element.classList.add('text-success');
-                    element.classList.remove('text-danger');
-                } else {
-                    element.innerHTML = `<i class="fas fa-times-circle text-danger"></i> ${element.textContent.replace(/✓|✗|\s*[a-zA-Z0-9]+$/, '')} ✗`;
-                    element.classList.add('text-danger');
-                    element.classList.remove('text-success');
-                }
+        // Update requirements UI
+        function updateRequirement(element, isMet) {
+            if (!element) return;
+            
+            if (isMet) {
+                element.innerHTML = `<i class="fas fa-check-circle text-success"></i> ${element.textContent.replace(/✓|✗|\s*[a-zA-Z0-9]+$/, '')} ✓`;
+                element.classList.add('text-success');
+                element.classList.remove('text-danger');
+            } else {
+                element.innerHTML = `<i class="fas fa-times-circle text-danger"></i> ${element.textContent.replace(/✓|✗|\s*[a-zA-Z0-9]+$/, '')} ✗`;
+                element.classList.add('text-danger');
+                element.classList.remove('text-success');
             }
+        }
 
-            // Check requirements
-            const hasLength = password.length >= 8;
-            const hasUppercase = /[A-Z]/.test(password);
-            const hasLowercase = /[a-z]/.test(password);
-            const hasNumber = /[0-9]/.test(password);
+        // Check requirements
+        const hasLength = password.length >= 8;
+        const hasUppercase = /[A-Z]/.test(password);
+        const hasLowercase = /[a-z]/.test(password);
+        const hasNumber = /[0-9]/.test(password);
 
-            // Update UI
-            updateRequirement(reqLength, hasLength);
-            updateRequirement(reqUppercase, hasUppercase);
-            updateRequirement(reqLowercase, hasLowercase);
-            updateRequirement(reqNumber, hasNumber);
+        // Update UI if elements exist
+        if (reqLength) updateRequirement(reqLength, hasLength);
+        if (reqUppercase) updateRequirement(reqUppercase, hasUppercase);
+        if (reqLowercase) updateRequirement(reqLowercase, hasLowercase);
+        if (reqNumber) updateRequirement(reqNumber, hasNumber);
 
-            // Calculate strength
-            if (hasLength) strength += 25;
-            if (hasUppercase) strength += 25;
-            if (hasLowercase) strength += 25;
-            if (hasNumber) strength += 25;
+        // Calculate strength
+        if (hasLength) strength += 25;
+        if (hasUppercase) strength += 25;
+        if (hasLowercase) strength += 25;
+        if (hasNumber) strength += 25;
 
-            // Animate strength bar
+        // Update strength bar if it exists
+        if (passwordStrengthBar) {
             passwordStrengthBar.style.transition = 'width 0.5s ease, background-color 0.5s ease';
             passwordStrengthBar.style.width = strength + '%';
+        }
 
-            // Update strength text
+        // Update strength text if it exists
+        if (passwordStrengthText) {
             if (strength < 50) {
                 passwordStrengthBar.className = 'progress-bar bg-danger';
                 passwordStrengthText.innerHTML = 'Password strength: <span class="text-danger fw-bold">Weak</span>';
@@ -968,145 +968,167 @@
                 return true;
             }
         }
+        
+        return strength >= 50; // Return true if password is medium or strong
+    }
 
-        // Check password strength with debounce
-        if (newPassword) {
-            let passwordTimer;
-            newPassword.addEventListener('input', function() {
-                clearTimeout(passwordTimer);
+    // Add password strength check
+    if (newPassword) {
+        let passwordTimer;
+        newPassword.addEventListener('input', function() {
+            clearTimeout(passwordTimer);
 
-                passwordTimer = setTimeout(() => {
-                    checkPasswordStrength(this.value);
+            passwordTimer = setTimeout(() => {
+                checkPasswordStrength(this.value);
 
-                    // Update confirmation field feedback
-                    if (confirmNewPassword.value) {
-                        if (this.value !== confirmNewPassword.value) {
+                // Check password match
+                if (confirmNewPassword && confirmNewPassword.value) {
+                    if (this.value !== confirmNewPassword.value) {
+                        if (confirmPasswordError) {
                             confirmPasswordError.innerHTML = '<i class="fas fa-exclamation-circle me-1"></i> Passwords do not match';
                             confirmPasswordError.className = 'text-danger small';
-                            confirmNewPassword.classList.add('is-invalid');
-                        } else {
+                        }
+                        confirmNewPassword.classList.add('is-invalid');
+                    } else {
+                        if (confirmPasswordError) {
                             confirmPasswordError.innerHTML = '<i class="fas fa-check-circle me-1"></i> Passwords match';
                             confirmPasswordError.className = 'text-success small';
-                            confirmNewPassword.classList.remove('is-invalid');
                         }
+                        confirmNewPassword.classList.remove('is-invalid');
                     }
-                }, 300);
-            });
-        }
+                }
+            }, 300);
+        });
+    }
 
-        // Better password matching feedback
-        if (confirmNewPassword) {
-            confirmNewPassword.addEventListener('input', function() {
-                if (newPassword.value && this.value) {
-                    if (this.value !== newPassword.value) {
+    // Password matching check
+    if (confirmNewPassword) {
+        confirmNewPassword.addEventListener('input', function() {
+            if (newPassword && newPassword.value && this.value) {
+                if (this.value !== newPassword.value) {
+                    if (confirmPasswordError) {
                         confirmPasswordError.innerHTML = '<i class="fas fa-exclamation-circle me-1"></i> Passwords do not match';
                         confirmPasswordError.className = 'text-danger small';
-                        this.classList.add('is-invalid');
-                    } else {
+                    }
+                    this.classList.add('is-invalid');
+                } else {
+                    if (confirmPasswordError) {
                         confirmPasswordError.innerHTML = '<i class="fas fa-check-circle me-1"></i> Passwords match';
                         confirmPasswordError.className = 'text-success small';
-                        this.classList.remove('is-invalid');
-
-                        // Add a brief success highlight
-                        this.style.transition = 'box-shadow 0.3s ease';
-                        this.style.boxShadow = '0 0 0 3px rgba(25, 135, 84, 0.25)';
-
-                        setTimeout(() => {
-                            this.style.boxShadow = '';
-                        }, 300);
                     }
-                } else {
-                    confirmPasswordError.textContent = '';
                     this.classList.remove('is-invalid');
+
+                    // Add a brief success highlight
+                    this.style.transition = 'box-shadow 0.3s ease';
+                    this.style.boxShadow = '0 0 0 3px rgba(25, 135, 84, 0.25)';
+
+                    setTimeout(() => {
+                        this.style.boxShadow = '';
+                    }, 300);
                 }
-            });
-        }
+            } else if (confirmPasswordError) {
+                confirmPasswordError.textContent = '';
+                this.classList.remove('is-invalid');
+            }
+        });
+    }
 
-        // Enhanced password form submission
-        const savePasswordBtn = document.getElementById('savePasswordBtn');
-        const changePasswordForm = document.getElementById('changePasswordForm');
+    // Password change form submission
+    const savePasswordBtn = document.getElementById('savePasswordBtn');
+    const changePasswordForm = document.getElementById('changePasswordForm');
 
-        if (savePasswordBtn && changePasswordForm) {
-            changePasswordForm.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    savePasswordBtn.click();
-                }
-            });
+    if (savePasswordBtn && changePasswordForm) {
+        // Add Enter key submission
+        changePasswordForm.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                savePasswordBtn.click();
+            }
+        });
 
-            savePasswordBtn.addEventListener('click', function() {
-                // Reset messages
-                passwordErrorMessage.classList.add('d-none');
-                passwordSuccessMessage.classList.add('d-none');
+        // Handle form submission
+        savePasswordBtn.addEventListener('click', function() {
+            // Reset messages
+            if (passwordErrorMessage) passwordErrorMessage.classList.add('d-none');
+            if (passwordSuccessMessage) passwordSuccessMessage.classList.add('d-none');
 
-                let isValid = true;
-                const currentPassword = document.getElementById('CurrentPassword');
+            let isValid = true;
+            const currentPassword = document.getElementById('CurrentPassword');
 
-                // Validate current password
-                if (!currentPassword.value) {
-                    currentPassword.classList.add('is-invalid');
-                    isValid = false;
-                } else {
-                    currentPassword.classList.remove('is-invalid');
-                }
+            // Validate current password
+            if (!currentPassword || !currentPassword.value) {
+                if (currentPassword) currentPassword.classList.add('is-invalid');
+                isValid = false;
+            } else if (currentPassword) {
+                currentPassword.classList.remove('is-invalid');
+            }
 
-                // Validate new password
-                if (!newPassword.value || !checkPasswordStrength(newPassword.value)) {
-                    newPassword.classList.add('is-invalid');
-                    isValid = false;
-                } else {
-                    newPassword.classList.remove('is-invalid');
-                }
+            // Validate new password
+            if (newPassword && (!newPassword.value || !checkPasswordStrength(newPassword.value))) {
+                newPassword.classList.add('is-invalid');
+                isValid = false;
+            } else if (newPassword) {
+                newPassword.classList.remove('is-invalid');
+            }
 
-                // Validate confirmation
-                if (!confirmNewPassword.value || newPassword.value !== confirmNewPassword.value) {
-                    confirmNewPassword.classList.add('is-invalid');
+            // Validate confirmation
+            if (newPassword && confirmNewPassword && (
+                !confirmNewPassword.value || 
+                newPassword.value !== confirmNewPassword.value)) {
+                confirmNewPassword.classList.add('is-invalid');
+                if (confirmPasswordError) {
                     confirmPasswordError.innerHTML = '<i class="fas fa-exclamation-circle me-1"></i> Passwords do not match';
                     confirmPasswordError.className = 'text-danger small';
-                    isValid = false;
-                } else {
-                    confirmNewPassword.classList.remove('is-invalid');
+                }
+                isValid = false;
+            } else if (confirmNewPassword) {
+                confirmNewPassword.classList.remove('is-invalid');
+                if (confirmPasswordError) {
                     confirmPasswordError.innerHTML = '<i class="fas fa-check-circle me-1"></i> Passwords match';
                     confirmPasswordError.className = 'text-success small';
                 }
+            }
 
-                if (!isValid) {
-                    // Show error message
+            if (!isValid) {
+                // Show error message
+                if (passwordErrorMessage) {
                     passwordErrorMessage.textContent = 'Please correct the errors above.';
                     passwordErrorMessage.classList.remove('d-none');
-
-                    // Add shake animation to button
-                    savePasswordBtn.classList.add('btn-shake');
-                    setTimeout(() => {
-                        savePasswordBtn.classList.remove('btn-shake');
-                    }, 500);
-
-                    return;
                 }
 
-                // Show loading state
-                savePasswordBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Saving...';
-                savePasswordBtn.disabled = true;
+                // Add shake animation to button
+                savePasswordBtn.classList.add('btn-shake');
+                setTimeout(() => {
+                    savePasswordBtn.classList.remove('btn-shake');
+                }, 500);
 
-                // Prepare data
-                const passwordData = {
-                    CurrentPassword: currentPassword.value,
-                    NewPassword: newPassword.value,
-                    ConfirmNewPassword: confirmNewPassword.value
-                };
+                return;
+            }
 
-                // AJAX call to change password
-                fetch('/Account/ChangePassword', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(passwordData)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Show success message
+            // Show loading state
+            savePasswordBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Saving...';
+            savePasswordBtn.disabled = true;
+
+            // Prepare data
+            const passwordData = {
+                CurrentPassword: currentPassword.value,
+                NewPassword: newPassword.value,
+                ConfirmNewPassword: confirmNewPassword.value
+            };
+
+            // AJAX call to change password
+            fetch('/Account/ChangePassword', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(passwordData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Show success message
+                    if (passwordSuccessMessage) {
                         passwordSuccessMessage.classList.remove('d-none');
                         passwordSuccessMessage.style.transform = 'translateY(-10px)';
                         passwordSuccessMessage.style.opacity = '0';
@@ -1116,89 +1138,66 @@
                             passwordSuccessMessage.style.transform = 'translateY(0)';
                             passwordSuccessMessage.style.opacity = '1';
                         }, 10);
+                    }
 
-                        // Update button
-                        savePasswordBtn.innerHTML = '<i class="fas fa-check me-2"></i> Saved';
+                    // Update button
+                    savePasswordBtn.innerHTML = '<i class="fas fa-check me-2"></i> Saved';
 
-                        // Close modal after delay
-                        setTimeout(function() {
-                            const modal = bootstrap.Modal.getInstance(document.getElementById('changePasswordModal'));
-                            modal.hide();
+                    // Close modal after delay
+                    setTimeout(function() {
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('changePasswordModal'));
+                        if (modal) modal.hide();
 
-                            // Reset form and button after modal is hidden
-                            setTimeout(() => {
-                                changePasswordForm.reset();
-                                savePasswordBtn.innerHTML = 'Save New Password';
-                                savePasswordBtn.disabled = false;
+                        // Reset form and button after modal is hidden
+                        setTimeout(() => {
+                            changePasswordForm.reset();
+                            savePasswordBtn.innerHTML = 'Save New Password';
+                            savePasswordBtn.disabled = false;
+                            if (passwordSuccessMessage) {
                                 passwordSuccessMessage.classList.add('d-none');
+                            }
 
-                                // Reset password strength
-                                if (passwordStrengthBar) passwordStrengthBar.style.width = '0%';
-                                if (passwordStrengthText) passwordStrengthText.innerHTML = 'Password strength';
+                            // Reset password strength
+                            if (passwordStrengthBar) passwordStrengthBar.style.width = '0%';
+                            if (passwordStrengthText) passwordStrengthText.innerHTML = 'Password strength';
 
-                                // Reset requirements
-                                if (reqLength) reqLength.innerHTML = '<i class="fas fa-times-circle text-danger"></i> 8+ characters';
-                                if (reqUppercase) reqUppercase.innerHTML = '<i class="fas fa-times-circle text-danger"></i> Uppercase';
-                                if (reqLowercase) reqLowercase.innerHTML = '<i class="fas fa-times-circle text-danger"></i> Lowercase';
-                                if (reqNumber) reqNumber.innerHTML = '<i class="fas fa-times-circle text-danger"></i> Number';
-                            }, 300);
-                        }, 1500);
-                    } else {
-                        // Show error message
+                            // Reset requirements
+                            if (reqLength) reqLength.innerHTML = '<i class="fas fa-times-circle text-danger"></i> 8+ characters';
+                            if (reqUppercase) reqUppercase.innerHTML = '<i class="fas fa-times-circle text-danger"></i> Uppercase';
+                            if (reqLowercase) reqLowercase.innerHTML = '<i class="fas fa-times-circle text-danger"></i> Lowercase';
+                            if (reqNumber) reqNumber.innerHTML = '<i class="fas fa-times-circle text-danger"></i> Number';
+                        }, 300);
+                    }, 1500);
+                } else {
+                    // Show error message
+                    if (passwordErrorMessage) {
                         passwordErrorMessage.textContent = data.message || 'Failed to change password.';
                         passwordErrorMessage.classList.remove('d-none');
-                        savePasswordBtn.innerHTML = 'Save New Password';
-                        savePasswordBtn.disabled = false;
                     }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    passwordErrorMessage.textContent = 'An error occurred while changing the password.';
-                    passwordErrorMessage.classList.remove('d-none');
                     savePasswordBtn.innerHTML = 'Save New Password';
                     savePasswordBtn.disabled = false;
-                });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                if (passwordErrorMessage) {
+                    passwordErrorMessage.textContent = 'An error occurred while changing the password.';
+                    passwordErrorMessage.classList.remove('d-none');
+                }
+                savePasswordBtn.innerHTML = 'Save New Password';
+                savePasswordBtn.disabled = false;
             });
-        }
-
-        // Add some CSS for animations
-        const style = document.createElement('style');
-        style.textContent = `
-            .btn-shake {
-                animation: btn-shake 0.5s ease;
-            }
-
-    
-
-            .profile-photo-container {
-                cursor: pointer;
-                transition: all 0.3s ease !important;
-            }
-
-            .photo-edit-overlay {
-                opacity: 0;
-                transition: opacity 0.3s ease, transform 0.2s ease !important;
-            }
-
-            .profile-photo-container:hover .photo-edit-overlay {
-                opacity: 1;
-            }
-
-            .input-group-profile:focus-within {
-                box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.25);
-            }
-
-            .alert {
-                transition: all 0.3s ease;
-            }
-        `;
-        document.head.appendChild(style);
-
-        // Fix footer visibility by ensuring the layout is properly extended
-        document.addEventListener('DOMContentLoaded', function() {
-            // Force recalculation of layout to ensure footer is visible
-            document.body.style.overflow = 'auto';
-            window.dispatchEvent(new Event('resize'));
         });
-    });
-</script>
+    }
+
+    // Add fade-in animation to the profile card
+    const profileCard = document.querySelector('.card');
+    if (profileCard) {
+        profileCard.classList.add('fade-in-element');
+        setTimeout(() => {
+            profileCard.classList.add('show');
+        }, 100);
+    }
+});
+
+    </script>
