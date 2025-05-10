@@ -915,340 +915,242 @@
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM loaded, initializing enhanced form');
-            
-            // Bootstrap 5 tooltips initialization
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            // Initialize tooltips
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
                 return new bootstrap.Tooltip(tooltipTriggerEl);
             });
             
-            // Function to calculate total price with animation
-            function calculateTotal() {
-                const checkInDate = new Date(document.getElementById('CheckInDate').value);
-                const checkOutDate = new Date(document.getElementById('CheckOutDate').value);
-                const pricePerNight = @room.Price;
-
-                // Calculate days (MS to days conversion)
-                const timeDiff = checkOutDate.getTime() - checkInDate.getTime();
-                const days = Math.max(1, Math.ceil(timeDiff / (1000 * 3600 * 24)));
-
-                // Update number of nights with animation
-                const numNightsElement = document.getElementById('numNights');
-                numNightsElement.classList.add('pulse');
-                numNightsElement.textContent = days;
-                
-                setTimeout(function() {
-                    numNightsElement.classList.remove('pulse');
-                }, 500);
-
-                // Update total price with animation
-                const totalPrice = days * pricePerNight;
-                const totalPriceElement = document.getElementById('totalPrice');
-                totalPriceElement.classList.add('pulse');
-                totalPriceElement.textContent = '$' + totalPrice.toFixed(2);
-                
-                setTimeout(function() {
-                    totalPriceElement.classList.remove('pulse');
-                }, 500);
-                
-                console.log('Calculated total:', totalPrice, 'for', days, 'days');
-            }
-
-            // Add event listeners to date inputs with enhanced validation
+            // Form elements
             const checkInDateInput = document.getElementById('CheckInDate');
             const checkOutDateInput = document.getElementById('CheckOutDate');
-            
-            if (checkInDateInput && checkOutDateInput) {
-                checkInDateInput.addEventListener('change', function() {
-                    // Update minimum date for checkout to be after checkin
-                    const checkInDate = new Date(this.value);
-                    if (checkInDate) {
-                        const nextDay = new Date(checkInDate);
-                        nextDay.setDate(nextDay.getDate() + 1);
-                        
-                        const year = nextDay.getFullYear();
-                        const month = String(nextDay.getMonth() + 1).padStart(2, '0');
-                        const day = String(nextDay.getDate()).padStart(2, '0');
-                        
-                        checkOutDateInput.min = `${year}-${month}-${day}`;
-                        
-                        // If checkout date is before new checkin date, update it
-                        const checkOutDate = new Date(checkOutDateInput.value);
-                        if (checkOutDate <= checkInDate) {
-                            checkOutDateInput.value = `${year}-${month}-${day}`;
-                        }
-                    }
-                    
-                    calculateTotal();
-                });
-                
-                checkOutDateInput.addEventListener('change', calculateTotal);
-                
-                // Calculate initial total
-                calculateTotal();
-            } else {
-                console.error('Date inputs not found');
-            }
-
-            // Enhanced Payment Method Handling
+            const guestsSelect = document.getElementById('NumberOfGuests');
             const paymentMethodSelect = document.getElementById('paymentMethod');
             const newPaymentMethodDiv = document.getElementById('newPaymentMethodDiv');
             const newPaymentMethodSelect = document.getElementById('newPaymentMethod');
-            const paymentDetails = document.getElementById('paymentDetails');
-            const paymentOptions = document.querySelectorAll('.payment-option');
-
-            if (paymentMethodSelect) {
-                paymentMethodSelect.addEventListener('change', function() {
-                    console.log('Payment method changed to:', this.value);
+            const cardDetailsDiv = document.getElementById('cardDetailsDiv');
+            const cardNumberInput = document.getElementById('cardNumber');
+            const savePaymentMethodCheckbox = document.getElementById('savePaymentMethod');
+            const termsCheck = document.getElementById('termsCheck');
+            const form = document.getElementById('bookingForm');
+            const confirmButton = document.getElementById('confirmBookingBtn');
+            
+            // Summary elements
+            const summaryCheckIn = document.getElementById('summaryCheckIn');
+            const summaryCheckOut = document.getElementById('summaryCheckOut');
+            const summaryGuests = document.getElementById('summaryGuests');
+            const numNightsElement = document.getElementById('numNights');
+            const taxesFeesElement = document.getElementById('taxesFees');
+            const totalPriceElement = document.getElementById('totalPrice');
+            
+            // Constants
+            const pricePerNight = @room.Price;
+            const taxRate = 0.12; // 12% tax rate
+            
+            // Function to format dates nicely
+            function formatDate(dateString) {
+                if (!dateString) return 'Select date';
+                const date = new Date(dateString);
+                return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+            }
+            
+            // Function to calculate total price
+            function calculateTotal() {
+                // Get dates
+                const checkInDate = checkInDateInput.value ? new Date(checkInDateInput.value) : null;
+                const checkOutDate = checkOutDateInput.value ? new Date(checkOutDateInput.value) : null;
+                
+                // Update summary displays
+                summaryCheckIn.textContent = formatDate(checkInDateInput.value);
+                summaryCheckOut.textContent = formatDate(checkOutDateInput.value);
+                summaryGuests.textContent = guestsSelect.value;
+                
+                // Calculate nights and costs
+                if (checkInDate && checkOutDate && checkOutDate > checkInDate) {
+                    // Calculate days
+                    const timeDiff = checkOutDate.getTime() - checkInDate.getTime();
+                    const days = Math.ceil(timeDiff / (1000 * 3600 * 24));
                     
-                    if (this.value === 'new') {
-                        newPaymentMethodDiv.classList.remove('d-none');
-                        newPaymentMethodDiv.classList.add('fadeIn');
-                        paymentDetails.classList.add('d-none');
-                        
-                        // Reset payment option selection
-                        paymentOptions.forEach(option => {
-                            option.classList.remove('selected');
-                        });
+                    // Update number of nights
+                    numNightsElement.textContent = days;
+                    
+                    // Calculate costs
+                    const roomCost = days * pricePerNight;
+                    const taxes = roomCost * taxRate;
+                    const totalCost = roomCost + taxes;
+                    
+                    // Update displayed costs
+                    taxesFeesElement.textContent = '$' + taxes.toFixed(2);
+                    totalPriceElement.textContent = '$' + totalCost.toFixed(2);
+                } else {
+                    // Reset if dates aren't valid
+                    numNightsElement.textContent = '0';
+                    taxesFeesElement.textContent = '$0.00';
+                    totalPriceElement.textContent = '$0.00';
+                }
+            }
+            
+            // Add event listeners to update summary
+            checkInDateInput.addEventListener('change', calculateTotal);
+            checkOutDateInput.addEventListener('change', calculateTotal);
+            guestsSelect.addEventListener('change', function() {
+                summaryGuests.textContent = this.value;
+            });
+            
+            // Payment method handling
+            if (paymentMethodSelect) {
+                // Mark saved cards in the dropdown
+                for (let i = 0; i < paymentMethodSelect.options.length; i++) {
+                    const option = paymentMethodSelect.options[i];
+                    if (option.value.includes('ending in')) {
+                        option.setAttribute('data-is-saved-card', 'true');
+                        // Optionally add a visual indicator like a card icon
+                        option.innerHTML = '<i class="fas fa-credit-card me-1"></i> ' + option.text;
+                    }
+                }
+                
+                paymentMethodSelect.addEventListener('change', function() {
+                    const selectedValue = this.value;
+                    const selectedOption = this.options[this.selectedIndex];
+                    const isSavedCard = selectedOption.getAttribute('data-is-saved-card') === 'true';
+                    
+                    if (selectedValue === 'new') {
+                        // Show new payment method options
+                        newPaymentMethodDiv.style.display = 'block';
+                        if (newPaymentMethodSelect) {
+                            newPaymentMethodSelect.value = ''; // Reset selection
+                        }
+                        if (cardDetailsDiv) {
+                            cardDetailsDiv.style.display = 'none'; // Hide card details initially
+                        }
                     } else {
-                        newPaymentMethodDiv.classList.add('d-none');
+                        // Hide new payment method section for existing methods
+                        newPaymentMethodDiv.style.display = 'none';
                         
-                        // Show payment details for credit/debit cards
-                        if (this.value.includes('Credit Card') || this.value.includes('Debit Card')) {
-                            paymentDetails.classList.remove('d-none');
-                            paymentDetails.classList.add('fadeIn');
-                        } else {
-                            paymentDetails.classList.add('d-none');
+                        // No need to show card details for saved cards
+                        if (cardDetailsDiv) {
+                            cardDetailsDiv.style.display = 'none';
                         }
                     }
                 });
-            } else {
-                console.error('Payment method select element not found');
             }
-
-            // Payment Option Click Handlers
-            if (paymentOptions.length > 0) {
-                paymentOptions.forEach(option => {
-                    option.addEventListener('click', function() {
-                        // Remove selected class from all options
-                        paymentOptions.forEach(opt => {
-                            opt.classList.remove('selected');
-                        });
-                        
-                        // Add selected class to clicked option
-                        this.classList.add('selected');
-                        
-                        // Update hidden select value
-                        const selectedValue = this.getAttribute('data-value');
-                        if (newPaymentMethodSelect) {
-                            newPaymentMethodSelect.value = selectedValue;
-                            
-                            // Trigger change event
-                            const event = new Event('change');
-                            newPaymentMethodSelect.dispatchEvent(event);
-                            
-                            // Show payment details for credit/debit cards
-                            if (selectedValue === 'Credit Card' || selectedValue === 'Debit Card') {
-                                paymentDetails.classList.remove('d-none');
-                                paymentDetails.classList.add('fadeIn');
-                            } else {
-                                paymentDetails.classList.add('d-none');
-                            }
-                        }
-                    });
-                });
-            }
-
+            
+            // New payment method selection
             if (newPaymentMethodSelect) {
                 newPaymentMethodSelect.addEventListener('change', function() {
-                    console.log('New payment method changed to:', this.value);
-                });
-            }
-
-            // Credit Card Formatting and Validation
-            const cardNumberInput = document.getElementById('cardNumber');
-            const expirationInput = document.getElementById('expiration');
-            const cvvInput = document.getElementById('cvv');
-            const detectedCardType = document.querySelector('.detected-card-type');
-            
-            if (cardNumberInput) {
-                cardNumberInput.addEventListener('input', function(e) {
-                    // Format card number with spaces
-                    let value = this.value.replace(/\D/g, '');
-                    let formattedValue = '';
-                    
-                    for (let i = 0; i < value.length; i++) {
-                        if (i > 0 && i % 4 === 0) {
-                            formattedValue += ' ';
+                    if (this.value === 'Credit Card' || this.value === 'Debit Card') {
+                        // Show card details for new credit/debit cards
+                        if (cardDetailsDiv) {
+                            cardDetailsDiv.style.display = 'block';
                         }
-                        formattedValue += value[i];
-                    }
-                    
-                    this.value = formattedValue;
-                    
-                    // Detect card type based on number pattern
-                    if (value.startsWith('4')) {
-                        detectedCardType.textContent = 'Visa';
-                        document.querySelector('.fa-cc-visa').style.color = '#1A1F71';
-                    } else if (value.startsWith('5')) {
-                        detectedCardType.textContent = 'MasterCard';
-                        document.querySelector('.fa-cc-mastercard').style.color = '#EB001B';
-                    } else if (value.startsWith('3')) {
-                        detectedCardType.textContent = 'American Express';
-                        document.querySelector('.fa-cc-amex').style.color = '#006FCF';
-                    } else if (value.startsWith('6')) {
-                        detectedCardType.textContent = 'Discover';
-                        document.querySelector('.fa-cc-discover').style.color = '#FF6600';
                     } else {
-                        detectedCardType.textContent = '';
-                        document.querySelectorAll('.card-icons i').forEach(icon => {
-                            icon.style.color = '#6c757d';
-                        });
+                        // Hide card details for non-card payment methods
+                        if (cardDetailsDiv) {
+                            cardDetailsDiv.style.display = 'none';
+                        }
                     }
                 });
             }
             
-            if (expirationInput) {
-                expirationInput.addEventListener('input', function(e) {
-                    // Format expiration date as MM/YY
+            // Format credit card input with spaces
+            if (cardNumberInput) {
+                cardNumberInput.addEventListener('input', function() {
+                    // Remove non-digit characters
                     let value = this.value.replace(/\D/g, '');
                     
-                    if (value.length > 2) {
-                        this.value = value.substring(0, 2) + '/' + value.substring(2, 4);
-                    } else {
-                        this.value = value;
+                    // Limit to 16 digits
+                    if (value.length > 16) {
+                        value = value.slice(0, 16);
                     }
+                    
+                    // Format with spaces every 4 digits
+                    if (value.length > 0) {
+                        value = value.match(/.{1,4}/g).join(' ');
+                    }
+                    
+                    this.value = value;
                 });
             }
             
-            if (cvvInput) {
-                cvvInput.addEventListener('input', function(e) {
-                    // Allow only digits and limit to 4 characters
-                    this.value = this.value.replace(/\D/g, '').substring(0, 4);
-                });
-            }
-
-            // Terms and Conditions Agreement
-            const termsModal = document.getElementById('termsModal');
-            const agreeTermsBtn = document.getElementById('agreeTermsBtn');
-            const termsCheck = document.getElementById('termsCheck');
-            
-            if (agreeTermsBtn && termsCheck) {
-                agreeTermsBtn.addEventListener('click', function() {
-                    termsCheck.checked = true;
-                });
-            }
-
-            // Enhanced Form Validation
-            const form = document.getElementById('bookingForm');
-            
+            // Form validation and submission
             if (form) {
-                // Add custom validation styles
                 form.addEventListener('submit', function(e) {
-                    if (!form.checkValidity()) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                    }
+                    e.preventDefault();
                     
-                    form.classList.add('was-validated');
-                    
-                    // Custom validation for dates
+                    // Form validation
                     const checkInDate = new Date(checkInDateInput.value);
                     const checkOutDate = new Date(checkOutDateInput.value);
-                    const today = new Date();
-                    today.setHours(0, 0, 0, 0);
+                    
+                    // Reset validation styling
+                    checkInDateInput.classList.remove('is-invalid');
+                    checkOutDateInput.classList.remove('is-invalid');
+                    termsCheck.classList.remove('is-invalid');
                     
                     let isValid = true;
                     
-                    if (checkInDate < today) {
-                        checkInDateInput.setCustomValidity('Check-in date cannot be in the past.');
+                    // Validate dates
+                    if (!checkInDateInput.value) {
+                        checkInDateInput.classList.add('is-invalid');
                         isValid = false;
-                    } else {
-                        checkInDateInput.setCustomValidity('');
+                    } else if (checkInDate < new Date().setHours(0, 0, 0, 0)) {
+                        checkInDateInput.classList.add('is-invalid');
+                        alert('Check-in date cannot be in the past.');
+                        isValid = false;
                     }
                     
-                    if (checkOutDate <= checkInDate) {
-                        checkOutDateInput.setCustomValidity('Check-out date must be after check-in date.');
+                    if (!checkOutDateInput.value) {
+                        checkOutDateInput.classList.add('is-invalid');
                         isValid = false;
-                    } else {
-                        checkOutDateInput.setCustomValidity('');
+                    } else if (checkOutDate <= checkInDate) {
+                        checkOutDateInput.classList.add('is-invalid');
+                        alert('Check-out date must be after check-in date.');
+                        isValid = false;
                     }
                     
-                    // Validate payment method
+                    // Validate terms
+                    if (!termsCheck.checked) {
+                        termsCheck.classList.add('is-invalid');
+                        alert('You must agree to the terms and conditions.');
+                        isValid = false;
+                    }
+                    
+                    // Process payment method
                     let finalPaymentMethod = paymentMethodSelect.value;
                     
                     if (finalPaymentMethod === 'new') {
+                        // For new payment method
                         finalPaymentMethod = newPaymentMethodSelect.value;
                         
                         if (!finalPaymentMethod) {
+                            alert('Please select a payment method.');
                             isValid = false;
-                            paymentMethodSelect.setCustomValidity('Please select a payment method.');
-                        } else {
-                            paymentMethodSelect.setCustomValidity('');
-                        }
-                    } else if (!finalPaymentMethod) {
-                        isValid = false;
-                        paymentMethodSelect.setCustomValidity('Please select a payment method.');
-                    } else {
-                        paymentMethodSelect.setCustomValidity('');
-                    }
-                    
-                    // Card validation if credit/debit selected
-                    if ((finalPaymentMethod === 'Credit Card' || finalPaymentMethod === 'Debit Card') && 
-                        cardNumberInput && expirationInput && cvvInput) {
-                        
-                        // Card number validation (simplified)
-                        if (cardNumberInput.value.replace(/\s/g, '').length < 13) {
-                            cardNumberInput.setCustomValidity('Please enter a valid card number.');
-                            isValid = false;
-                        } else {
-                            cardNumberInput.setCustomValidity('');
-                        }
-                        
-                        // Expiration validation
-                        const expValue = expirationInput.value;
-                        if (!expValue.match(/^\d{2}\/\d{2}$/)) {
-                            expirationInput.setCustomValidity('Please enter a valid expiration date (MM/YY).');
-                            isValid = false;
-                        } else {
-                            const [month, year] = expValue.split('/');
-                            const expDate = new Date(2000 + parseInt(year), parseInt(month) - 1);
-                            const currentDate = new Date();
+                        } else if ((finalPaymentMethod === 'Credit Card' || finalPaymentMethod === 'Debit Card') && 
+                                    cardNumberInput) {
+                            // Validate card details for new card payments
+                            const cardNumber = cardNumberInput.value.replace(/\s/g, '');
                             
-                            if (expDate < currentDate) {
-                                expirationInput.setCustomValidity('Card is expired.');
+                            if (cardNumber.length !== 16) {
+                                cardNumberInput.classList.add('is-invalid');
+                                alert('Please enter a valid 16-digit card number.');
                                 isValid = false;
                             } else {
-                                expirationInput.setCustomValidity('');
+                                // Format card details for submission
+                                const last4 = cardNumber.slice(-4);
+                                
+                                // Set the formatted payment method with last 4 digits
+                                finalPaymentMethod = `${finalPaymentMethod} ending in ${last4}`;
                             }
                         }
-                        
-                        // CVV validation
-                        if (cvvInput.value.length < 3) {
-                            cvvInput.setCustomValidity('Please enter a valid CVV code.');
-                            isValid = false;
-                        } else {
-                            cvvInput.setCustomValidity('');
-                        }
+                    } else if (!finalPaymentMethod) {
+                        alert('Please select a payment method.');
+                        isValid = false;
                     }
                     
                     if (!isValid) {
-                        e.preventDefault();
-                        console.log('Form validation failed');
-                        
-                        // Scroll to first invalid element
-                        const firstInvalid = form.querySelector(':invalid');
-                        if (firstInvalid) {
-                            firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        }
-                        
                         return false;
                     }
                     
-                    console.log('Form validation passed');
-                    
-                    // Update hidden payment method field or create one
+                    // Create or update hidden payment method input
                     let paymentMethodInput = document.querySelector('input[name="paymentMethod"][type="hidden"]');
                     if (!paymentMethodInput) {
                         paymentMethodInput = document.createElement('input');
@@ -1258,41 +1160,68 @@
                     }
                     paymentMethodInput.value = finalPaymentMethod;
                     
-                    console.log('Final payment method:', finalPaymentMethod);
-                    
-                    // Show loading state on submit button
-                    const confirmButton = document.getElementById('confirmBookingBtn');
-                    if (confirmButton) {
-                        confirmButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
-                        confirmButton.disabled = true;
+                    // Handle save payment method checkbox
+                    if (savePaymentMethodCheckbox && savePaymentMethodCheckbox.checked) {
+                        let savePaymentInput = document.querySelector('input[name="savePaymentMethod"][type="hidden"]');
+                        if (!savePaymentInput) {
+                            savePaymentInput = document.createElement('input');
+                            savePaymentInput.type = 'hidden';
+                            savePaymentInput.name = 'savePaymentMethod';
+                            savePaymentInput.value = 'true';
+                            form.appendChild(savePaymentInput);
+                        }
                     }
                     
+                    // Disable submit button to prevent double submission
+                    confirmButton.disabled = true;
+                    confirmButton.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Processing...';
+                    
+                    // Submit the form
+                    form.submit();
                 });
-            } else {
-                console.error('Booking form not found');
             }
             
-            // Initialize date inputs if empty
-            if (checkInDateInput && !checkInDateInput.value) {
-                const today = new Date();
-                const tomorrow = new Date(today);
-                tomorrow.setDate(tomorrow.getDate() + 1);
-                
-                const formatDate = (date) => {
-                    const year = date.getFullYear();
-                    const month = String(date.getMonth() + 1).padStart(2, '0');
-                    const day = String(date.getDate()).padStart(2, '0');
-                    return `${year}-${month}-${day}`;
-                };
-                
-                checkInDateInput.value = formatDate(today);
-                
-                if (checkOutDateInput && !checkOutDateInput.value) {
-                    checkOutDateInput.value = formatDate(tomorrow);
-                }
-                
-                calculateTotal();
+            // Run initial calculation
+            calculateTotal();
+            
+            // Initial state of payment method sections
+            if (paymentMethodSelect.value === 'new') {
+                newPaymentMethodDiv.style.display = 'block';
+            } else {
+                newPaymentMethodDiv.style.display = 'none';
             }
+            
+            // Add nice card icons to payment methods in dropdown
+            function addCardIcons() {
+                // Get all options in the payment method dropdown
+                const options = paymentMethodSelect.options;
+                
+                // Loop through each option
+                for (let i = 0; i < options.length; i++) {
+                    const option = options[i];
+                    const value = option.value;
+                    
+                    // Skip empty or "Add new" options
+                    if (!value || value === 'new') continue;
+                    
+                    // Add icon based on payment method type
+                    if (value.includes('Credit Card')) {
+                        option.innerHTML = '<i class="fas fa-credit-card me-2"></i>' + option.text;
+                    } else if (value.includes('Debit Card')) {
+                        option.innerHTML = '<i class="fas fa-credit-card me-2"></i>' + option.text;
+                    } else if (value.includes('PayPal')) {
+                        option.innerHTML = '<i class="fab fa-paypal me-2"></i>' + option.text;
+                    } else if (value.includes('Bank Transfer')) {
+                        option.innerHTML = '<i class="fas fa-university me-2"></i>' + option.text;
+                    } else if (value.includes('Cash')) {
+                        option.innerHTML = '<i class="fas fa-money-bill-wave me-2"></i>' + option.text;
+                    }
+                }
+            }
+            
+            // Call the function to add icons
+            addCardIcons();
         });
     </script>
+}
 }
