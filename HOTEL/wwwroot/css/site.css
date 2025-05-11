@@ -531,6 +531,11 @@ img {
     margin: 0;
     border-radius: 0;
     overflow: visible;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
 }
 
 .modal-content {
@@ -753,4 +758,64 @@ img {
     border-color: #198754;
     background: #198754;
     color: #fff;
+}
+
+/* User Management Styles */
+.table > :not(caption) > * > * {
+    padding: 1rem 1rem;
+}
+
+.table tbody tr {
+    transition: all 0.3s ease;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(var(--primary-rgb), 0.02);
+}
+
+.btn-group .btn {
+    border: none;
+    padding: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-group .btn:hover {
+    background-color: rgba(var(--primary-rgb), 0.1);
+}
+
+.badge {
+    padding: 0.5em 0.8em;
+    font-weight: 500;
+}
+
+.badge.bg-opacity-10 {
+    font-weight: 600;
+}
+
+.rounded-circle.bg-opacity-10 {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.input-group .form-control:focus {
+    box-shadow: none;
+    border-color: var(--primary);
+}
+
+.input-group .input-group-text {
+    background-color: transparent;
+}
+
+.page-link {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px !important;
+    margin: 0 2px;
 }

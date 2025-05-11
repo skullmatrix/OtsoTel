@@ -9,137 +9,137 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = HOTEL
 build_property.RootNamespace = HOTEL
-build_property.ProjectDir = C:\Users\Lenovo\Documents\Planas\hotel\OtsoTel\HOTEL\
+build_property.ProjectDir = C:\Users\Lenovo\Documents\Planas\hotel\OtsoTel\hotel\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = true
-build_property.MSBuildProjectDirectory = C:\Users\Lenovo\Documents\Planas\hotel\OtsoTel\HOTEL
+build_property.MSBuildProjectDirectory = C:\Users\Lenovo\Documents\Planas\hotel\OtsoTel\hotel
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 8.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/HOTEL/Views/Account/SignUp.cshtml]
+[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/hotel/Views/Account/SignUp.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxTaWduVXAuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/HOTEL/Views/Account/UserProfile.cshtml]
+[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/hotel/Views/Account/UserProfile.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxVc2VyUHJvZmlsZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/HOTEL/Views/Admin/Admin.cshtml]
+[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/hotel/Views/Admin/Admin.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQWRtaW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/HOTEL/Views/Admin/Dashboard.cshtml]
+[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/hotel/Views/Admin/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRGFzaGJvYXJkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/HOTEL/Views/Admin/EditUser.cshtml]
+[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/hotel/Views/Admin/EditUser.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRWRpdFVzZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/HOTEL/Views/Admin/Index.cshtml]
+[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/hotel/Views/Admin/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/HOTEL/Views/Admin/UserManagement.cshtml]
+[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/hotel/Views/Admin/UserManagement.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cVXNlck1hbmFnZW1lbnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/HOTEL/Views/Billing/GuestBill.cshtml]
+[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/hotel/Views/Billing/GuestBill.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmlsbGluZ1xHdWVzdEJpbGwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/HOTEL/Views/Billing/Invoice.cshtml]
+[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/hotel/Views/Billing/Invoice.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmlsbGluZ1xJbnZvaWNlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/HOTEL/Views/Booking/Cancel.cshtml]
+[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/hotel/Views/Booking/Cancel.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ1xDYW5jZWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/HOTEL/Views/Booking/Create.cshtml]
+[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/hotel/Views/Booking/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ1xDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/HOTEL/Views/Booking/Details.cshtml]
+[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/hotel/Views/Booking/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ1xEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/HOTEL/Views/Booking/MyBookings.cshtml]
+[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/hotel/Views/Booking/MyBookings.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ1xNeUJvb2tpbmdzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/HOTEL/Views/CheckInOut/CheckIn.cshtml]
+[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/hotel/Views/CheckInOut/CheckIn.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hlY2tJbk91dFxDaGVja0luLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/HOTEL/Views/CheckInOut/FrontDesk.cshtml]
+[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/hotel/Views/CheckInOut/FrontDesk.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hlY2tJbk91dFxGcm9udERlc2suY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/HOTEL/Views/FrontDesk/ConfirmBooking.cshtml]
+[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/hotel/Views/FrontDesk/ConfirmBooking.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRnJvbnREZXNrXENvbmZpcm1Cb29raW5nLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/HOTEL/Views/FrontDesk/Index.cshtml]
+[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/hotel/Views/FrontDesk/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRnJvbnREZXNrXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/HOTEL/Views/FrontDesk/PendingBookings.cshtml]
+[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/hotel/Views/FrontDesk/PendingBookings.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRnJvbnREZXNrXFBlbmRpbmdCb29raW5ncy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/HOTEL/Views/Home/Index.cshtml]
+[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/hotel/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/HOTEL/Views/Home/Privacy.cshtml]
+[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/hotel/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/HOTEL/Views/Home/User.cshtml]
+[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/hotel/Views/Home/User.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxVc2VyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/HOTEL/Views/Housekeeping/Index.cshtml]
+[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/hotel/Views/Housekeeping/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG91c2VrZWVwaW5nXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/HOTEL/Views/Reports/Index.cshtml]
+[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/hotel/Views/Reports/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwb3J0c1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/HOTEL/Views/Rooms/Admin.cshtml]
+[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/hotel/Views/Rooms/Admin.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9vbXNcQWRtaW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/HOTEL/Views/Rooms/Details.cshtml]
+[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/hotel/Views/Rooms/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9vbXNcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/HOTEL/Views/Rooms/Index.cshtml]
+[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/hotel/Views/Rooms/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9vbXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/HOTEL/Views/Shared/Error.cshtml]
+[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/hotel/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/HOTEL/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/hotel/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/HOTEL/Views/_ViewImports.cshtml]
+[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/hotel/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/HOTEL/Views/_ViewStart.cshtml]
+[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/hotel/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/HOTEL/Views/Shared/_Layout.cshtml]
+[C:/Users/Lenovo/Documents/Planas/hotel/OtsoTel/hotel/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-b0qmt2uae4

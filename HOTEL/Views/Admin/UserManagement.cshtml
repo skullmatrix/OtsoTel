@@ -6,116 +6,178 @@
 }
 
 <div class="container-fluid py-4">
+    <!-- Stats Section -->
     <div class="row mb-4">
-        <div class="col-12">
-            <div class="card shadow-sm border-0 rounded-lg">
-                <div class="card-body p-4">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h2 class="text-primary fw-bold mb-0">User Management</h2>
-                        <a href="/Admin" class="btn btn-outline-secondary">
-                            <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
-                        </a>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle bg-primary bg-opacity-10 p-3">
+                            <i class="fas fa-users text-primary fa-2x"></i>
+                        </div>
+                        <div class="ms-3">
+                            <h6 class="text-muted mb-1">Total Users</h6>
+                            <h4 class="mb-0">@Model.Count()</h4>
+                        </div>
                     </div>
-                    <p class="text-muted">Manage registered users of The Matrix Hotel.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle bg-success bg-opacity-10 p-3">
+                            <i class="fas fa-user-shield text-success fa-2x"></i>
+                        </div>
+                        <div class="ms-3">
+                            <h6 class="text-muted mb-1">Administrators</h6>
+                            <h4 class="mb-0">@Model.Count(u => u.IsAdmin)</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle bg-info bg-opacity-10 p-3">
+                            <i class="fas fa-user-check text-info fa-2x"></i>
+                        </div>
+                        <div class="ms-3">
+                            <h6 class="text-muted mb-1">Active Users</h6>
+                            <h4 class="mb-0">@Model.Count()</h4>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-12">
-            <div class="card border-0 shadow-sm rounded-lg overflow-hidden">
-                <div class="card-header bg-white p-4 border-0 d-flex justify-content-between align-items-center">
-                    <h3 class="h5 mb-0">All Users</h3>
-                    <div class="d-flex gap-2">
-                        <div class="input-group">
-                            <input type="text" id="searchInput" class="form-control" placeholder="Search users...">
-                            <button class="btn btn-outline-secondary" type="button">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
-                        <button class="btn btn-primary" id="addUserBtn">
-                            <i class="fas fa-user-plus me-2"></i> Add User
-                        </button>
+    <!-- User List Card -->
+    <div class="card border-0 shadow-sm rounded-lg overflow-hidden">
+        <div class="card-header bg-white p-4 border-0">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                <div class="d-flex align-items-center">
+                    <h5 class="mb-0 me-4">User Management</h5>
+                    <div class="input-group" style="width: 300px;">
+                        <span class="input-group-text bg-light border-end-0">
+                            <i class="fas fa-search text-muted"></i>
+                        </span>
+                        <input type="text" id="searchInput" class="form-control border-start-0 ps-0" 
+                               placeholder="Search users...">
                     </div>
                 </div>
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0" id="userTable">
-                            <thead class="table-light">
-                                <tr>
-                                    <th class="ps-4">User</th>
-                                    <th>Email</th>
-                                    <th>Address</th>
-                                    <th class="text-end pe-4">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var user in Model)
-                                {
-                                    <tr>
-                                        <td class="ps-4">
-                                            <div class="d-flex align-items-center">
-                                                @if (!string.IsNullOrEmpty(user.Photo))
-                                                {
-                                                    <img src="@user.Photo" class="rounded-circle" width="40" height="40" alt="@user.FirstName's profile" style="object-fit: cover;" />
-                                                }
-                                                else
-                                                {
-                                                    <img src="https://cdn-icons-png.flaticon.com/256/727/727410.png" class="rounded-circle" width="40" height="40" alt="Default profile" />
-                                                }
-                                                <div class="ms-3">
-                                                    <h6 class="mb-0">@user.FirstName @user.LastName</h6>
-                                                    @if (user.IsAdmin)
-                                                    {
-                                                        <span class="badge bg-success">Admin</span>
-                                                    }
-                                                </div>
+                <button class="btn btn-primary" id="addUserBtn">
+                    <i class="fas fa-user-plus me-2"></i>Add User
+                </button>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0" id="userTable">
+                <thead class="bg-light">
+                    <tr>
+                        <th class="ps-4">User</th>
+                        <th>Role</th>
+                        <th>Contact</th>
+                        <th>Status</th>
+                        <th class="text-end pe-4">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td class="ps-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="position-relative">
+                                        @if (!string.IsNullOrEmpty(user.Photo))
+                                        {
+                                            <img src="@user.Photo" class="rounded-circle" width="45" height="45" 
+                                                 style="object-fit: cover;" alt="@user.FirstName's profile" />
+                                        }
+                                        else
+                                        {
+                                            <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" 
+                                                 style="width: 45px; height: 45px;">
+                                                <i class="fas fa-user text-secondary"></i>
                                             </div>
-                                        </td>
-                                        <td>@user.Email</td>
-                                        <td>
-                                            @if (!string.IsNullOrEmpty(user.Address))
-                                            {
-                                                <span>@user.Address</span>
-                                            }
-                                            else
-                                            {
-                                                <span class="text-muted">No address provided</span>
-                                            }
-                                        </td>
-                                        <td class="text-end pe-4">
-                                            <div class="btn-group">
-                                                <a asp-action="EditUser" asp-route-id="@user.Id" class="btn btn-outline-primary btn-sm">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
-                                                <button type="button" class="btn btn-outline-danger btn-sm delete-user" data-user-id="@user.Id" data-user-name="@user.FirstName @user.LastName">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="card-footer bg-white border-0 p-3 d-flex justify-content-between align-items-center">
-                    <span>Showing <strong>@Model.Count()</strong> users</span>
-                    <nav aria-label="User pagination">
-                        <ul class="pagination pagination-sm mb-0">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                            </li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">Next</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
+                                        }
+                                        @if (user.IsAdmin)
+                                        {
+                                            <span class="position-absolute bottom-0 end-0 badge border border-white rounded-circle bg-success p-1">
+                                                <i class="fas fa-check-circle fa-xs"></i>
+                                            </span>
+                                        }
+                                    </div>
+                                    <div class="ms-3">
+                                        <h6 class="mb-1">@user.FirstName @user.LastName</h6>
+                                        <small class="text-muted">@user.Email</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge bg-@(user.Role.ToLower() switch {
+                                    "administrator" => "success",
+                                    "frontdesk" => "primary",
+                                    "housekeeping" => "info",
+                                    "maintenance" => "warning",
+                                    _ => "secondary"
+                                }) rounded-pill">@user.Role</span>
+                            </td>
+                            <td>
+                                <div>
+                                    <small class="text-muted d-block">
+                                        <i class="fas fa-envelope me-2"></i>@user.Email
+                                    </small>
+                                    @if (!string.IsNullOrEmpty(user.PhoneNumber))
+                                    {
+                                        <small class="text-muted d-block">
+                                            <i class="fas fa-phone me-2"></i>@user.PhoneNumber
+                                        </small>
+                                    }
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge bg-success bg-opacity-10 text-success">Active</span>
+                            </td>
+                            <td class="text-end pe-4">
+                                <div class="btn-group">
+                                    <a asp-action="EditUser" asp-route-id="@user.Id" 
+                                       class="btn btn-light btn-sm" data-bs-toggle="tooltip" title="Edit User">
+                                        <i class="fas fa-edit text-primary"></i>
+                                    </a>
+                                    <button type="button" class="btn btn-light btn-sm delete-user"
+                                            data-user-id="@user.Id" data-user-name="@user.FirstName @user.LastName"
+                                            data-bs-toggle="tooltip" title="Delete User">
+                                        <i class="fas fa-trash text-danger"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card-footer bg-white border-0 p-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <p class="text-muted mb-0">Showing <strong>@Model.Count()</strong> users</p>
+                <nav>
+                    <ul class="pagination pagination-sm mb-0">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#"><i class="fas fa-chevron-left"></i></a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>
@@ -209,28 +271,43 @@
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Search functionality
+            // Initialize tooltips
+            const tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+            tooltips.forEach(tooltip => new bootstrap.Tooltip(tooltip));
+
+            // Search functionality with smooth animation
             const searchInput = document.getElementById('searchInput');
-            const userTable = document.getElementById('userTable');
-            
-            if (searchInput) {
-                searchInput.addEventListener('keyup', function() {
-                    const searchTerm = this.value.toLowerCase();
-                    const rows = userTable.querySelectorAll('tbody tr');
+            const userRows = document.querySelectorAll('#userTable tbody tr');
+
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                
+                userRows.forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    const shouldShow = text.includes(searchTerm);
                     
-                    rows.forEach(row => {
-                        const userName = row.querySelector('td:first-child').textContent.toLowerCase();
-                        const userEmail = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
-                        
-                        if (userName.includes(searchTerm) || userEmail.includes(searchTerm)) {
-                            row.style.display = '';
-                        } else {
-                            row.style.display = 'none';
-                        }
-                    });
+                    row.style.opacity = shouldShow ? '1' : '0';
+                    row.style.transform = shouldShow ? 'translateY(0)' : 'translateY(-10px)';
+                    
+                    setTimeout(() => {
+                        row.style.display = shouldShow ? '' : 'none';
+                    }, shouldShow ? 0 : 300);
                 });
-            }
-            
+            });
+
+            // Fade in animation for stats cards
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 100 * index);
+            });
+
             // Delete user modal handling
             const deleteUserBtns = document.querySelectorAll('.delete-user');
             const deleteUserModal = new bootstrap.Modal(document.getElementById('deleteUserModal'));

@@ -95,26 +95,31 @@ namespace HotelWebsite.Controllers
 
         // POST: Rooms/UpdateStatus
         [HttpPost]
-        public async Task<IActionResult> UpdateStatus(decimal id, string status)
+        public async Task<IActionResult> UpdateStatus([FromBody] UpdateRoomStatusModel model)
         {
-            // Check if user is admin
-            var isAdmin = HttpContext.Session.GetString("IsAdmin") == "True";
-            if (!isAdmin)
+            try
             {
-                return RedirectToAction("Index", "Home");
-            }
+                var room = await _context.Rooms.FindAsync(model.Id);
+                if (room == null)
+                {
+                    return NotFound(new { success = false, message = "Room not found" });
+                }
 
-            var room = await _context.Rooms.FindAsync(id);
-            if (room == null)
+                room.Status = model.Status;
+                await _context.SaveChangesAsync();
+
+                return Json(new { success = true, message = $"Room {room.RoomNumber} status updated to {model.Status}" });
+            }
+            catch (Exception ex)
             {
-                return NotFound();
+                return Json(new { success = false, message = "Error updating room status: " + ex.Message });
             }
+        }
 
-            room.Status = status;
-            _context.Update(room);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction(nameof(Admin));
+        public class UpdateRoomStatusModel
+        {
+            public int Id { get; set; }
+            public string Status { get; set; }
         }
 
         // GET: Rooms/GetRoomDetails/5
@@ -132,14 +137,21 @@ namespace HotelWebsite.Controllers
         // POST: Rooms/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Room room)
+        public async Task<IActionResult> Create([Bind("RoomNumber,Type,Price,Capacity,Description,ImageUrl,Status")] Room room)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(room);
-                await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Room created successfully.";
-                return RedirectToAction(nameof(Admin));
+                try 
+                {
+                    _context.Add(room);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Room added successfully.";
+                    return RedirectToAction(nameof(Admin));
+                }
+                catch (Exception ex)
+                {
+                    TempData["ErrorMessage"] = "Error creating room: " + ex.Message;
+                }
             }
             return RedirectToAction(nameof(Admin));
         }
