@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Lenovo\\Documents\\Planas\\matrixhotel\\OtsoTel\\hotel\\HOTEL.csproj": {}
+    "C:\\Users\\Lenovo\\Documents\\Planas\\hotel\\OtsoTel\\HOTEL\\HOTEL.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Lenovo\\Documents\\Planas\\matrixhotel\\OtsoTel\\hotel\\HOTEL.csproj": {
+    "C:\\Users\\Lenovo\\Documents\\Planas\\hotel\\OtsoTel\\HOTEL\\HOTEL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Lenovo\\Documents\\Planas\\matrixhotel\\OtsoTel\\hotel\\HOTEL.csproj",
+        "projectUniqueName": "C:\\Users\\Lenovo\\Documents\\Planas\\hotel\\OtsoTel\\HOTEL\\HOTEL.csproj",
         "projectName": "HOTEL",
-        "projectPath": "C:\\Users\\Lenovo\\Documents\\Planas\\matrixhotel\\OtsoTel\\hotel\\HOTEL.csproj",
+        "projectPath": "C:\\Users\\Lenovo\\Documents\\Planas\\hotel\\OtsoTel\\HOTEL\\HOTEL.csproj",
         "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Lenovo\\Documents\\Planas\\matrixhotel\\OtsoTel\\hotel\\obj\\",
+        "outputPath": "C:\\Users\\Lenovo\\Documents\\Planas\\hotel\\OtsoTel\\HOTEL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

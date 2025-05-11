@@ -4,73 +4,90 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace HOTEL.Migrations
 {
     /// <inheritdoc />
-    public partial class AddHotelManagementFeatures : Migration
+    public partial class Final : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<DateTime>(
-                name: "DateOfBirth",
-                table: "Users",
-                type: "datetime(6)",
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "IdNumber",
-                table: "Users",
-                type: "longtext",
-                nullable: true)
+            migrationBuilder.AlterDatabase()
                 .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.AddColumn<string>(
-                name: "IdType",
-                table: "Users",
-                type: "longtext",
-                nullable: true)
+            migrationBuilder.CreateTable(
+                name: "Rooms",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    RoomNumber = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Type = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Price = table.Column<decimal>(type: "decimal(10,0)", nullable: false),
+                    Status = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Description = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Capacity = table.Column<int>(type: "int", nullable: false),
+                    ImageUrl = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Rooms", x => x.Id);
+                })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.AddColumn<string>(
-                name: "LoyaltyMembershipId",
-                table: "Users",
-                type: "longtext",
-                nullable: true)
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.AddColumn<int>(
-                name: "LoyaltyPoints",
-                table: "Users",
-                type: "int",
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "Nationality",
-                table: "Users",
-                type: "longtext",
-                nullable: true)
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.AddColumn<string>(
-                name: "Notes",
-                table: "Users",
-                type: "longtext",
-                nullable: true)
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.AddColumn<string>(
-                name: "PhoneNumber",
-                table: "Users",
-                type: "longtext",
-                nullable: true)
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.AddColumn<string>(
-                name: "PreferredLanguage",
-                table: "Users",
-                type: "longtext",
-                nullable: true)
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    FirstName = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    LastName = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    MiddleName = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Email = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Password = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Address = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Photo = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    IsAdmin = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Role = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    PhoneNumber = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    Nationality = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    IdType = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    IdNumber = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    PreferredLanguage = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    LoyaltyMembershipId = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    LoyaltyPoints = table.Column<int>(type: "int", nullable: true),
+                    Notes = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    PreferredPaymentMethod = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
@@ -89,17 +106,16 @@ namespace HOTEL.Migrations
                     SpecialRequests = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     BookingDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    TotalPrice = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    TotalPrice = table.Column<decimal>(type: "decimal(10,0)", nullable: false),
                     ActualCheckInDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     ActualCheckOutDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CheckedInByUserId = table.Column<int>(type: "int", nullable: true),
-                    CheckedInById = table.Column<int>(type: "int", nullable: false),
-                    CheckedOutByUserId = table.Column<int>(type: "int", nullable: true),
-                    CheckedOutById = table.Column<int>(type: "int", nullable: false),
+                    CheckedInById = table.Column<int>(type: "int", nullable: true),
+                    CheckedOutById = table.Column<int>(type: "int", nullable: true),
                     IdVerification = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     PaymentStatus = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -114,14 +130,12 @@ namespace HOTEL.Migrations
                         name: "FK_Bookings_Users_CheckedInById",
                         column: x => x.CheckedInById,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Bookings_Users_CheckedOutById",
                         column: x => x.CheckedOutById,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Bookings_Users_UserId",
                         column: x => x.UserId,
@@ -220,7 +234,7 @@ namespace HOTEL.Migrations
                     BookingId = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Amount = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(10,0)", nullable: false),
                     DateAdded = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Category = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -246,7 +260,7 @@ namespace HOTEL.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     BookingId = table.Column<int>(type: "int", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(10,0)", nullable: false),
                     PaymentDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     PaymentMethod = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -269,26 +283,26 @@ namespace HOTEL.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.UpdateData(
-                table: "Users",
-                keyColumn: "Id",
-                keyValue: 1,
-                columns: new[] { "DateOfBirth", "IdNumber", "IdType", "LoyaltyMembershipId", "LoyaltyPoints", "Nationality", "Notes", "Password", "PhoneNumber", "PreferredLanguage" },
-                values: new object[] { null, null, null, null, null, null, null, "$2a$11$PfZGD.nAv4VIkwa30DOyT.vBvlC.UTeiucjLQ4KQGmKpmmBrqWs1u", null, null });
+            migrationBuilder.InsertData(
+                table: "Rooms",
+                columns: new[] { "Id", "Capacity", "Description", "ImageUrl", "Price", "RoomNumber", "Status", "Type" },
+                values: new object[,]
+                {
+                    { 1, 2, "Comfortable standard room with queen bed", "https://www.citiparkhotel.com.ph/images/uploads/143/6221b2c5dfe34_Standard-Queen.jpg?0.6300843762493157", 2500m, "101", "Vacant", "Standard" },
+                    { 2, 2, "Spacious deluxe room with king bed", "https://www.theexcelsiorhotel.com.ph/wp-content/uploads/elementor/thumbs/Room-906-Deluxe-Room-King-10-scaled-qsvjndyna7l6ugj7qq7kmpcfulmijl5i1hhxnpodio.jpg", 4000m, "201", "Vacant", "Deluxe" },
+                    { 3, 4, "Luxurious suite with separate living area", "https://www.manila-hotel.com.ph/wp-content/uploads/2020/06/Veranda-Suite-LR-0505-scaled.jpg", 5000m, "301", "Vacant", "Suite" },
+                    { 4, 2, "Comfortable standard room with queen bed", "https://example.com/standard-room.jpg", 2500m, "102", "Under Maintenance", "Standard" }
+                });
 
-            migrationBuilder.UpdateData(
+            migrationBuilder.InsertData(
                 table: "Users",
-                keyColumn: "Id",
-                keyValue: 2,
-                columns: new[] { "DateOfBirth", "IdNumber", "IdType", "LoyaltyMembershipId", "LoyaltyPoints", "Nationality", "Notes", "Password", "PhoneNumber", "PreferredLanguage" },
-                values: new object[] { null, null, null, null, null, null, null, "$2a$11$9tZ/lI1Cm/vqCkSgu1ZdYOu2jCic9WDuLiDeSHZ8cSTPyWv9cWmlm", null, null });
-
-            migrationBuilder.UpdateData(
-                table: "Users",
-                keyColumn: "Id",
-                keyValue: 3,
-                columns: new[] { "DateOfBirth", "IdNumber", "IdType", "LoyaltyMembershipId", "LoyaltyPoints", "Nationality", "Notes", "Password", "PhoneNumber", "PreferredLanguage" },
-                values: new object[] { null, null, null, null, null, null, null, "$2a$11$fPJJU.T/2DB.0W4qbW5QEubNcvdCjhHQissz6RwR9oaSJwKcbzf.q", null, null });
+                columns: new[] { "Id", "Address", "DateOfBirth", "Email", "FirstName", "IdNumber", "IdType", "IsAdmin", "LastName", "LoyaltyMembershipId", "LoyaltyPoints", "MiddleName", "Nationality", "Notes", "Password", "PhoneNumber", "Photo", "PreferredLanguage", "PreferredPaymentMethod", "Role" },
+                values: new object[,]
+                {
+                    { 1, "Admin Address", null, "admin@matrix.com", "Admin", null, null, true, "Matrix", null, null, null, null, null, "$2a$11$Vu6BATbj598OtCLmUi9MQumaWX8r/YsPnFouvm7cBYBGfdEQj0GZ2", null, "https://cdn-icons-png.flaticon.com/256/2165/2165674.png", null, null, "Administrator" },
+                    { 2, "Hotel Front Desk", null, "frontdesk@matrix.com", "John", null, null, false, "Doe", null, null, null, null, null, "$2a$11$wBKiXnxF.a8OhSwQurSVhudVcrBElYHrZ0mO1mx7Uii47.V18aAZe", null, "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", null, null, "FrontDesk" },
+                    { 3, "Hotel Housekeeping", null, "housekeeping@matrix.com", "Jane", null, null, false, "Smith", null, null, null, null, null, "$2a$11$7Mw7U0x8lH7CKEefGp3Kue8hzlF0iPQ/s1x2GIcDCFx6Z2jImHK4O", null, "https://cdn-icons-png.flaticon.com/512/4128/4128176.png", null, null, "Housekeeping" }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_BillItems_BookingId",
@@ -364,62 +378,11 @@ namespace HOTEL.Migrations
             migrationBuilder.DropTable(
                 name: "Bookings");
 
-            migrationBuilder.DropColumn(
-                name: "DateOfBirth",
-                table: "Users");
+            migrationBuilder.DropTable(
+                name: "Rooms");
 
-            migrationBuilder.DropColumn(
-                name: "IdNumber",
-                table: "Users");
-
-            migrationBuilder.DropColumn(
-                name: "IdType",
-                table: "Users");
-
-            migrationBuilder.DropColumn(
-                name: "LoyaltyMembershipId",
-                table: "Users");
-
-            migrationBuilder.DropColumn(
-                name: "LoyaltyPoints",
-                table: "Users");
-
-            migrationBuilder.DropColumn(
-                name: "Nationality",
-                table: "Users");
-
-            migrationBuilder.DropColumn(
-                name: "Notes",
-                table: "Users");
-
-            migrationBuilder.DropColumn(
-                name: "PhoneNumber",
-                table: "Users");
-
-            migrationBuilder.DropColumn(
-                name: "PreferredLanguage",
-                table: "Users");
-
-            migrationBuilder.UpdateData(
-                table: "Users",
-                keyColumn: "Id",
-                keyValue: 1,
-                column: "Password",
-                value: "$2a$11$zg6JJ8v9KvEPY0UY27Gq8ecMW55CEGXtMHUfPEL.rmGSA3nJVgxU2");
-
-            migrationBuilder.UpdateData(
-                table: "Users",
-                keyColumn: "Id",
-                keyValue: 2,
-                column: "Password",
-                value: "$2a$11$mS0kzt5z1ppE1sOKNlYmOOdBTCc7rdgrNrIQxomol4v1yvlhavSce");
-
-            migrationBuilder.UpdateData(
-                table: "Users",
-                keyColumn: "Id",
-                keyValue: 3,
-                column: "Password",
-                value: "$2a$11$O9LAlPai2rENJygqLo0.CeABJLuOuzEwwJlrxfXRT/wlegBxcmNwy");
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

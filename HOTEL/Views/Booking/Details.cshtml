@@ -155,12 +155,25 @@
                         }
                     </div>
 
-                    @if (Model.Status == "Confirmed" && Model.CheckInDate > DateTime.Now.Date)
+                    @if (Model.Status != "Cancelled" && Model.Status != "Checked Out" && Model.CheckInDate > DateTime.Now.Date)
+                    {
+                        <div class="mt-4 border-top pt-4">
+                            <div class="d-flex justify-content-between">
+                                <a href="@Url.Action("MyBookings")" class="btn btn-outline-secondary">
+                                    <i class="fas fa-arrow-left me-2"></i> Back to Bookings
+                                </a>
+                                <a href="@Url.Action("Cancel", new { id = Model.Id })" class="btn btn-danger">
+                                    <i class="fas fa-times me-2"></i> Cancel Booking
+                                </a>
+                            </div>
+                        </div>
+                    }
+                    else
                     {
                         <div class="mt-4 border-top pt-4">
                             <div class="d-flex justify-content-end">
-                                <a href="@Url.Action("Cancel", new { id = Model.Id })" class="btn btn-danger">
-                                    <i class="fas fa-times me-2"></i> Cancel Booking
+                                <a href="@Url.Action("MyBookings")" class="btn btn-outline-secondary">
+                                    <i class="fas fa-arrow-left me-2"></i> Back to Bookings
                                 </a>
                             </div>
                         </div>

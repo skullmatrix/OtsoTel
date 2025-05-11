@@ -47,14 +47,15 @@ namespace HotelWebsite.Controllers
         }
 
         // GET: Rooms/Details/5
-        public async Task<IActionResult> Details(int id)
+        public IActionResult Details(decimal id)
         {
-            var room = await _context.Rooms.FindAsync(id);
+            var room = _context.Rooms.Find(id);
             if (room == null)
             {
                 return NotFound();
             }
 
+            ViewBag.IsLoggedIn = User.Identity.IsAuthenticated;
             return View(room);
         }
 
@@ -81,7 +82,7 @@ namespace HotelWebsite.Controllers
             // Get room status counts for dashboard
             ViewBag.VacantCount = await _context.Rooms.CountAsync(r => r.Status == "Vacant");
             ViewBag.OccupiedCount = await _context.Rooms.CountAsync(r => r.Status == "Occupied");
-            ViewBag.MaintenanceCount = await _context.Rooms.CountAsync(r => r.Status == "Under Maintenance");
+            ViewBag.MadecimalenanceCount = await _context.Rooms.CountAsync(r => r.Status == "Under Madecimalenance");
 
             // Get distinct statuses for filter
             ViewBag.Statuses = await _context.Rooms
@@ -94,7 +95,7 @@ namespace HotelWebsite.Controllers
 
         // POST: Rooms/UpdateStatus
         [HttpPost]
-        public async Task<IActionResult> UpdateStatus(int id, string status)
+        public async Task<IActionResult> UpdateStatus(decimal id, string status)
         {
             // Check if user is admin
             var isAdmin = HttpContext.Session.GetString("IsAdmin") == "True";
@@ -114,6 +115,82 @@ namespace HotelWebsite.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Admin));
+        }
+
+        // GET: Rooms/GetRoomDetails/5
+        [HttpGet]
+        public async Task<IActionResult> GetRoomDetails(decimal id)
+        {
+            var room = await _context.Rooms.FindAsync(id);
+            if (room == null)
+            {
+                return NotFound();
+            }
+            return Json(room);
+        }
+
+        // POST: Rooms/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Room room)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(room);
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Room created successfully.";
+                return RedirectToAction(nameof(Admin));
+            }
+            return RedirectToAction(nameof(Admin));
+        }
+
+        // POST: Rooms/Edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Room room)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(room);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Room updated successfully.";
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!RoomExists(room.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Admin));
+            }
+            return RedirectToAction(nameof(Admin));
+        }
+
+        // POST: Rooms/Delete
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var room = await _context.Rooms.FindAsync(id);
+            if (room != null)
+            {
+                _context.Rooms.Remove(room);
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Room deleted successfully.";
+            }
+            return RedirectToAction(nameof(Admin));
+        }
+
+        private bool RoomExists(int id)
+        {
+            return _context.Rooms.Any(e => e.Id == id);
         }
     }
 }

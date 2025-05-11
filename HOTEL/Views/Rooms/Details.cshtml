@@ -4,29 +4,25 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!-- Hero Section -->
-<section class="hero-section position-relative vh-50">
+<!-- Hero Section with Room Image -->
+<section class="hero-section position-relative vh-100">
+    <!-- Background Image -->
     <div class="position-relative h-100">
-        <img src="@Model.ImageUrl" class="w-100 h-100 object-fit-cover" alt="@Model.Type Room">
-        <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50"></div>
+        <img src="@Model.ImageUrl" class="d-block w-100 h-100 object-fit-cover" alt="@Model.Type Room">
+        <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"></div>
     </div>
     <!-- Hero Content -->
     <div class="position-absolute top-50 start-0 translate-middle-y px-4 px-lg-5 w-100">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6 col-md-8 solid-hero-bg p-4 p-md-5 rounded">
+                <div class="col-lg-6 col-md-8 bg-dark bg-opacity-75 p-4 p-md-5 rounded">
                     <h2 class="fs-4 text-white mb-2">THE MATRIX</h2>
                     <h1 class="display-4 fw-bold text-white">@Model.Type Room</h1>
                     <p class="lead mb-4 text-white">Experience luxury in room @Model.RoomNumber</p>
                     <div class="d-flex gap-3">
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <a href="#booking-section" class="btn btn-primary">Book Now</a>
-                        }
-                        else
-                        {
-                            <a href="#" class="btn btn-primary book-now-btn" data-bs-toggle="modal" data-bs-target="#loginModal">Book Now</a>
-                        }
+                        <button onclick="handleBookNowClick(@Model.Id)" class="btn btn-primary">
+                            Book Now
+                        </button>
                         <a href="@Url.Action("Index", "Rooms")" class="btn btn-outline-light">Back to Rooms</a>
                     </div>
                 </div>
@@ -44,31 +40,21 @@
                     <span class="badge bg-primary fs-6 me-2 p-2">@Model.Type</span>
                     <span class="badge bg-success fs-6 me-2 p-2">Available</span>
                     <div class="ms-auto d-md-none">
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <a href="#booking-section" class="btn btn-sm btn-primary">Book Now</a>
-                    }
-                    else
-                    {
-                        <a href="#" class="btn btn-sm btn-primary book-now-btn" data-bs-toggle="modal" data-bs-target="#loginModal">Book Now</a>
-                    }
-                </div>
+                        <button onclick="handleBookNowClick(@Model.Id)" class="btn btn-sm btn-primary">
+                            Book Now
+                        </button>
+                    </div>
                 </div>
             </div>
-                                        <div class="col-md-4 text-md-center">
+            <div class="col-md-4 text-md-center">
                 <div class="fw-bold text-primary fs-3">
-                    ₱@Model.Price<small class="text-muted fs-6">/night</small>
+                    $@Model.Price.ToString("0.00")<small class="text-muted fs-6">/night</small>
                 </div>
             </div>
             <div class="col-md-4 text-md-end d-none d-md-block">
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <a href="#booking-section" class="btn btn-primary">Book Now</a>
-                }
-                else
-                {
-                    <a href="#" class="btn btn-primary book-now-btn" data-bs-toggle="modal" data-bs-target="#loginModal">Book Now</a>
-                }
+                <button onclick="handleBookNowClick(@Model.Id)" class="btn btn-primary">
+                    Book Now
+                </button>
                 <a href="@Url.Action("Index", "Rooms")" class="btn btn-outline-primary ms-2">View All Rooms</a>
             </div>
         </div>
@@ -79,7 +65,7 @@
     <div class="row">
         <div class="col-lg-8">
             <!-- Room Description Card -->
-            <div class="card border-0 shadow transition-all hover-subtle mb-4">
+            <div class="card border-0 shadow mb-4">
                 <div class="card-body p-4">
                     <h2 class="fw-bold mb-4 border-bottom pb-3">About This Room</h2>
                     <p class="card-text mb-4 fs-5">@Model.Description</p>
@@ -89,19 +75,19 @@
                         <h3 class="fw-bold mb-3">Room Gallery</h3>
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <img src="@Model.ImageUrl" class="img-fluid rounded shadow-sm hover-lift transition-all" alt="@Model.Type Room">
+                                <img src="@Model.ImageUrl" class="img-fluid rounded shadow-sm" alt="@Model.Type Room">
                             </div>
                             <div class="col-md-6">
-                                <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="img-fluid rounded shadow-sm hover-lift transition-all" alt="@Model.Type Room Bathroom">
+                                <img src="https://images.unsplash.com/photo-1552902019-ebcd97aa9aa0?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="img-fluid rounded shadow-sm" alt="@Model.Type Room Bathroom">
                             </div>
                             <div class="col-md-4">
-                                <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="img-fluid rounded shadow-sm hover-lift transition-all" alt="@Model.Type Room View">
+                                <img src="https://images.unsplash.com/photo-1560185007-5f0bb1866cab?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="img-fluid rounded shadow-sm" alt="@Model.Type Room View">
                             </div>
                             <div class="col-md-4">
-                                <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="img-fluid rounded shadow-sm hover-lift transition-all" alt="@Model.Type Room Detail">
+                                <img src="https://images.unsplash.com/photo-1584132967334-10e028bd69f7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="img-fluid rounded shadow-sm" alt="@Model.Type Room Detail">
                             </div>
                             <div class="col-md-4">
-                                <img src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="img-fluid rounded shadow-sm hover-lift transition-all" alt="@Model.Type Room Balcony">
+                                <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="img-fluid rounded shadow-sm" alt="@Model.Type Room Desk">
                             </div>
                         </div>
                     </div>
@@ -110,50 +96,50 @@
                     <h3 class="fw-bold mb-3">Room Amenities</h3>
                     <div class="row g-4 mb-4">
                         <div class="col-md-3 col-6">
-                            <div class="facility-card p-3 text-center bg-light rounded shadow-sm h-100 transition-all hover-lift">
-                                <i class="fas fa-wifi facility-icon fs-1 text-primary mb-3"></i>
+                            <div class="p-3 text-center bg-light rounded shadow-sm h-100">
+                                <i class="fas fa-wifi fs-1 text-primary mb-3"></i>
                                 <h4 class="fs-5">Free Wi-Fi</h4>
                             </div>
                         </div>
                         <div class="col-md-3 col-6">
-                            <div class="facility-card p-3 text-center bg-light rounded shadow-sm h-100 transition-all hover-lift">
-                                <i class="fas fa-tv facility-icon fs-1 text-primary mb-3"></i>
+                            <div class="p-3 text-center bg-light rounded shadow-sm h-100">
+                                <i class="fas fa-tv fs-1 text-primary mb-3"></i>
                                 <h4 class="fs-5">Smart TV</h4>
                             </div>
                         </div>
                         <div class="col-md-3 col-6">
-                            <div class="facility-card p-3 text-center bg-light rounded shadow-sm h-100 transition-all hover-lift">
-                                <i class="fas fa-snowflake facility-icon fs-1 text-primary mb-3"></i>
+                            <div class="p-3 text-center bg-light rounded shadow-sm h-100">
+                                <i class="fas fa-snowflake fs-1 text-primary mb-3"></i>
                                 <h4 class="fs-5">Air Conditioning</h4>
                             </div>
                         </div>
                         <div class="col-md-3 col-6">
-                            <div class="facility-card p-3 text-center bg-light rounded shadow-sm h-100 transition-all hover-lift">
-                                <i class="fas fa-coffee facility-icon fs-1 text-primary mb-3"></i>
+                            <div class="p-3 text-center bg-light rounded shadow-sm h-100">
+                                <i class="fas fa-coffee fs-1 text-primary mb-3"></i>
                                 <h4 class="fs-5">Coffee Maker</h4>
                             </div>
                         </div>
                         <div class="col-md-3 col-6">
-                            <div class="facility-card p-3 text-center bg-light rounded shadow-sm h-100 transition-all hover-lift">
-                                <i class="fas fa-utensils facility-icon fs-1 text-primary mb-3"></i>
+                            <div class="p-3 text-center bg-light rounded shadow-sm h-100">
+                                <i class="fas fa-utensils fs-1 text-primary mb-3"></i>
                                 <h4 class="fs-5">Breakfast</h4>
                             </div>
                         </div>
                         <div class="col-md-3 col-6">
-                            <div class="facility-card p-3 text-center bg-light rounded shadow-sm h-100 transition-all hover-lift">
-                                <i class="fas fa-bath facility-icon fs-1 text-primary mb-3"></i>
+                            <div class="p-3 text-center bg-light rounded shadow-sm h-100">
+                                <i class="fas fa-bath fs-1 text-primary mb-3"></i>
                                 <h4 class="fs-5">Private Bath</h4>
                             </div>
                         </div>
                         <div class="col-md-3 col-6">
-                            <div class="facility-card p-3 text-center bg-light rounded shadow-sm h-100 transition-all hover-lift">
-                                <i class="fas fa-concierge-bell facility-icon fs-1 text-primary mb-3"></i>
+                            <div class="p-3 text-center bg-light rounded shadow-sm h-100">
+                                <i class="fas fa-concierge-bell fs-1 text-primary mb-3"></i>
                                 <h4 class="fs-5">Room Service</h4>
                             </div>
                         </div>
                         <div class="col-md-3 col-6">
-                            <div class="facility-card p-3 text-center bg-light rounded shadow-sm h-100 transition-all hover-lift">
-                                <i class="fas fa-user-friends facility-icon fs-1 text-primary mb-3"></i>
+                            <div class="p-3 text-center bg-light rounded shadow-sm h-100">
+                                <i class="fas fa-user-friends fs-1 text-primary mb-3"></i>
                                 <h4 class="fs-5">@Model.Capacity Guests</h4>
                             </div>
                         </div>
@@ -183,7 +169,7 @@
 
         <div class="col-lg-4">
             <!-- Booking Form Card -->
-            <div class="card border-0 shadow transition-all hover-subtle mb-4" id="booking-section">
+            <div class="card border-0 shadow mb-4" id="booking-section">
                 <div class="card-header bg-primary text-white p-3">
                     <h3 class="card-title fw-bold mb-0">Book this room</h3>
                 </div>
@@ -225,13 +211,13 @@
                         <div class="booking-summary bg-light p-3 rounded mb-3">
                             <h5 class="fw-bold mb-3">Booking Summary</h5>
                             <div class="d-flex justify-content-between mb-2">
-                                <span>₱@Model.Price x <span id="nightsCount">1</span> night(s)</span>
-                                <span id="totalPrice">₱@Model.Price</span>
+                                <span>$@Model.Price.ToString("0.00") x <span id="nightsCount">1</span> night(s)</span>
+                                <span id="totalPrice">$@Model.Price.ToString("0.00")</span>
                             </div>
                             <hr>
                             <div class="d-flex justify-content-between fw-bold">
                                 <span>Total</span>
-                                <span id="finalTotal">₱@Model.Price</span>
+                                <span id="finalTotal">$@Model.Price.ToString("0.00")</span>
                             </div>
                         </div>
 
@@ -250,7 +236,7 @@
             </div>
 
             <!-- Why Book With Us Card -->
-            <div class="card border-0 shadow transition-all hover-subtle">
+            <div class="card border-0 shadow">
                 <div class="card-header bg-success text-white p-3">
                     <h3 class="card-title fw-bold mb-0">Why Book with Us?</h3>
                 </div>
@@ -300,7 +286,7 @@
 </div>
 
 <!-- Related Rooms Section -->
-<section class="related-rooms-section py-5 bg-light">
+<section class="py-5 bg-light">
     <div class="container">
         <div class="text-center mb-5">
             <h2 class="display-5 fw-bold mb-3">You May Also Like</h2>
@@ -308,104 +294,115 @@
         </div>
 
         <div class="row g-4">
-            <!-- Related Room Card 1 -->
-            <div class="col-lg-4 col-md-6">
-                <div class="card h-100 border-0 shadow transition-all hover-lift">
-                    <div class="position-relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Deluxe Room">
-                        <span class="badge bg-primary position-absolute top-0 end-0 m-3 p-2">Deluxe</span>
-                    </div>
-                    <div class="card-body p-4">
-                        <h5 class="card-title fw-bold">Deluxe Room</h5>
-                        <p class="card-text text-muted">Experience enhanced comfort with premium amenities and services.</p>
+            <!-- We'll show similar rooms based on the current room type -->
+            @{
+                var relatedRooms = ViewBag.RelatedRooms as IEnumerable<HotelWebsite.Models.Room>;
+                if (relatedRooms != null && relatedRooms.Any())
+                {
+                    foreach (var relatedRoom in relatedRooms.Take(3))
+                    {
+                        <div class="col-lg-4 col-md-6">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="position-relative">
+                                    <img src="@relatedRoom.ImageUrl" class="card-img-top" alt="@relatedRoom.Type Room">
+                                    <span class="badge bg-primary position-absolute top-0 end-0 m-3 p-2">@relatedRoom.Type</span>
+                                </div>
+                                <div class="card-body p-4">
+                                    <h5 class="card-title fw-bold">@relatedRoom.Type Room - @relatedRoom.RoomNumber</h5>
+                                    <p class="card-text text-muted">@relatedRoom.Description.Substring(0, Math.Min(100, relatedRoom.Description.Length))...</p>
 
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <span class="fw-bold text-primary fs-4">₱9,000<small class="text-muted fs-6">/night</small></span>
-                            <span class="badge bg-success p-2">Available</span>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="fw-bold text-primary fs-4">$@relatedRoom.Price.ToString("0.00")<small class="text-muted fs-6">/night</small></span>
+                                        <span class="badge bg-success p-2">Available</span>
+                                    </div>
+
+                                    <div class="d-grid">
+                                        <button onclick="handleBookNowClick(@relatedRoom.Id)" class="btn btn-primary">
+                                            Book Now
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                    }
+                }
+                else
+                {
+                    <!-- Fallback to show generic room options if no related rooms are provided -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="position-relative">
+                                <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Deluxe Room">
+                                <span class="badge bg-primary position-absolute top-0 end-0 m-3 p-2">Deluxe</span>
+                            </div>
+                            <div class="card-body p-4">
+                                <h5 class="card-title fw-bold">Deluxe Room</h5>
+                                <p class="card-text text-muted">Experience enhanced comfort with premium amenities and services.</p>
 
-                        <div class="d-grid">
-                            <a href="@Url.Action("Index", "Rooms", new { type = "Deluxe" })" class="btn btn-primary">View Rooms</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="fw-bold text-primary fs-4">$9,000<small class="text-muted fs-6">/night</small></span>
+                                    <span class="badge bg-success p-2">Available</span>
+                                </div>
 
-            <!-- Related Room Card 2 -->
-            <div class="col-lg-4 col-md-6">
-                <div class="card h-100 border-0 shadow transition-all hover-lift">
-                    <div class="position-relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Premium Suite">
-                        <span class="badge bg-primary position-absolute top-0 end-0 m-3 p-2">Premium</span>
-                    </div>
-                    <div class="card-body p-4">
-                        <h5 class="card-title fw-bold">Premium Suite</h5>
-                        <p class="card-text text-muted">Our premium suites offer the ultimate luxury experience with all amenities.</p>
-
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <span class="fw-bold text-primary fs-4">₱12,500<small class="text-muted fs-6">/night</small></span>
-                            <span class="badge bg-success p-2">Available</span>
-                        </div>
-
-                        <div class="d-grid">
-                            <a href="@Url.Action("Index", "Rooms", new { type = "Premium" })" class="btn btn-primary">View Rooms</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Related Room Card 3 -->
-            <div class="col-lg-4 col-md-6">
-                <div class="card h-100 border-0 shadow transition-all hover-lift">
-                    <div class="position-relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Standard Room">
-                        <span class="badge bg-primary position-absolute top-0 end-0 m-3 p-2">Standard</span>
-                    </div>
-                    <div class="card-body p-4">
-                        <h5 class="card-title fw-bold">Standard Room</h5>
-                        <p class="card-text text-muted">Our standard rooms offer comfort and style with essential amenities.</p>
-
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <span class="fw-bold text-primary fs-4">₱6,000<small class="text-muted fs-6">/night</small></span>
-                            <span class="badge bg-success p-2">Available</span>
-                        </div>
-
-                        <div class="d-grid">
-                            <a href="@Url.Action("Index", "Rooms", new { type = "Standard" })" class="btn btn-primary">View Rooms</a>
+                                <div class="d-grid">
+                                    <button onclick="handleBookNowClick(1)" class="btn btn-primary">
+                                        Book Now
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="position-relative">
+                                <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Premium Suite">
+                                <span class="badge bg-primary position-absolute top-0 end-0 m-3 p-2">Premium</span>
+                            </div>
+                            <div class="card-body p-4">
+                                <h5 class="card-title fw-bold">Premium Suite</h5>
+                                <p class="card-text text-muted">Our premium suites offer the ultimate luxury experience with all amenities.</p>
+
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="fw-bold text-primary fs-4">$12,500<small class="text-muted fs-6">/night</small></span>
+                                    <span class="badge bg-success p-2">Available</span>
+                                </div>
+
+                                <div class="d-grid">
+                                    <button onclick="handleBookNowClick(2)" class="btn btn-primary">
+                                        Book Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="position-relative">
+                                <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Family Suite">
+                                <span class="badge bg-primary position-absolute top-0 end-0 m-3 p-2">Family</span>
+                            </div>
+                            <div class="card-body p-4">
+                                <h5 class="card-title fw-bold">Family Suite</h5>
+                                <p class="card-text text-muted">Perfect for families, our spacious suites offer comfort for everyone.</p>
+
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="fw-bold text-primary fs-4">$15,000<small class="text-muted fs-6">/night</small></span>
+                                    <span class="badge bg-success p-2">Available</span>
+                                </div>
+
+                                <div class="d-grid">
+                                    <button onclick="handleBookNowClick(3)" class="btn btn-primary">
+                                        Book Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
         </div>
     </div>
 </section>
-
-<!-- Add CSS for styling -->
-<style>
-    .transition-all {
-        transition: all 0.3s ease;
-    }
-    
-    .hover-lift:hover {
-        transform: translateY(-5px);
-    }
-    
-    .hover-subtle:hover {
-        transform: translateY(-3px);
-    }
-    
-    .vh-50 {
-        height: 50vh;
-    }
-    
-    .object-fit-cover {
-        object-fit: cover;
-    }
-    
-    .solid-hero-bg {
-        background-color: rgba(0, 0, 0, 0.6);
-    }
-</style>
 
 <!-- JavaScript for calculations -->
 <script>
@@ -434,8 +431,9 @@
                     
                     const total = roomPrice * nightsCount;
                     
-                    totalPriceElement.textContent = '₱' + total.toLocaleString();
-                    finalTotalElement.textContent = '₱' + total.toLocaleString();
+                    // Format with thousand separator
+                    totalPriceElement.textContent = '$' + total.toLocaleString();
+                    finalTotalElement.textContent = '$' + total.toLocaleString();
                 }
             }
         }

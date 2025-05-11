@@ -19,6 +19,24 @@ namespace HotelWebsite.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Room>()
+                .Property(r => r.Price)
+                .HasColumnType("decimal(10,0)");
+
+            modelBuilder.Entity<Booking>()
+                .Property(b => b.TotalPrice)
+                .HasColumnType("decimal(10,0)");
+
+            modelBuilder.Entity<Payment>()
+                .Property(p => p.Amount)
+                .HasColumnType("decimal(10,0)");
+
+            modelBuilder.Entity<BillItem>()
+                .Property(b => b.Amount)
+                .HasColumnType("decimal(10,0)");
+
             // Seed admin user
             modelBuilder.Entity<User>().HasData(
                 new User
@@ -68,40 +86,40 @@ namespace HotelWebsite.Models
                     Id = 1,
                     RoomNumber = "101",
                     Type = "Standard",
-                    Price = 150.00m,
+                    Price = 2500,
                     Status = "Vacant",
                     Description = "Comfortable standard room with queen bed",
                     Capacity = 2,
-                    ImageUrl = "https://example.com/standard-room.jpg"
+                    ImageUrl = "https://www.citiparkhotel.com.ph/images/uploads/143/6221b2c5dfe34_Standard-Queen.jpg?0.6300843762493157"
                 },
                 new Room
                 {
                     Id = 2,
                     RoomNumber = "201",
                     Type = "Deluxe",
-                    Price = 250.00m,
+                    Price = 4000,
                     Status = "Vacant",
                     Description = "Spacious deluxe room with king bed",
                     Capacity = 2,
-                    ImageUrl = "https://example.com/deluxe-room.jpg"
+                    ImageUrl = "https://www.theexcelsiorhotel.com.ph/wp-content/uploads/elementor/thumbs/Room-906-Deluxe-Room-King-10-scaled-qsvjndyna7l6ugj7qq7kmpcfulmijl5i1hhxnpodio.jpg"
                 },
                 new Room
                 {
                     Id = 3,
                     RoomNumber = "301",
                     Type = "Suite",
-                    Price = 400.00m,
+                    Price = 5000,
                     Status = "Vacant",
                     Description = "Luxurious suite with separate living area",
                     Capacity = 4,
-                    ImageUrl = "https://example.com/suite-room.jpg"
+                    ImageUrl = "https://www.manila-hotel.com.ph/wp-content/uploads/2020/06/Veranda-Suite-LR-0505-scaled.jpg"
                 },
                 new Room
                 {
                     Id = 4,
                     RoomNumber = "102",
                     Type = "Standard",
-                    Price = 150.00m,
+                    Price = 2500,
                     Status = "Under Maintenance",
                     Description = "Comfortable standard room with queen bed",
                     Capacity = 2,

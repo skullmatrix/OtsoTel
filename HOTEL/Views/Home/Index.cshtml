@@ -1,4 +1,5 @@
-﻿@{
+﻿@model HotelWebsite.Models.HomeViewModel
+@{
     ViewData["Title"] = "Home";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -158,7 +159,7 @@
     </div>
 </section>
 
-<!-- Rooms Section with Carousel -->
+<!-- Rooms Section with Carousel - Updated to use database -->
 <section class="rooms-section py-5 bg-light">
     <div class="container">
         <div class="text-center mb-5">
@@ -167,75 +168,64 @@
         </div>
 
         <div id="roomsCarousel" class="carousel slide shadow-lg rounded overflow-hidden" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <div class="row g-0">
-                        <div class="col-lg-6">
-                            <img src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="d-block w-100 h-100 object-fit-cover" alt="Standard Room">
-                        </div>
-                        <div class="col-lg-6 d-flex align-items-center bg-white">
-                            <div class="p-4 p-lg-5">
-                                <h3 class="mb-3">Standard Room</h3>
-                                <p class="mb-4">Our standard rooms offer comfort and style with television, extra sheets, and complimentary breakfast.</p>
-                                <ul class="list-unstyled mb-4">
-                                    <li class="mb-2"><i class="fas fa-tv me-2 text-primary"></i> Television Set</li>
-                                    <li class="mb-2"><i class="fas fa-bed me-2 text-primary"></i> Extra Sheets</li>
-                                    <li class="mb-2"><i class="fas fa-coffee me-2 text-primary"></i> Breakfast</li>
-                                </ul>
-                                <button class="btn btn-primary book-now-btn" data-bs-toggle="modal" data-bs-target="#loginModal">Book Now</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="row g-0">
-                        <div class="col-lg-6">
-                            <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="d-block w-100 h-100 object-fit-cover" alt="Deluxe Room">
-                        </div>
-                        <div class="col-lg-6 d-flex align-items-center bg-white">
-                            <div class="p-4 p-lg-5">
-                                <h3 class="mb-3">Deluxe Room</h3>
-                                <p class="mb-4">Our deluxe rooms offer enhanced comfort with television, extra sheets, breakfast, and a cozy fireplace.</p>
-                                <ul class="list-unstyled mb-4">
-                                    <li class="mb-2"><i class="fas fa-tv me-2 text-primary"></i> Television Set</li>
-                                    <li class="mb-2"><i class="fas fa-bed me-2 text-primary"></i> Extra Sheets</li>
-                                    <li class="mb-2"><i class="fas fa-coffee me-2 text-primary"></i> Breakfast</li>
-                                    <li class="mb-2"><i class="fas fa-fire me-2 text-primary"></i> Fireplace</li>
-                                </ul>
-                                <button class="btn btn-primary book-now-btn" data-bs-toggle="modal" data-bs-target="#loginModal">Book Now</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="row g-0">
-                        <div class="col-lg-6">
-                            <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="d-block w-100 h-100 object-fit-cover" alt="Premium Room">
-                        </div>
-                        <div class="col-lg-6 d-flex align-items-center bg-white">
-                            <div class="p-4 p-lg-5">
-                                <h3 class="mb-3">Premium Suite</h3>
-                                <p class="mb-4">Our premium suites offer the ultimate luxury experience with all amenities for a perfect stay.</p>
-                                <ul class="list-unstyled mb-4">
-                                    <li class="mb-2"><i class="fas fa-tv me-2 text-primary"></i> Television Set</li>
-                                    <li class="mb-2"><i class="fas fa-bed me-2 text-primary"></i> Extra Sheets</li>
-                                    <li class="mb-2"><i class="fas fa-coffee me-2 text-primary"></i> Breakfast</li>
-                                    <li class="mb-2"><i class="fas fa-fire me-2 text-primary"></i> Fireplace</li>
-                                    <li class="mb-2"><i class="fas fa-gamepad me-2 text-primary"></i> Gaming Console</li>
-                                    <li class="mb-2"><i class="fas fa-bath me-2 text-primary"></i> Luxury Bathroom</li>
-                                </ul>
-                                <button class="btn btn-primary book-now-btn" data-bs-toggle="modal" data-bs-target="#loginModal">Book Now</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <!-- Carousel Indicators -->
+            <div class="carousel-indicators">
+                @if (Model.Rooms != null && Model.Rooms.Any())
+                {
+                    for (int i = 0; i < Model.Rooms.Count; i++)
+                    {
+                        <button type="button" data-bs-target="#roomsCarousel" data-bs-slide-to="@i" 
+                                class="@(i == 0 ? "active" : "")" 
+                                aria-current="@(i == 0 ? "true" : "false")" 
+                                aria-label="Room @(i+1)">
+                        </button>
+                    }
+                }
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#roomsCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon bg-primary rounded-circle p-3" aria-hidden="true"></span>
+            
+            <div class="carousel-inner">
+                @if (Model.Rooms != null && Model.Rooms.Any())
+                {
+                    for (var i = 0; i < Model.Rooms.Count; i++)
+                    {
+                        var room = Model.Rooms[i];
+                        <div class="carousel-item @(i == 0 ? "active" : "")">
+                            <div class="row g-0">
+                                <div class="col-lg-6">
+                                    <img src="@room.ImageUrl" class="d-block w-100 h-100 object-fit-cover" alt="@room.Type Room">
+                                </div>
+                                <div class="col-lg-6 d-flex align-items-center bg-white">
+                                    <div class="p-4 p-lg-5">
+                                        <h3 class="mb-3">@room.Type Room</h3>
+                                        <p class="mb-4">@room.Description</p>
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <span class="fw-bold text-primary fs-4">₱@room.Price.ToString("0.00")<small class="text-muted fs-6">/night</small></span>
+                                            <span class="badge bg-success">Available</span>
+                                        </div>
+                                        <button class="btn btn-primary book-now-btn" data-bs-toggle="modal" data-bs-target="#loginModal">Book Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="carousel-item active">
+                        <div class="p-5 text-center">
+                            <p>No rooms available at the moment.</p>
+                        </div>
+                    </div>
+                }
+            </div>
+            
+            <!-- Updated Carousel Controls to match first carousel style -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#roomsCarousel" data-bs-slide="prev" style="z-index: 5;">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
             </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#roomsCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon bg-primary rounded-circle p-3" aria-hidden="true"></span>
+            <button class="carousel-control-next" type="button" data-bs-target="#roomsCarousel" data-bs-slide="next" style="z-index: 5;">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
@@ -502,27 +492,29 @@
             });
         }
 
-        // Initialize room carousel
-        const roomsCarousel = document.getElementById('roomsCarousel');
-        if (roomsCarousel) {
-            // Create IntersectionObserver to detect when carousel is visible
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        // Start auto-scroll when visible
-                        const carousel = new bootstrap.Carousel(roomsCarousel, {
-                            interval: 5000,
-                            ride: 'carousel'
-                        });
-                        // Once started, no need to observe anymore
-                        observer.unobserve(roomsCarousel);
-                    }
-                });
-            }, { threshold: 0.3 }); // Trigger when 30% of element is visible
+        // Add this to your existing script section, replacing the current roomsCarousel initialization
+// Initialize room carousel to match the first carousel behavior
+const roomsCarousel = document.getElementById('roomsCarousel');
+if (roomsCarousel) {
+    // Initialize Bootstrap carousel with similar settings as the hero carousel
+    const bsRoomsCarousel = new bootstrap.Carousel(roomsCarousel, {
+        interval: 5000,
+        ride: 'carousel',
+        wrap: true
+    });
 
-            // Start observing the carousel
-            observer.observe(roomsCarousel);
-        }
+    // Ensure navigation buttons work properly
+    const prevButton = roomsCarousel.querySelector('.carousel-control-prev');
+    const nextButton = roomsCarousel.querySelector('.carousel-control-next');
+
+    prevButton.addEventListener('click', function() {
+        bsRoomsCarousel.prev();
+    });
+
+    nextButton.addEventListener('click', function() {
+        bsRoomsCarousel.next();
+    });
+}
 
         // Initialize testimonial carousel with improved controls
         const testimonialCarousel = document.getElementById('testimonialCarousel');

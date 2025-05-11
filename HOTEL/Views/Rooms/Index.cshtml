@@ -4,27 +4,32 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!-- Hero Section -->
-<section class="hero-section position-relative vh-50">
+<!-- Hero Section with Background Image -->
+<section class="hero-section position-relative vh-100">
+    <!-- Background Image -->
     <div class="position-relative h-100">
-        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80" class="w-100 h-100 object-fit-cover" alt="The Matrix Hotel Rooms">
-        <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50"></div>
+        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80" class="d-block w-100 h-100 object-fit-cover" alt="The Matrix Hotel Rooms">
+        <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"></div>
     </div>
     <!-- Hero Content -->
     <div class="position-absolute top-50 start-0 translate-middle-y px-4 px-lg-5 w-100">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6 col-md-8 p-4 p-md-5 rounded">
+                <div class="col-lg-6 col-md-8 bg-dark bg-opacity-75 p-4 p-md-5 rounded">
                     <h2 class="fs-4 text-white mb-2">THE MATRIX</h2>
                     <h1 class="display-4 fw-bold text-white">Choose Your Reality</h1>
-                    <p class="lead mb-4 text-white">Explore our selection of rooms designed to transcend ordinary accommodations</p>
+                    <p class="lead mb-4 text-white">Our rooms are designed to transcend ordinary accommodations.</p>
+                    <div class="d-flex gap-3">
+                        <a href="#room-listings" class="btn btn-primary">View Rooms</a>
+                        <a href="@Url.Action("Index", "Home")" class="btn btn-outline-light">Back to Home</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Search and Filter Section -->
+<!-- Booking Section -->
 <section class="booking-section py-4 shadow bg-white">
     <div class="container">
         <form class="booking-form">
@@ -71,7 +76,7 @@
                     <input type="date" class="form-control" value="@DateTime.Now.AddDays(4).ToString("yyyy-MM-dd")">
                 </div>
                 <div class="col-md-2 col-sm-6 d-grid">
-                    <label class="invisible form-label">Search</label>
+                    <label class="invisible form-label">Filter</label>
                     <button type="button" class="btn btn-primary" id="filterRooms">Find Rooms</button>
                 </div>
             </div>
@@ -79,96 +84,88 @@
     </div>
 </section>
 
-<div class="container py-5">
-    <!-- Room Type Buttons -->
-    <div class="text-center mb-5">
-        <h2 class="display-5 fw-bold mb-3">Our Accommodations</h2>
-        <p class="text-muted mb-4">Our rooms are designed to transcend ordinary accommodations</p>
-        
-        <div class="btn-group btn-group-lg" role="group">
-            <a href="@Url.Action("Index")" class="btn @(string.IsNullOrEmpty(Context.Request.Query["type"]) ? "btn-primary" : "btn-outline-primary") rounded-pill mx-1">All</a>
-            @foreach (var type in ViewBag.RoomTypes)
-            {
-                <a href="@Url.Action("Index", new { type = type })" class="btn @(Context.Request.Query["type"] == type ? "btn-primary" : "btn-outline-primary") rounded-pill mx-1">@type</a>
-            }
+<!-- Room Types Section -->
+<section class="py-5" id="room-listings">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold mb-3">Our Accommodations</h2>
+            <p class="text-muted">Find the perfect room for your stay</p>
         </div>
-    </div>
 
-    @if (ViewBag.ErrorMessage != null)
-    {
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            @ViewBag.ErrorMessage
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <!-- Room Type Filter Buttons -->
+        <div class="text-center mb-5">
+            <div class="btn-group">
+                <a href="@Url.Action("Index")" class="btn @(string.IsNullOrEmpty(Context.Request.Query["type"]) ? "btn-primary" : "btn-outline-primary")">All</a>
+                @foreach (var type in ViewBag.RoomTypes)
+                {
+                    <a href="@Url.Action("Index", new { type = type })" class="btn @(Context.Request.Query["type"] == type ? "btn-primary" : "btn-outline-primary")">@type</a>
+                }
+            </div>
         </div>
-    }
 
-    @if (ViewBag.SuccessMessage != null)
-    {
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            @ViewBag.SuccessMessage
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    }
-
-    <div class="row g-4">
-        @foreach (var room in Model)
+        @if (ViewBag.ErrorMessage != null)
         {
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card h-100 border-0 shadow transition-all hover-lift">
-                    <div class="position-relative overflow-hidden">
-                        <img src="@room.ImageUrl" class="card-img-top" alt="@room.Type Room">
-                        <span class="badge bg-primary position-absolute top-0 end-0 m-3 p-2">@room.Type</span>
-                        <div class="room-overlay position-absolute bottom-0 start-0 w-100 bg-dark bg-opacity-75 text-white p-3 translate-up-100 transition-all">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="fw-bold fs-5">Features</span>
-                                <i class="fas fa-chevron-up"></i>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @ViewBag.ErrorMessage
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        @if (ViewBag.SuccessMessage != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @ViewBag.SuccessMessage
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        <div class="row g-4">
+            @foreach (var room in Model)
+            {
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="position-relative">
+                            <img src="@room.ImageUrl" class="card-img-top" alt="@room.Type Room">
+                            <span class="badge bg-primary position-absolute top-0 end-0 m-3">@room.Type</span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@room.Type Room - @room.RoomNumber</h5>
+                            <p class="card-text">@room.Description</p>
+
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="fw-bold text-primary fs-4">₱@room.Price<small class="text-muted fs-6">/night</small></span>
+                                <span class="badge bg-success">Available</span>
                             </div>
-                            <div class="room-features d-flex flex-wrap gap-3 mt-2">
+
+                            <div class="room-features d-flex flex-wrap gap-3 mb-3">
                                 <div class="feature d-flex align-items-center">
-                                    <i class="fas fa-user-friends me-2"></i>
+                                    <i class="fas fa-user-friends text-primary me-2"></i>
                                     <span>@room.Capacity guests</span>
                                 </div>
                                 <div class="feature d-flex align-items-center">
-                                    <i class="fas fa-wifi me-2"></i>
+                                    <i class="fas fa-wifi text-primary me-2"></i>
                                     <span>Free WiFi</span>
                                 </div>
                                 <div class="feature d-flex align-items-center">
-                                    <i class="fas fa-coffee me-2"></i>
+                                    <i class="fas fa-coffee text-primary me-2"></i>
                                     <span>Breakfast</span>
                                 </div>
-                                <div class="feature d-flex align-items-center">
-                                    <i class="fas fa-tv me-2"></i>
-                                    <span>Smart TV</span>
-                                </div>
+                            </div>
+
+                            <!-- Replace the existing Book Now buttons section with this -->
+                            <div class="d-grid gap-2">
+                                <a href="@Url.Action("Details", new { id = room.Id })" class="btn btn-outline-primary">View Details</a>
+                                <a href="@Url.Action("Create", "Booking", new { roomId = room.Id })" class="btn btn-primary">
+                                    <i class="fas fa-calendar-check me-2"></i>Book Now
+                                </a>
                             </div>
                         </div>
                     </div>
-                    <div class="card-body p-4">
-                        <h5 class="card-title fw-bold">@room.Type Room - @room.RoomNumber</h5>
-                        <p class="card-text text-muted">@room.Description</p>
-
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <span class="fw-bold text-primary fs-4">$@room.Price<small class="text-muted fs-6">/night</small></span>
-                            <span class="badge bg-success p-2">Available</span>
-                        </div>
-
-                        <div class="d-grid gap-2">
-                            <a href="@Url.Action("Details", new { id = room.Id })" class="btn btn-outline-primary">View Details</a>
-                            @if (User.Identity.IsAuthenticated)
-                            {
-                                <a href="@Url.Action("Create", "Booking", new { roomId = room.Id })" class="btn btn-primary">Book Now</a>
-                            }
-                            else
-                            {
-                                <a href="#" class="btn btn-primary book-now-btn" data-bs-toggle="modal" data-bs-target="#loginModal">Book Now</a>
-                            }
-                        </div>
-                    </div>
                 </div>
-            </div>
-        }
+            }
+        </div>
     </div>
-</div>
+</section>
 
 <!-- Testimonials Section -->
 <section class="testimonials-section py-5 bg-light">
@@ -181,11 +178,11 @@
         <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <div class="testimonial-card bg-white p-4 rounded shadow">
+                    <div class="bg-white p-4 rounded shadow">
                         <div class="row">
                             <div class="col-md-3 col-12 mb-3 mb-md-0 text-center">
-                                <img src="https://scontent.fmnl40-2.fna.fbcdn.net/v/t39.30808-6/474648070_2052592781871642_2552383880528591768_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=U94S4I1bRlQQ7kNvgHgntsK&_nc_oc=Admu8ohiiGwwNUhZun3PwQ9i_1UAqyBW_3PiEaIMuXgR6DG3ajyzBtlIQUWJwOM0G1s&_nc_zt=23&_nc_ht=scontent.fmnl40-2.fna&_nc_gid=GTt0e2hVIPwwMmydp4J1EA&oh=00_AYE92sEUAls4t9k2LUrJZUFQoHqTxkRS8EUWpGzjcUnSIQ&oe=67E99DF7" class="rounded-circle mb-3 shadow" width="120" height="120" alt="Anthony Bruff">
-                                <h5>Anthony Bruff</h5>
+                                <img src="https://randomuser.me/api/portraits/men/32.jpg" class="rounded-circle mb-3 shadow" width="120" height="120" alt="John Doe">
+                                <h5>John Doe</h5>
                                 <div class="text-warning mb-2">
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>
@@ -203,22 +200,22 @@
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <div class="testimonial-card bg-white p-4 rounded shadow">
+                    <div class="bg-white p-4 rounded shadow">
                         <div class="row">
                             <div class="col-md-3 col-12 mb-3 mb-md-0 text-center">
-                                <img src="https://scontent.fmnl40-1.fna.fbcdn.net/v/t1.6435-9/93179170_867145597083039_5287749652190330880_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=per2axiwhcEQ7kNvgGMm4Nb&_nc_oc=AdkPLPGYura2btoYtjNx_3Jl5fE-2dhABR7PsOZ7aNk3Ijzt7n5ELDOnYz1vkPspURM&_nc_zt=23&_nc_ht=scontent.fmnl40-1.fna&_nc_gid=SJpOr4yOTsz1rPyPG_Z9Dg&oh=00_AYFM6w_osNYTtE__VFzp17XPG0gSA7dtBv9du1pV90BXww&oe=680B3F05" class="rounded-circle mb-3 shadow" width="120" height="120" alt="Jennyn Aliyu">
-                                <h5>Jennyn Aliyu</h5>
+                                <img src="https://randomuser.me/api/portraits/women/44.jpg" class="rounded-circle mb-3 shadow" width="120" height="120" alt="Jane Smith">
+                                <h5>Jane Smith</h5>
                                 <div class="text-warning mb-2">
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
                                 </div>
                             </div>
                             <div class="col-md-9 col-12">
                                 <blockquote class="blockquote">
-                                    <p><i class="fas fa-quote-left text-primary me-2 opacity-50"></i>There was absolutely no issue that was not timely and with satisfactory results. We were impressed with how the hotel staff anticipated our needs. Numerous conference attendees commented on the quality of the food, the quality of the service, and positive attitude toward the conference site.<i class="fas fa-quote-right text-primary ms-2 opacity-50"></i></p>
+                                    <p><i class="fas fa-quote-left text-primary me-2 opacity-50"></i>My stay at The Matrix was nothing short of exceptional. The room was immaculate, the bed incredibly comfortable, and the service was attentive without being intrusive. The breakfast buffet offered a wide variety of delicious options. I particularly enjoyed the pool area which was well maintained and peaceful.<i class="fas fa-quote-right text-primary ms-2 opacity-50"></i></p>
                                 </blockquote>
                             </div>
                         </div>
@@ -233,38 +230,7 @@
     </div>
 </section>
 
-<!-- Add CSS for hover effects and transitions -->
-<style>
-    .transition-all {
-        transition: all 0.3s ease;
-    }
-    
-    .hover-lift:hover {
-        transform: translateY(-10px);
-    }
-    
-    .translate-up-100 {
-        transform: translateY(100%);
-    }
-    
-    .card:hover .translate-up-100 {
-        transform: translateY(0);
-    }
-    
-    .vh-50 {
-        height: 50vh;
-    }
-    
-    .object-fit-cover {
-        object-fit: cover;
-    }
-    
-    .solid-hero-bg {
-        background-color: rgba(0, 0, 0, 0.6);
-    }
-</style>
-
-<!-- JavaScript for Room Filter -->
+<!-- Simple JavaScript for the Room Filter -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Room type filter functionality
@@ -282,19 +248,15 @@
             });
         }
         
-        // Initialize testimonial carousel
-        const testimonialCarousel = document.getElementById('testimonialCarousel');
-        if (testimonialCarousel) {
-            const testimonialButtons = document.querySelectorAll('[data-bs-target="#testimonialCarousel"]');
+        // Initialize testimonial carousel buttons
+        const testimonialButtons = document.querySelectorAll('[data-bs-target="#testimonialCarousel"]');
+        if (testimonialButtons.length > 0) {
             testimonialButtons.forEach(button => {
                 button.addEventListener('click', function() {
-                    // Remove active class from all buttons
                     testimonialButtons.forEach(btn => {
                         btn.classList.remove('btn-primary');
                         btn.classList.add('btn-outline-primary');
                     });
-
-                    // Add active class to clicked button
                     this.classList.remove('btn-outline-primary');
                     this.classList.add('btn-primary');
                 });

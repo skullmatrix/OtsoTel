@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using HotelWebsite.Models; // Add this namespace
+using System.Linq;
+using HotelWebsite.Models;
 
 namespace HotelWebsite.Controllers
 {
@@ -32,8 +34,20 @@ namespace HotelWebsite.Controllers
                 return RedirectToAction("Index", "Housekeeping");
             }
 
-            // Default view for guests and non-logged in users
-            return View();
+            // Get available rooms for the hotel carousel
+            var rooms = _context.Rooms
+                .Where(r => r.Status == "Vacant")  // Only show available rooms
+                .OrderBy(r => r.Price)  // Order by price (cheapest first)
+                .Take(3)  // Limit to 3 rooms initially
+                .ToList();
+
+            // Create a view model to pass to the view
+            var viewModel = new HomeViewModel
+            {
+                Rooms = rooms
+            };
+
+            return View(viewModel);
         }   
 
         // Rename this method to avoid conflict

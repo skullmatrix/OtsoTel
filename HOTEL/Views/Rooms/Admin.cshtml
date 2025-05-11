@@ -13,6 +13,14 @@
     var maintenancePercentage = totalRooms > 0 ? (maintenanceCount * 100 / totalRooms) : 0;
 }
 
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
 <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="mb-0">Room Management</h1>
@@ -166,50 +174,56 @@
                                                 
                                                 <div class="mb-3">
                                                     <label for="RoomNumber" class="form-label">Room Number</label>
-                                                    <input type="text" class="form-control" id="RoomNumber" name="RoomNumber" value="@room.RoomNumber" required>
+                                                    <input type="text" class="form-control" name="RoomNumber" value="@room.RoomNumber" required>
                                                 </div>
                                                 
                                                 <div class="mb-3">
                                                     <label for="Type" class="form-label">Room Type</label>
-                                                    <select class="form-select" id="Type" name="Type">
-                                                        <select class="form-select" id="Type" name="Type">
-                                                            <option value="Standard" selected="@(room.Type == "Standard")">Standard</option>
-                                                            <option value="Deluxe" selected="@(room.Type == "Deluxe")">Deluxe</option>
-                                                            <option value="Suite" selected="@(room.Type == "Suite")">Suite</option>
-                                                        </select>
+                                                    <select class="form-select" name="Type">
+                                                        @{
+                                                            var types = new[] { "Standard", "Deluxe", "Suite" };
+                                                            foreach (var type in types)
+                                                            {
+                                                                <option value="@type" selected="@(room.Type == type)">@type</option>
+                                                            }
+                                                        }
                                                     </select>
                                                 </div>
                                                 
                                                 <div class="mb-3">
                                                     <label for="Price" class="form-label">Price per Night</label>
                                                     <div class="input-group">
-                                                        <span class="input-group-text">$</span>
-                                                        <input type="number" step="0.01" class="form-control" id="Price" name="Price" value="@room.Price" required>
+                                                        <span class="input-group-text">₱</span>
+                                                        <input type="number" step="0.01" class="form-control" name="Price" value="@room.Price" required>
                                                     </div>
                                                 </div>
                                                 
                                                 <div class="mb-3">
                                                     <label for="Capacity" class="form-label">Capacity</label>
-                                                    <input type="number" class="form-control" id="Capacity" name="Capacity" value="@room.Capacity" required>
-                                                </div>
-                                                
-                                                <div class="mb-3">
-                                                    <label for="Status" class="form-label">Status</label>
-                                                    <select class="form-select" id="Status" name="Status">
-                                                        <option value="Vacant" selected="@(room.Status == "Vacant")">Vacant</option>
-                                                        <option value="Occupied" selected="@(room.Status == "Occupied")">Occupied</option>
-                                                        <option value="Under Maintenance" selected="@(room.Status == "Under Maintenance")">Under Maintenance</option>
-                                                    </select>
+                                                    <input type="number" class="form-control" name="Capacity" value="@room.Capacity" required>
                                                 </div>
                                                 
                                                 <div class="mb-3">
                                                     <label for="Description" class="form-label">Description</label>
-                                                    <textarea class="form-control" id="Description" name="Description" rows="3">@room.Description</textarea>
+                                                    <textarea class="form-control" name="Description" rows="3">@room.Description</textarea>
                                                 </div>
                                                 
                                                 <div class="mb-3">
                                                     <label for="ImageUrl" class="form-label">Image URL</label>
-                                                    <input type="text" class="form-control" id="ImageUrl" name="ImageUrl" value="@room.ImageUrl">
+                                                    <input type="url" class="form-control" name="ImageUrl" value="@room.ImageUrl" required>
+                                                </div>
+                                                
+                                                <div class="mb-3">
+                                                    <label for="Status" class="form-label">Status</label>
+                                                    <select class="form-select" name="Status">
+                                                        @{
+                                                            var statuses = new[] { "Vacant", "Occupied", "Under Maintenance" };
+                                                            foreach (var status in statuses)
+                                                            {
+                                                                <option value="@status" selected="@(room.Status == status)">@status</option>
+                                                            }
+                                                        }
+                                                    </select>
                                                 </div>
                                                 
                                                 <div class="d-grid gap-2">
@@ -235,7 +249,7 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                            <form asp-action="Delete" method="post">
+                                            <form asp-action="Delete" method="post" class="d-inline">
                                                 <input type="hidden" name="id" value="@room.Id" />
                                                 <button type="submit" class="btn btn-danger">Delete</button>
                                             </form>
@@ -262,13 +276,13 @@
             <div class="modal-body">
                 <form asp-action="Create" method="post">
                     <div class="mb-3">
-                        <label for="newRoomNumber" class="form-label">Room Number</label>
-                        <input type="text" class="form-control" id="newRoomNumber" name="RoomNumber" required>
+                        <label for="RoomNumber" class="form-label">Room Number</label>
+                        <input type="text" class="form-control" id="RoomNumber" name="RoomNumber" required>
                     </div>
                     
                     <div class="mb-3">
-                        <label for="newType" class="form-label">Room Type</label>
-                        <select class="form-select" id="newType" name="Type">
+                        <label for="Type" class="form-label">Room Type</label>
+                        <select class="form-select" id="Type" name="Type">
                             <option value="Standard">Standard</option>
                             <option value="Deluxe">Deluxe</option>
                             <option value="Suite">Suite</option>
@@ -276,35 +290,35 @@
                     </div>
                     
                     <div class="mb-3">
-                        <label for="newPrice" class="form-label">Price per Night</label>
+                        <label for="Price" class="form-label">Price per Night</label>
                         <div class="input-group">
-                            <span class="input-group-text">$</span>
-                            <input type="number" step="0.01" class="form-control" id="newPrice" name="Price" value="100.00" required>
+                            <span class="input-group-text">₱</span>
+                            <input type="number" step="0.01" class="form-control" id="Price" name="Price" required>
                         </div>
                     </div>
                     
                     <div class="mb-3">
-                        <label for="newCapacity" class="form-label">Capacity</label>
-                        <input type="number" class="form-control" id="newCapacity" name="Capacity" value="2" required>
+                        <label for="Capacity" class="form-label">Capacity</label>
+                        <input type="number" class="form-control" id="Capacity" name="Capacity" required>
                     </div>
-                    
+
                     <div class="mb-3">
-                        <label for="newStatus" class="form-label">Status</label>
-                        <select class="form-select" id="newStatus" name="Status">
+                        <label for="Description" class="form-label">Description</label>
+                        <textarea class="form-control" id="Description" name="Description" rows="3"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="ImageUrl" class="form-label">Image URL</label>
+                        <input type="url" class="form-control" id="ImageUrl" name="ImageUrl" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="Status" class="form-label">Status</label>
+                        <select class="form-select" id="Status" name="Status">
                             <option value="Vacant" selected>Vacant</option>
                             <option value="Occupied">Occupied</option>
                             <option value="Under Maintenance">Under Maintenance</option>
                         </select>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="newDescription" class="form-label">Description</label>
-                        <textarea class="form-control" id="newDescription" name="Description" rows="3">Comfortable room with modern amenities.</textarea>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="newImageUrl" class="form-label">Image URL</label>
-                        <input type="text" class="form-control" id="newImageUrl" name="ImageUrl" value="https://example.com/room.jpg">
                     </div>
                     
                     <div class="d-grid gap-2">

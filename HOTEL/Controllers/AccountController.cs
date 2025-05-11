@@ -145,7 +145,7 @@ namespace HotelWebsite.Controllers
                     return Json(new { success = false, message = "User not logged in" });
                 }
 
-                var user = _context.Users.FirstOrDefault(u => u.Id == int.Parse(userId));
+                var user = _context.Users.FirstOrDefault(u => u.Id == decimal.Parse(userId));
                 if (user == null)
                 {
                     return Json(new { success = false, message = "User not found" });
@@ -198,7 +198,7 @@ namespace HotelWebsite.Controllers
                     return Json(new { success = false, message = "User not logged in" });
                 }
 
-                var user = _context.Users.FirstOrDefault(u => u.Id == int.Parse(userId));
+                var user = _context.Users.FirstOrDefault(u => u.Id == decimal.Parse(userId));
                 if (user == null)
                 {
                     return Json(new { success = false, message = "User not found" });
@@ -257,7 +257,7 @@ namespace HotelWebsite.Controllers
                 return RedirectToAction("Index", "Home"); // Redirect if not logged in
             }
 
-            var user = _context.Users.FirstOrDefault(u => u.Id == int.Parse(userId));
+            var user = _context.Users.FirstOrDefault(u => u.Id == decimal.Parse(userId));
             if (user == null)
             {
                 return RedirectToAction("Index", "Home"); // Redirect if user not found

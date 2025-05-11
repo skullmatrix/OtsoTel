@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HOTEL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250506155832_AddPreferredPaymentMethodToUser")]
-    partial class AddPreferredPaymentMethodToUser
+    [Migration("20250510202425_Final")]
+    partial class Final
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,7 +29,7 @@ namespace HOTEL.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(65,30)");
+                        .HasColumnType("decimal(10,0)");
 
                     b.Property<int>("BookingId")
                         .HasColumnType("int");
@@ -77,16 +77,10 @@ namespace HOTEL.Migrations
                     b.Property<DateTime>("CheckOutDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("CheckedInById")
+                    b.Property<int?>("CheckedInById")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CheckedInByUserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CheckedOutById")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CheckedOutByUserId")
+                    b.Property<int?>("CheckedOutById")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
@@ -115,7 +109,7 @@ namespace HOTEL.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(65,30)");
+                        .HasColumnType("decimal(10,0)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -235,7 +229,7 @@ namespace HOTEL.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(65,30)");
+                        .HasColumnType("decimal(10,0)");
 
                     b.Property<int>("BookingId")
                         .HasColumnType("int");
@@ -284,7 +278,7 @@ namespace HOTEL.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(65,30)");
+                        .HasColumnType("decimal(10,0)");
 
                     b.Property<string>("RoomNumber")
                         .IsRequired()
@@ -308,8 +302,8 @@ namespace HOTEL.Migrations
                             Id = 1,
                             Capacity = 2,
                             Description = "Comfortable standard room with queen bed",
-                            ImageUrl = "https://example.com/standard-room.jpg",
-                            Price = 150.00m,
+                            ImageUrl = "https://www.citiparkhotel.com.ph/images/uploads/143/6221b2c5dfe34_Standard-Queen.jpg?0.6300843762493157",
+                            Price = 2500m,
                             RoomNumber = "101",
                             Status = "Vacant",
                             Type = "Standard"
@@ -319,8 +313,8 @@ namespace HOTEL.Migrations
                             Id = 2,
                             Capacity = 2,
                             Description = "Spacious deluxe room with king bed",
-                            ImageUrl = "https://example.com/deluxe-room.jpg",
-                            Price = 250.00m,
+                            ImageUrl = "https://www.theexcelsiorhotel.com.ph/wp-content/uploads/elementor/thumbs/Room-906-Deluxe-Room-King-10-scaled-qsvjndyna7l6ugj7qq7kmpcfulmijl5i1hhxnpodio.jpg",
+                            Price = 4000m,
                             RoomNumber = "201",
                             Status = "Vacant",
                             Type = "Deluxe"
@@ -330,8 +324,8 @@ namespace HOTEL.Migrations
                             Id = 3,
                             Capacity = 4,
                             Description = "Luxurious suite with separate living area",
-                            ImageUrl = "https://example.com/suite-room.jpg",
-                            Price = 400.00m,
+                            ImageUrl = "https://www.manila-hotel.com.ph/wp-content/uploads/2020/06/Veranda-Suite-LR-0505-scaled.jpg",
+                            Price = 5000m,
                             RoomNumber = "301",
                             Status = "Vacant",
                             Type = "Suite"
@@ -342,7 +336,7 @@ namespace HOTEL.Migrations
                             Capacity = 2,
                             Description = "Comfortable standard room with queen bed",
                             ImageUrl = "https://example.com/standard-room.jpg",
-                            Price = 150.00m,
+                            Price = 2500m,
                             RoomNumber = "102",
                             Status = "Under Maintenance",
                             Type = "Standard"
@@ -432,7 +426,7 @@ namespace HOTEL.Migrations
                             FirstName = "Admin",
                             IsAdmin = true,
                             LastName = "Matrix",
-                            Password = "$2a$11$wiOvkzNz92Minh6qAfcp1edvtc/UgDxjajF8qwwhorBGK6aJ0mJGi",
+                            Password = "$2a$11$Vu6BATbj598OtCLmUi9MQumaWX8r/YsPnFouvm7cBYBGfdEQj0GZ2",
                             Photo = "https://cdn-icons-png.flaticon.com/256/2165/2165674.png",
                             Role = "Administrator"
                         },
@@ -444,7 +438,7 @@ namespace HOTEL.Migrations
                             FirstName = "John",
                             IsAdmin = false,
                             LastName = "Doe",
-                            Password = "$2a$11$CPVylWNze3Om/sQQeLc1B.rEHYcCrkRH0T5C3Kjh3v3vp6EthcwHW",
+                            Password = "$2a$11$wBKiXnxF.a8OhSwQurSVhudVcrBElYHrZ0mO1mx7Uii47.V18aAZe",
                             Photo = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                             Role = "FrontDesk"
                         },
@@ -456,7 +450,7 @@ namespace HOTEL.Migrations
                             FirstName = "Jane",
                             IsAdmin = false,
                             LastName = "Smith",
-                            Password = "$2a$11$ohssdchh7fyb0RfJQMKinO3hqps28dKO42VkVkeH.e7DO8Z7XVLQ2",
+                            Password = "$2a$11$7Mw7U0x8lH7CKEefGp3Kue8hzlF0iPQ/s1x2GIcDCFx6Z2jImHK4O",
                             Photo = "https://cdn-icons-png.flaticon.com/512/4128/4128176.png",
                             Role = "Housekeeping"
                         });
@@ -477,15 +471,11 @@ namespace HOTEL.Migrations
                 {
                     b.HasOne("HotelWebsite.Models.User", "CheckedInBy")
                         .WithMany()
-                        .HasForeignKey("CheckedInById")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CheckedInById");
 
                     b.HasOne("HotelWebsite.Models.User", "CheckedOutBy")
                         .WithMany()
-                        .HasForeignKey("CheckedOutById")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CheckedOutById");
 
                     b.HasOne("HotelWebsite.Models.Room", "Room")
                         .WithMany()
